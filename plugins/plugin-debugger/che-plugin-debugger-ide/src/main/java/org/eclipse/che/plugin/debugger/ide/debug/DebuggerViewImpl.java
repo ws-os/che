@@ -70,6 +70,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   @UiField SimplePanel toolbarPanel;
   @UiField ScrollPanel variablesPanel;
   @UiField ScrollPanel breakpointsPanel;
+  @UiField SimplePanel watchExpressionPanel;
 
   @UiField(provided = true)
   DebuggerLocalizationConstant locale;
@@ -163,6 +164,8 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
     this.variablesPanel.add(variables);
     minimizeButton.ensureDebugId("debugger-minimizeBut");
+
+    watchExpressionPanel.addStyleName(resources.getCss().watchExpressionsPanel());
   }
 
   @Override
@@ -269,6 +272,11 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   @Override
   public AcceptsOneWidget getDebuggerToolbarPanel() {
     return toolbarPanel;
+  }
+
+  @Override
+  public AcceptsOneWidget getDebuggerWatchToolbarPanel() {
+    return watchExpressionPanel;
   }
 
   @Override

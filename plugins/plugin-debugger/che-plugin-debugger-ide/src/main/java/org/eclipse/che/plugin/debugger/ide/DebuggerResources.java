@@ -57,6 +57,12 @@ public interface DebuggerResources extends ClientBundle {
   @Source("debug-icon.svg")
   SVGResource debugIcon();
 
+  @Source("add-expression-button.svg")
+  SVGResource addExpressionBtn();
+
+  @Source("remove-expression-button.svg")
+  SVGResource removeExpressionBtn();
+
   /** Returns the CSS resource for the Debugger extension. */
   @Source({"debugger.css", "org/eclipse/che/ide/api/ui/style.css"})
   Css getCss();
@@ -67,5 +73,7 @@ public interface DebuggerResources extends ClientBundle {
     String selectConfigurationBox();
 
     String selectConfigurationsBoxIconPanel();
+
+    String watchExpressionsPanel();
   }
 }

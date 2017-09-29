@@ -25,6 +25,7 @@ import org.eclipse.che.plugin.debugger.ide.configuration.EditDebugConfigurations
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerToolbar;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerView;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerViewImpl;
+import org.eclipse.che.plugin.debugger.ide.debug.DebuggerWatchToolBar;
 import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValueView;
 import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValueViewImpl;
 import org.eclipse.che.plugin.debugger.ide.debug.expression.EvaluateExpressionView;
@@ -58,6 +59,11 @@ public class DebuggerGinModule extends AbstractGinModule {
 
     bind(ToolbarPresenter.class)
         .annotatedWith(DebuggerToolbar.class)
+        .to(ToolbarPresenter.class)
+        .in(Singleton.class);
+
+    bind(ToolbarPresenter.class)
+        .annotatedWith(DebuggerWatchToolBar.class)
         .to(ToolbarPresenter.class)
         .in(Singleton.class);
   }

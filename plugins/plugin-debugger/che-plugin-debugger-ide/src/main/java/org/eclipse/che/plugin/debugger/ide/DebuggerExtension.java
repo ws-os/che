@@ -25,6 +25,7 @@ import org.eclipse.che.ide.api.keybinding.KeyBindingAgent;
 import org.eclipse.che.ide.api.keybinding.KeyBuilder;
 import org.eclipse.che.ide.util.browser.UserAgent;
 import org.eclipse.che.ide.util.input.KeyCodeMap;
+import org.eclipse.che.plugin.debugger.ide.actions.AddWatchExpressionAction;
 import org.eclipse.che.plugin.debugger.ide.actions.ChangeVariableValueAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DebugAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DeleteAllBreakpointsAction;
@@ -82,6 +83,7 @@ public class DebuggerExtension {
       ChangeVariableValueAction changeVariableValueAction,
       ShowHideDebuggerPanelAction showHideDebuggerPanelAction,
       EditConfigurationsAction editConfigurationsAction,
+      AddWatchExpressionAction addWatchExpressionAction,
       DebugConfigurationsGroup configurationsGroup,
       DebuggerPresenter debuggerPresenter,
       KeyBindingAgent keyBinding) {
@@ -132,9 +134,15 @@ public class DebuggerExtension {
     debuggerToolbarActionGroup.add(stepOutAction);
     debuggerToolbarActionGroup.add(disconnectDebuggerAction);
     debuggerToolbarActionGroup.add(deleteAllBreakpointsAction);
-    debuggerToolbarActionGroup.add(changeVariableValueAction);
     debuggerToolbarActionGroup.add(evaluateExpressionAction);
     debuggerPresenter.getDebuggerToolbar().bindMainGroup(debuggerToolbarActionGroup);
+
+    DefaultActionGroup watchDebuggerActionGroup = new DefaultActionGroup(actionManager);
+    watchDebuggerActionGroup.add(addWatchExpressionAction);
+    watchDebuggerActionGroup.add(changeVariableValueAction);
+
+    //create watch debugger toolbar action group
+    debuggerPresenter.getWatchToolbar().bindMainGroup(watchDebuggerActionGroup);
 
     // add actions in 'Debug' context menu
     final DefaultActionGroup debugContextMenuGroup =

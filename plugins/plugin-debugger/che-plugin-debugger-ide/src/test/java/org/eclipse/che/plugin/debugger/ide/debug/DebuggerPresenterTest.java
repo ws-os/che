@@ -65,6 +65,7 @@ public class DebuggerPresenterTest extends BaseTest {
   @Mock private NotificationManager notificationManager;
   @Mock private DebuggerResources debuggerResources;
   @Mock @DebuggerToolbar private ToolbarPresenter debuggerToolbar;
+  @Mock @DebuggerWatchToolBar private ToolbarPresenter watchToolbar;
   @Mock private DebuggerManager debuggerManager;
   @Mock private WorkspaceAgent workspaceAgent;
   @Mock private DebuggerResourceHandlerFactory debuggerResourceHandlerFactory;
@@ -101,6 +102,7 @@ public class DebuggerPresenterTest extends BaseTest {
                 notificationManager,
                 debuggerResources,
                 debuggerToolbar,
+                watchToolbar,
                 debuggerManager,
                 workspaceAgent,
                 debuggerResourceHandlerFactory));

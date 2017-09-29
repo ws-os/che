@@ -202,4 +202,24 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
 
   @Key("debugger.frames.title")
   String debuggerFramesTitle();
+
+  @Key("add.watch.expression")
+  String addWatchExpression();
+
+  @Key("remove.watch.expression")
+  String removeWatchExpression();
+
+  @Key("edit.watch.expression")
+  String editWatchExpression();
+
+
+  @Key("addWatchExpressionDescription")
+  String addWatchExpressionDescription();
+
+  @Key("removeWatchExpressionDescription")
+  String removeWatchExpressionDescription();
+
+  @Key("editWatchExpressionDescription")
+  String editWatchExpressionDescription();
+
 }

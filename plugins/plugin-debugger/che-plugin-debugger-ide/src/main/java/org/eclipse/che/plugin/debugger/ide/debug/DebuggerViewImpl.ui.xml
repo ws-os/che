@@ -85,6 +85,9 @@
                             <g:north size="20">
                                 <g:Label text="{locale.variables}" addStyleNames="{style.alignLeft}"/>
                             </g:north>
+                            <g:west size="20">
+                                <g:SimplePanel ui:field="watchExpressionPanel" debugId="watch-expression-panel"/>
+                            </g:west>
                             <g:north size="20">
                                 <g:Label ui:field="executionPoint"/>
                             </g:north>

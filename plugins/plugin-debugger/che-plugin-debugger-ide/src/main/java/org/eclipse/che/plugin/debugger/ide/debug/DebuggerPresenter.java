@@ -70,6 +70,7 @@ public class DebuggerPresenter extends BasePresenter
 
   private final DebuggerResources debuggerResources;
   private final ToolbarPresenter debuggerToolbar;
+  private final ToolbarPresenter watchToolbar;
   private final BreakpointManager breakpointManager;
   private final NotificationManager notificationManager;
   private final DebuggerLocalizationConstant constant;
@@ -91,12 +92,14 @@ public class DebuggerPresenter extends BasePresenter
       final NotificationManager notificationManager,
       final DebuggerResources debuggerResources,
       final @DebuggerToolbar ToolbarPresenter debuggerToolbar,
+      final @DebuggerWatchToolBar ToolbarPresenter watchToolbar,
       final DebuggerManager debuggerManager,
       final WorkspaceAgent workspaceAgent,
       final DebuggerResourceHandlerFactory resourceHandlerManager) {
     this.view = view;
     this.debuggerResources = debuggerResources;
     this.debuggerToolbar = debuggerToolbar;
+    this.watchToolbar = watchToolbar;
     this.debuggerManager = debuggerManager;
     this.workspaceAgent = workspaceAgent;
     this.resourceHandlerManager = resourceHandlerManager;
@@ -139,6 +142,7 @@ public class DebuggerPresenter extends BasePresenter
   public void go(AcceptsOneWidget container) {
     container.setWidget(view);
     debuggerToolbar.go(view.getDebuggerToolbarPanel());
+    watchToolbar.go(view.getDebuggerWatchToolbarPanel());
   }
 
   @Override
@@ -178,6 +182,12 @@ public class DebuggerPresenter extends BasePresenter
       }
     }
   }
+
+  @Override
+  public void onAddExpressionBtnClicked() {}
+
+  @Override
+  public void onRemoveExpressionBtnClicked() {}
 
   protected void open(Location location) {
     Debugger debugger = debuggerManager.getActiveDebugger();
@@ -267,6 +277,10 @@ public class DebuggerPresenter extends BasePresenter
 
   public ToolbarPresenter getDebuggerToolbar() {
     return debuggerToolbar;
+  }
+
+  public ToolbarPresenter getWatchToolbar() {
+    return watchToolbar;
   }
 
   @Override

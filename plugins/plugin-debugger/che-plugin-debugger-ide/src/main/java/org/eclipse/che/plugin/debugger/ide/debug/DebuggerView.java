@@ -50,6 +50,12 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
      * @param frameIndex the frame index inside a thread
      */
     void onSelectedFrame(int frameIndex);
+
+    /** Is invoked when a add watch expression button clicked */
+    void onAddExpressionBtnClicked();
+
+    /** Is invoked when remove watch expression button clicked. */
+    void onRemoveExpressionBtnClicked();
   }
 
   /**
@@ -112,5 +118,9 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
    */
   MutableVariable getSelectedDebuggerVariable();
 
+  /** Returns debugger toolbar panel widget. */
   AcceptsOneWidget getDebuggerToolbarPanel();
+
+  /** Returns debugger watch toolbar panel widget. */
+  AcceptsOneWidget getDebuggerWatchToolbarPanel();
 }
