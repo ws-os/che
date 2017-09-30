@@ -26,7 +26,7 @@
 
     <g:DockLayoutPanel unit="PX" width="440px" height="200px" addStyleNames="{style.emptyBorder}">
         <g:north size="20">
-            <g:Label ui:field="changeValueLabel" addStyleNames="{style.alignLeft}"/>
+            <g:Label ui:field="textAreaLabel" addStyleNames="{style.alignLeft}"/>
         </g:north>
         <g:center>
             <g:TextArea ui:field="value" width="428px"/>

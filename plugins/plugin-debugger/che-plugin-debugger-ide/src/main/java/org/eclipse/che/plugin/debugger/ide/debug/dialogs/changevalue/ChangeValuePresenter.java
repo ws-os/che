@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.debugger.ide.debug.changevalue;
+package org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -19,6 +19,8 @@ import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
 
 /**
  * Presenter for changing variables value.
@@ -26,19 +28,24 @@ import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
  * @author Artem Zatsarynnyi
  */
 @Singleton
-public class ChangeValuePresenter implements ChangeValueView.ActionDelegate {
+public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   private final DebuggerManager debuggerManager;
-  private final ChangeValueView view;
+  private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
   private final DebuggerLocalizationConstant constant;
 
   @Inject
   public ChangeValuePresenter(
-      ChangeValueView view,
+      DebuggerDialogFactory dialogFactory,
       DebuggerLocalizationConstant constant,
       DebuggerManager debuggerManager,
       DebuggerPresenter debuggerPresenter) {
-    this.view = view;
+    this.view =
+        dialogFactory.createTextAreaDialogView(
+            constant.changeValueViewTitle(),
+            "debugger-change-value",
+            constant.changeValueViewChangeButtonTitle(),
+            constant.changeValueViewCancelButtonTitle());
     this.debuggerManager = debuggerManager;
     this.debuggerPresenter = debuggerPresenter;
     this.view.setDelegate(this);
@@ -52,7 +59,7 @@ public class ChangeValuePresenter implements ChangeValueView.ActionDelegate {
     view.focusInValueField();
     view.selectAllText();
     view.setEnableChangeButton(false);
-    view.showDialog();
+    view.show();
   }
 
   @Override
@@ -61,7 +68,7 @@ public class ChangeValuePresenter implements ChangeValueView.ActionDelegate {
   }
 
   @Override
-  public void onChangeClicked() {
+  public void onAgreeClicked() {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       Variable selectedVariable = debuggerPresenter.getSelectedVariable();
@@ -85,7 +92,7 @@ public class ChangeValuePresenter implements ChangeValueView.ActionDelegate {
   }
 
   @Override
-  public void onVariableValueChanged() {
+  public void onValueChanged() {
     final String value = view.getValue();
     boolean isExpressionFieldNotEmpty = !value.trim().isEmpty();
     view.setEnableChangeButton(isExpressionFieldNotEmpty);

@@ -8,17 +8,18 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.debugger.ide.debug.changevalue;
+package org.eclipse.che.plugin.debugger.ide.debug.dialogs.common;
 
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.mvp.View;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
 
 /**
  * The view of {@link ChangeValuePresenter}.
  *
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
  */
-public interface ChangeValueView extends View<ChangeValueView.ActionDelegate> {
+public interface TextAreaDialogView extends View<TextAreaDialogView.ActionDelegate> {
   /** Needs for delegate some function into ChangeValue view. */
   interface ActionDelegate {
     /**
@@ -29,10 +30,10 @@ public interface ChangeValueView extends View<ChangeValueView.ActionDelegate> {
     /**
      * Performs any actions appropriate in response to the user having pressed the Change button.
      */
-    void onChangeClicked();
+    void onAgreeClicked();
 
     /** Performs any actions appropriate in response to the user having changed value. */
-    void onVariableValueChanged();
+    void onValueChanged();
   }
 
   /** @return changed value */
@@ -70,5 +71,5 @@ public interface ChangeValueView extends View<ChangeValueView.ActionDelegate> {
   void close();
 
   /** Show dialog. */
-  void showDialog();
+  void show();
 }

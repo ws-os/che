@@ -26,8 +26,8 @@ import org.eclipse.che.api.debug.shared.model.MutableVariable;
 import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValuePresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValueView;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -42,7 +42,7 @@ public class ChangeVariableValueTest extends BaseTest {
   private static final String VAR_VALUE = "var_value";
   private static final String VAR_NAME = "var_name";
   private static final String EMPTY_VALUE = "";
-  @Mock private ChangeValueView view;
+  @Mock private TextAreaDialogView view;
   @InjectMocks private ChangeValuePresenter presenter;
   @Mock private VariableDto var;
   @Mock private VariablePathDto varPath;
@@ -77,7 +77,7 @@ public class ChangeVariableValueTest extends BaseTest {
     verify(view).focusInValueField();
     verify(view).selectAllText();
     verify(view).setEnableChangeButton(eq(DISABLE_BUTTON));
-    verify(view).showDialog();
+    verify(view).show();
   }
 
   @Test
@@ -91,7 +91,7 @@ public class ChangeVariableValueTest extends BaseTest {
   public void shouldDisableChangeButtonIfNoValue() throws Exception {
     when(view.getValue()).thenReturn(EMPTY_VALUE);
 
-    presenter.onVariableValueChanged();
+    presenter.onValueChanged();
 
     verify(view).setEnableChangeButton(eq(DISABLE_BUTTON));
   }
@@ -100,7 +100,7 @@ public class ChangeVariableValueTest extends BaseTest {
   public void shouldEnableChangeButtonIfValueNotEmpty() throws Exception {
     when(view.getValue()).thenReturn(VAR_VALUE);
 
-    presenter.onVariableValueChanged();
+    presenter.onValueChanged();
 
     verify(view).setEnableChangeButton(eq(!DISABLE_BUTTON));
   }
@@ -115,7 +115,7 @@ public class ChangeVariableValueTest extends BaseTest {
     when(variablePathDto.getPath()).thenReturn(new ArrayList<>());
 
     presenter.showDialog();
-    presenter.onChangeClicked();
+    presenter.onAgreeClicked();
 
     verify(debugger).setValue(anyObject(), anyLong(), anyInt());
     verify(view).close();

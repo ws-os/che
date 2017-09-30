@@ -19,7 +19,7 @@ import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValuePresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
 
 /**
  * Action which allows change value of selected variable with debugger

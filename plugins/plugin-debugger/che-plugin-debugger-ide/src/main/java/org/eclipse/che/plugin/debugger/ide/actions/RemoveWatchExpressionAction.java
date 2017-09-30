@@ -10,5 +10,32 @@
  */
 package org.eclipse.che.plugin.debugger.ide.actions;
 
+import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
+
+import com.google.inject.Inject;
+import java.util.Collections;
+import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
+import org.eclipse.che.ide.api.action.ActionEvent;
+import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
+import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
+
 /** @author Alexander Andrienko */
-public class RemoveWatchExpressionAction {}
+public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
+
+  @Inject
+  public RemoveWatchExpressionAction(
+      DebuggerLocalizationConstant locale, DebuggerResources resources) {
+    super(
+        Collections.singletonList(PROJECT_PERSPECTIVE_ID),
+        locale.removeWatchExpression(),
+        locale.removeWatchExpressionDescription(),
+        null,
+        resources.removeExpressionBtn());
+  }
+
+  @Override
+  public void updateInPerspective(ActionEvent event) {}
+
+  @Override
+  public void actionPerformed(ActionEvent e) {}
+}

@@ -26,8 +26,9 @@ import org.eclipse.che.plugin.debugger.ide.debug.DebuggerToolbar;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerView;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerViewImpl;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerWatchToolBar;
-import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValueView;
-import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValueViewImpl;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogViewImpl;
 import org.eclipse.che.plugin.debugger.ide.debug.expression.EvaluateExpressionView;
 import org.eclipse.che.plugin.debugger.ide.debug.expression.EvaluateExpressionViewImpl;
 
@@ -44,7 +45,6 @@ public class DebuggerGinModule extends AbstractGinModule {
   protected void configure() {
     bind(DebuggerView.class).to(DebuggerViewImpl.class).in(Singleton.class);
     bind(EvaluateExpressionView.class).to(EvaluateExpressionViewImpl.class).in(Singleton.class);
-    bind(ChangeValueView.class).to(ChangeValueViewImpl.class).in(Singleton.class);
     bind(EditDebugConfigurationsView.class)
         .to(EditDebugConfigurationsViewImpl.class)
         .in(Singleton.class);
@@ -56,6 +56,11 @@ public class DebuggerGinModule extends AbstractGinModule {
         new GinFactoryModuleBuilder()
             .implement(Action.class, DebugConfigurationAction.class)
             .build(DebugConfigurationActionFactory.class));
+
+    install(
+        new GinFactoryModuleBuilder()
+            .implement(TextAreaDialogView.class, TextAreaDialogViewImpl.class)
+            .build(DebuggerDialogFactory.class));
 
     bind(ToolbarPresenter.class)
         .annotatedWith(DebuggerToolbar.class)

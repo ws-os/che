@@ -212,7 +212,6 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("edit.watch.expression")
   String editWatchExpression();
 
-
   @Key("addWatchExpressionDescription")
   String addWatchExpressionDescription();
 
@@ -221,5 +220,4 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
 
   @Key("editWatchExpressionDescription")
   String editWatchExpressionDescription();
-
 }

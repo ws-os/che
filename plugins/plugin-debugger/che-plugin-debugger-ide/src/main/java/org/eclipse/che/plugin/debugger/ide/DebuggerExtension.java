@@ -31,7 +31,9 @@ import org.eclipse.che.plugin.debugger.ide.actions.DebugAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DeleteAllBreakpointsAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DisconnectDebuggerAction;
 import org.eclipse.che.plugin.debugger.ide.actions.EditConfigurationsAction;
+import org.eclipse.che.plugin.debugger.ide.actions.EditWatchExpressionAction;
 import org.eclipse.che.plugin.debugger.ide.actions.EvaluateExpressionAction;
+import org.eclipse.che.plugin.debugger.ide.actions.RemoveWatchExpressionAction;
 import org.eclipse.che.plugin.debugger.ide.actions.ResumeExecutionAction;
 import org.eclipse.che.plugin.debugger.ide.actions.ShowHideDebuggerPanelAction;
 import org.eclipse.che.plugin.debugger.ide.actions.StepIntoAction;
@@ -84,6 +86,8 @@ public class DebuggerExtension {
       ShowHideDebuggerPanelAction showHideDebuggerPanelAction,
       EditConfigurationsAction editConfigurationsAction,
       AddWatchExpressionAction addWatchExpressionAction,
+      RemoveWatchExpressionAction removeWatchExpressionAction,
+      EditWatchExpressionAction editWatchExpressionAction,
       DebugConfigurationsGroup configurationsGroup,
       DebuggerPresenter debuggerPresenter,
       KeyBindingAgent keyBinding) {
@@ -139,6 +143,9 @@ public class DebuggerExtension {
 
     DefaultActionGroup watchDebuggerActionGroup = new DefaultActionGroup(actionManager);
     watchDebuggerActionGroup.add(addWatchExpressionAction);
+    watchDebuggerActionGroup.add(removeWatchExpressionAction);
+    watchDebuggerActionGroup.add(editWatchExpressionAction);
+
     watchDebuggerActionGroup.add(changeVariableValueAction);
 
     //create watch debugger toolbar action group

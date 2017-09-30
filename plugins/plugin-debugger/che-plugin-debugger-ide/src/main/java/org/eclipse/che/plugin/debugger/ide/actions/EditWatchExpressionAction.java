@@ -20,17 +20,17 @@ import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 
 /** @author Alexander Andrienko */
-public class AddWatchExpressionAction extends AbstractPerspectiveAction {
+public class EditWatchExpressionAction extends AbstractPerspectiveAction {
 
   @Inject
-  public AddWatchExpressionAction(
+  public EditWatchExpressionAction(
       DebuggerLocalizationConstant locale, DebuggerResources resources) {
     super(
         Collections.singletonList(PROJECT_PERSPECTIVE_ID),
-        locale.addWatchExpression(),
-        locale.addWatchExpressionDescription(),
+        locale.editWatchExpression(),
+        locale.editWatchExpressionDescription(),
         null,
-        resources.addExpressionBtn());
+        resources.editExpressionBtn());
   }
 
   @Override
