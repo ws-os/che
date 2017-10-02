@@ -430,4 +430,8 @@ public class DebuggerPresenter extends BasePresenter
   public boolean isDebuggerPanelOpened() {
     return partStack.getActivePart() == this;
   }
+
+  public void onAddWatchExpressionVariable(Variable variable) {
+    view.addVariable(variable);
+  }
 }

@@ -19,6 +19,7 @@ import org.eclipse.che.ide.ui.tree.NodeRenderer;
 import org.eclipse.che.ide.ui.tree.Tree;
 import org.eclipse.che.ide.ui.tree.TreeNodeElement;
 import org.eclipse.che.ide.util.dom.Elements;
+import org.eclipse.che.ide.util.loging.Log;
 
 /**
  * Renders variable item on the debugger panel.
@@ -54,6 +55,7 @@ public class VariableTreeNodeRenderer implements NodeRenderer<MutableVariable> {
 
   @Override
   public SpanElement renderNodeContents(@NotNull MutableVariable data) {
+    Log.info(getClass(), "data" + data);
     SpanElement root = Elements.createSpanElement(css.variableRoot());
     SpanElement label = Elements.createSpanElement(css.variableLabel());
     String content = data.getName() + "=" + data.getValue().getString();

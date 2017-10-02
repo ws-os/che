@@ -75,6 +75,8 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   /** Updates variable in the list */
   void setVariableValue(@NotNull Variable variable, @NotNull SimpleValue value);
 
+  void addVariable(@NotNull Variable variable);
+
   /**
    * Sets breakpoints.
    *

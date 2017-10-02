@@ -13,8 +13,12 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
+import org.eclipse.che.api.debug.shared.model.MutableVariable;
+import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
+import org.eclipse.che.ide.dto.DtoFactory;
 import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
@@ -32,12 +36,14 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
     private final TextAreaDialogView view;
     private final DebuggerManager debuggerManager;
     private final DebuggerPresenter debuggerPresenter;
+    private final DtoFactory dtoFactory;
 
     @Inject
     public AddWatchExpressionPresenter(DebuggerDialogFactory dialogFactory,
                                        DebuggerLocalizationConstant constant,
                                        DebuggerManager debuggerManager,
-                                       DebuggerPresenter debuggerPresenter) {
+                                       DebuggerPresenter debuggerPresenter,
+                                       DtoFactory dtoFactory) {
         this.view = dialogFactory.createTextAreaDialogView(constant.addExpressionTextAreaDialogView(),
                                                            constant.addExpressionViewAddButtonTitle(),
                                                            constant.addExpressionViewCancelButtonTitle(),
@@ -47,6 +53,7 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
         this.view.setDelegate(this);
         this.debuggerManager = debuggerManager;
         this.debuggerPresenter = debuggerPresenter;
+        this.dtoFactory = dtoFactory;
     }
 
     @Override
@@ -74,6 +81,14 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
                             result -> {
                                 Log.info(getClass(), result);
                             })
+                    .then(result   -> {
+                        SimpleValueDto simpleValueDto = dtoFactory.createDto(SimpleValueDto.class);
+                        simpleValueDto.setString(result);
+                        MutableVariable variable = new MutableVariableImpl();
+                        variable.setValue(simpleValueDto);
+
+                        debuggerPresenter.onAddWatchExpressionVariable(variable);
+                    })
                     .catchError(
                             error -> {
                                 Log.info(getClass(), error);

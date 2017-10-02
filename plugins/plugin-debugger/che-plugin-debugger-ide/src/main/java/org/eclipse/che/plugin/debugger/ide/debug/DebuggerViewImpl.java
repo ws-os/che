@@ -50,6 +50,7 @@ import org.eclipse.che.ide.ui.tree.Tree;
 import org.eclipse.che.ide.ui.tree.TreeNodeElement;
 import org.eclipse.che.ide.util.dom.Elements;
 import org.eclipse.che.ide.util.input.SignalEvent;
+import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 
@@ -217,6 +218,20 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
         }
       }
     }
+  }
+
+  @Override
+  public void addVariable(Variable variable) {
+//    MutableVariable root = variables.getModel().getRoot();
+    MutableVariableImpl nodeData = new MutableVariableImpl(variable);
+    TreeNodeElement<MutableVariable> node = variables.createNode(nodeData);
+
+//    Log.info(getClass(), variables.getModel().getNodeRenderer().updateNodeContents(););
+//
+//
+//    SpanElement element = variables.getModel().getNodeRenderer().renderNodeContents(nodeData);
+
+
   }
 
   @Override
