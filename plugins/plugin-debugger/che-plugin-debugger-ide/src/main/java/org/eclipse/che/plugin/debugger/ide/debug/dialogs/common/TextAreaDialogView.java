@@ -22,6 +22,12 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValue
 public interface TextAreaDialogView extends View<TextAreaDialogView.ActionDelegate> {
   /** Needs for delegate some function into ChangeValue view. */
   interface ActionDelegate {
+
+    /**
+     * Show text area dialog view.
+      */
+    void showDialog();
+
     /**
      * Performs any actions appropriate in response to the user having pressed the Cancel button.
      */

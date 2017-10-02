@@ -220,4 +220,25 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
 
   @Key("editWatchExpressionDescription")
   String editWatchExpressionDescription();
+
+  @Key("add.expression.text.area.dialog.view")
+  String addExpressionTextAreaDialogView();
+
+  @Key("add.expression.view.add.button.title")
+  String addExpressionViewAddButtonTitle();
+
+  @Key("add.expression.view.cancel.button.title")
+  String addExpressionViewCancelButtonTitle();
+
+  @Key("edit.expression.text.area.dialog.view")
+  String editExpressionTextAreaDialogView();
+
+  @Key("edit.expression.view.add.button.title")
+  String editExpressionViewAddButtonTitle();
+
+  @Key("edit.expression.view.cancel.button.title")
+  String editExpressionViewCancelButtonTitle();
+
+  @Key("add.expression.view.expression.field.title")
+  String addExpressionViewExpressionFieldTitle();
 }

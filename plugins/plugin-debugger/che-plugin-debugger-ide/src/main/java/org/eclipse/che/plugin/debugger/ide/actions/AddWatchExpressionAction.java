@@ -18,24 +18,31 @@ import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add.AddWatchExpressionPresenter;
 
 /** @author Alexander Andrienko */
 public class AddWatchExpressionAction extends AbstractPerspectiveAction {
 
+  private final AddWatchExpressionPresenter addWatchExpressionPresenter;
+
   @Inject
   public AddWatchExpressionAction(
-      DebuggerLocalizationConstant locale, DebuggerResources resources) {
+      DebuggerLocalizationConstant locale, DebuggerResources resources,
+      AddWatchExpressionPresenter addWatchExpressionPresenter) {
     super(
         Collections.singletonList(PROJECT_PERSPECTIVE_ID),
         locale.addWatchExpression(),
         locale.addWatchExpressionDescription(),
         null,
         resources.addExpressionBtn());
+    this.addWatchExpressionPresenter = addWatchExpressionPresenter;
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {}
 
   @Override
-  public void actionPerformed(ActionEvent e) {}
+  public void actionPerformed(ActionEvent e) {
+    addWatchExpressionPresenter.showDialog();
+  }
 }

@@ -53,12 +53,12 @@ public class TextAreaDialogViewImpl extends Window implements TextAreaDialogView
     this.ensureDebugId(debugId);
 
     Button cancelButton =
-        createButton(
-            agreeBtnLabel, debugId + "-cancel-btn", clickEvent -> delegate.onCancelClicked());
+        createButton(cancelBtnLabel,
+                     debugId + "-cancel-btn", clickEvent -> delegate.onCancelClicked());
 
     agreeButton =
-        createButton(
-            cancelBtnLabel, debugId + "-agree-btn", clickEvent -> delegate.onAgreeClicked());
+        createButton(agreeBtnLabel,
+                     debugId + "-agree-btn", clickEvent -> delegate.onAgreeClicked());
 
     addButtonToFooter(cancelButton);
     addButtonToFooter(agreeButton);

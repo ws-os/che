@@ -43,9 +43,9 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
     this.view =
         dialogFactory.createTextAreaDialogView(
             constant.changeValueViewTitle(),
-            "debugger-change-value",
             constant.changeValueViewChangeButtonTitle(),
-            constant.changeValueViewCancelButtonTitle());
+            constant.changeValueViewCancelButtonTitle(),
+            "debugger-change-value");
     this.debuggerManager = debuggerManager;
     this.debuggerPresenter = debuggerPresenter;
     this.view.setDelegate(this);
