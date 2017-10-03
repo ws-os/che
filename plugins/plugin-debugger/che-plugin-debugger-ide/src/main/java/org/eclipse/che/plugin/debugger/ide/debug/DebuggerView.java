@@ -75,7 +75,9 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   /** Updates variable in the list */
   void setVariableValue(@NotNull Variable variable, @NotNull SimpleValue value);
 
-  void addVariable(@NotNull MutableVariable variable);
+  Variable createWatchExpression(@NotNull String expression, String result);
+
+  void updateWatchExpression(Variable variable, @NotNull String newExpression, String result);
 
   /**
    * Sets breakpoints.

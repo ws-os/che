@@ -19,4 +19,7 @@ public interface SimpleValue {
 
   /** Returns string representation of the value. */
   String getString();
+
+  //todo why it should not contains name. It would be nice to have ability render not only mutable node.
+  // It would be nice to render SimpleValue node. And SimpleValue can be different.
 }

@@ -80,6 +80,7 @@ public class DebuggerPresenter extends BasePresenter
   private final DebuggerResourceHandlerFactory resourceHandlerManager;
 
   private List<Variable> variables;
+  //todo it should map int to string, where is int key is unique id!!!
   private List<String> expressions;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
@@ -274,10 +275,41 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  public void updateExpressions(int threadId, int frameIndex) {
+  //todo comparator!!!
+  public void onAddWatchExpression(String expression) {
+    //render empty expression value
+    this.expressions.add(expression);
+    Variable exprVar = view.createWatchExpression(expression, "");
+
+    //run and update expression
+    Debugger activeDebugger = debuggerManager.getActiveDebugger();
+    if (activeDebugger != null && activeDebugger.isConnected()) {
+
+      updateWatchExpression(expression, exprVar);
+    }
+  }
+
+  private void updateWatchExpressions(long threadId, int frameIndex) {
 
   }
 
+  //todo think about synch
+  private void updateWatchExpression(String expression, Variable variable) {
+    final long threadId = getSelectedThreadId();
+    final int frameIndex = getSelectedFrameIndex();
+    debuggerManager.getActiveDebugger()
+                   .evaluate(expression, threadId, frameIndex)
+                   .then(result   -> {
+                     view.updateWatchExpression(variable, expression, result);
+                   })
+                   .catchError(
+                           error -> {
+                             //todo think about adding error icon and some exception node...
+                             view.updateWatchExpression(variable, expression, error.getMessage());
+                           });
+  }
+
+  //todo check, maybe throw away cashed variable and get this data from selection manager.
   public Variable getSelectedVariable() {
     return view.getSelectedDebuggerVariable();
   }
@@ -436,10 +468,5 @@ public class DebuggerPresenter extends BasePresenter
 
   public boolean isDebuggerPanelOpened() {
     return partStack.getActivePart() == this;
-  }
-
-  public void onAddWatchExpressionVariable(MutableVariable variable) {
-    this.expressions.add(variable.getName());
-    view.addVariable(variable);
   }
 }

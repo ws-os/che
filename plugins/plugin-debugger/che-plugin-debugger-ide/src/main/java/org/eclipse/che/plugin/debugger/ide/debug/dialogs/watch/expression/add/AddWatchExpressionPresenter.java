@@ -13,13 +13,6 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
-import org.eclipse.che.api.debug.shared.model.MutableVariable;
-import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
-import org.eclipse.che.ide.debug.Debugger;
-import org.eclipse.che.ide.debug.DebuggerManager;
-import org.eclipse.che.ide.dto.DtoFactory;
-import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
@@ -34,16 +27,12 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogVi
 public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDelegate {
 
     private final TextAreaDialogView view;
-    private final DebuggerManager debuggerManager;
     private final DebuggerPresenter debuggerPresenter;
-    private final DtoFactory dtoFactory;
 
     @Inject
     public AddWatchExpressionPresenter(DebuggerDialogFactory dialogFactory,
                                        DebuggerLocalizationConstant constant,
-                                       DebuggerManager debuggerManager,
-                                       DebuggerPresenter debuggerPresenter,
-                                       DtoFactory dtoFactory) {
+                                       DebuggerPresenter debuggerPresenter) {
         this.view = dialogFactory.createTextAreaDialogView(constant.addExpressionTextAreaDialogView(),
                                                            constant.addExpressionViewAddButtonTitle(),
                                                            constant.addExpressionViewCancelButtonTitle(),
@@ -51,9 +40,7 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
                                                            );
         view.setValueTitle(constant.addExpressionViewExpressionFieldTitle());
         this.view.setDelegate(this);
-        this.debuggerManager = debuggerManager;
         this.debuggerPresenter = debuggerPresenter;
-        this.dtoFactory = dtoFactory;
     }
 
     @Override
@@ -71,44 +58,8 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
 
     @Override
     public void onAgreeClicked() {
-        Debugger debugger = debuggerManager.getActiveDebugger();
-        if (debugger != null) {
-            final long threadId = debuggerPresenter.getSelectedThreadId();
-            final int frameIndex = debuggerPresenter.getSelectedFrameIndex();
-
-            final String expression = view.getValue();
-
-            debugger
-                    .evaluate(expression, threadId, frameIndex)
-                    .then(result   -> {
-                        SimpleValueDto simpleValueDto = dtoFactory.createDto(SimpleValueDto.class);
-
-                        String value = result == null ? "null" : result;
-                        simpleValueDto.setString(value);
-
-                        MutableVariable variable = new MutableVariableImpl();
-                        variable.setValue(simpleValueDto);
-                        variable.setName(expression);
-
-                        debuggerPresenter.onAddWatchExpressionVariable(variable);
-                    })
-                    .catchError(
-                            error -> {
-                                Log.info(getClass(), error);
-                            });
-        } else {
-            //todo
-            //Do we add empty variable and throw event to update it?
-        }
+        debuggerPresenter.onAddWatchExpression(view.getValue());
         view.close();
-    }
-
-    public void createVariable(String expression, String result) {
-
-    }
-
-    public void createUnaccessibleVariable(Exception e) {
-
     }
 
     @Override

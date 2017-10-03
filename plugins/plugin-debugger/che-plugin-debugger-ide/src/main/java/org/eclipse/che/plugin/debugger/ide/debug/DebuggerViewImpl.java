@@ -31,6 +31,8 @@ import elemental.html.TableElement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
+
+import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.MutableVariable;
@@ -44,6 +46,7 @@ import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.Resources;
 import org.eclipse.che.ide.api.parts.PartStackUIResources;
 import org.eclipse.che.ide.api.parts.base.BaseView;
+import org.eclipse.che.ide.dto.DtoFactory;
 import org.eclipse.che.ide.resource.Path;
 import org.eclipse.che.ide.ui.list.SimpleList;
 import org.eclipse.che.ide.ui.tree.Tree;
@@ -88,22 +91,25 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   private final SimpleList<Breakpoint> breakpoints;
   private final SimpleList<StackFrameDump> frames;
   private final DebuggerResources debuggerResources;
+  private final DtoFactory dtoFactory;
 
   private TreeNodeElement<MutableVariable> selectedVariable;
 
   @Inject
   protected DebuggerViewImpl(
-      PartStackUIResources partStackUIResources,
-      DebuggerResources resources,
-      DebuggerLocalizationConstant locale,
-      Resources coreRes,
-      VariableTreeNodeRenderer.Resources rendererResources,
-      DebuggerViewImplUiBinder uiBinder) {
+          PartStackUIResources partStackUIResources,
+          DebuggerResources resources,
+          DebuggerLocalizationConstant locale,
+          Resources coreRes,
+          VariableTreeNodeRenderer.Resources rendererResources,
+          DebuggerViewImplUiBinder uiBinder,
+          DtoFactory dtoFactory) {
     super(partStackUIResources);
 
     this.locale = locale;
     this.debuggerResources = resources;
     this.coreRes = coreRes;
+    this.dtoFactory = dtoFactory;
 
     setContentWidget(uiBinder.createAndBindUi(this));
 
@@ -219,12 +225,15 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     }
   }
 
+  //todo maybe we should rename to add expression and use string like param?!!
   @Override
-  public void addVariable(MutableVariable newVariable) {
+  public Variable createWatchExpression(String expression, String result) {
     MutableVariable root = variables.getModel().getRoot();
 
+    //todo rework this code ...
     List<MutableVariable> vars = variables.getModel().getDataAdapter().getChildren(root);
-    vars.add(newVariable);
+    MutableVariable var = createVariable(expression, result);
+    vars.add(var);
     setVariables(vars);
 //    TreeNodeElement<MutableVariable> rootNode = variables.getNode(root);
 //    Log.info(getClass(),  "rootNode is null " + (rootNode == null));
@@ -232,6 +241,33 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 //    rootNode.addChild();
 //    Log.info(getClass(), variables.getModel().getNodeRenderer().updateNodeContents(););
 //    SpanElement element = variables.getModel().getNodeRenderer().renderNodeContents(nodeData);
+    return var;
+  }
+
+  @Override
+  public void updateWatchExpression(Variable oldVariable, String expression, String result) {
+//    if (oldVariable instanceof MutableVariable) {
+//
+//      SimpleValueDto simpleValueDto = dtoFactory.createDto(SimpleValueDto.class);
+//      simpleValueDto.setString();
+//      ((MutableVariable)oldVariable).setName();
+//
+//      setVariableValue((MutableVariable)oldVariable, simpleValueDto);
+//    }
+
+  }
+
+  private MutableVariable createVariable(String expression, String result) {
+    SimpleValueDto simpleValueDto = dtoFactory.createDto(SimpleValueDto.class);
+
+    String value = result == null ? "null" : result;
+    simpleValueDto.setString(value);
+
+    MutableVariable variable = new MutableVariableImpl();
+    variable.setValue(simpleValueDto);
+    variable.setName(expression);
+
+    return variable;
   }
 
   @Override
