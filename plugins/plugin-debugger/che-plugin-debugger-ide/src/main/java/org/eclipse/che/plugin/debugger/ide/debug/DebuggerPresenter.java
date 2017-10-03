@@ -80,6 +80,7 @@ public class DebuggerPresenter extends BasePresenter
   private final DebuggerResourceHandlerFactory resourceHandlerManager;
 
   private List<Variable> variables;
+  private List<String> expressions;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
   private DebuggerDescriptor debuggerDescriptor;
@@ -113,6 +114,8 @@ public class DebuggerPresenter extends BasePresenter
 
     this.debuggerManager.addObserver(this);
     this.breakpointManager.addObserver(this);
+
+    this.expressions = new LinkedList<>();
 
     resetView();
     addDebuggerPanel();
@@ -269,6 +272,10 @@ public class DebuggerPresenter extends BasePresenter
                 Log.error(DebuggerPresenter.class, error.getCause());
               });
     }
+  }
+
+  public void updateExpressions(int threadId, int frameIndex) {
+
   }
 
   public Variable getSelectedVariable() {
@@ -431,7 +438,8 @@ public class DebuggerPresenter extends BasePresenter
     return partStack.getActivePart() == this;
   }
 
-  public void onAddWatchExpressionVariable(Variable variable) {
+  public void onAddWatchExpressionVariable(MutableVariable variable) {
+    this.expressions.add(variable.getName());
     view.addVariable(variable);
   }
 }

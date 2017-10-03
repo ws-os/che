@@ -75,17 +75,20 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
         if (debugger != null) {
             final long threadId = debuggerPresenter.getSelectedThreadId();
             final int frameIndex = debuggerPresenter.getSelectedFrameIndex();
+
+            final String expression = view.getValue();
+
             debugger
-                    .evaluate(view.getValue(), threadId, frameIndex)
-                    .then(
-                            result -> {
-                                Log.info(getClass(), result);
-                            })
+                    .evaluate(expression, threadId, frameIndex)
                     .then(result   -> {
                         SimpleValueDto simpleValueDto = dtoFactory.createDto(SimpleValueDto.class);
-                        simpleValueDto.setString(result);
+
+                        String value = result == null ? "null" : result;
+                        simpleValueDto.setString(value);
+
                         MutableVariable variable = new MutableVariableImpl();
                         variable.setValue(simpleValueDto);
+                        variable.setName(expression);
 
                         debuggerPresenter.onAddWatchExpressionVariable(variable);
                     })
@@ -98,6 +101,14 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
             //Do we add empty variable and throw event to update it?
         }
         view.close();
+    }
+
+    public void createVariable(String expression, String result) {
+
+    }
+
+    public void createUnaccessibleVariable(Exception e) {
+
     }
 
     @Override
