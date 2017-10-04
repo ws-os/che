@@ -108,6 +108,7 @@ public class ProcessesPanelViewImpl extends BaseView<ProcessesPanelView.ActionDe
     processWidgets = new HashMap<>();
     widget2TreeNodes = new HashMap<>();
 
+
     renderer.addAddTerminalClickHandler(
         machineId -> delegate.onAddTerminal(machineId, TerminalOptionsJso.createDefault()));
     renderer.addPreviewSshClickHandler(machineId -> delegate.onPreviewSsh(machineId));

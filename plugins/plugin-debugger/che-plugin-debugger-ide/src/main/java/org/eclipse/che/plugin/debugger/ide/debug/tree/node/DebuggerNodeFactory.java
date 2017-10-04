@@ -8,15 +8,16 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.api.debug.shared.model;
+package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
+
+import com.google.inject.assistedinject.Assisted;
+import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.ide.api.data.tree.Node;
 
 import java.util.List;
 
-/** @author Anatoliy Bazko */
-public interface SimpleValue {
-  /** The nested variables. */
-  List<? extends Variable> getVariables();
+public interface DebuggerNodeFactory {
 
-  /** Returns string representation of the value. */
-  String getString();
+    VariableNode createVariableNode(@Assisted Variable variable);
+
 }

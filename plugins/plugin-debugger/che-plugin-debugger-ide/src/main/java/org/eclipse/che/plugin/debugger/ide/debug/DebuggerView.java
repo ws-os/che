@@ -21,8 +21,10 @@ import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.commons.annotation.Nullable;
+import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.mvp.View;
 import org.eclipse.che.ide.api.parts.base.BaseActionDelegate;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 
 /**
  * Provides methods which allow change view representation of debugger panel. Also the interface
@@ -39,7 +41,9 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
      * Performs any actions appropriate in response to the user having pressed the expand button in
      * variables tree.
      */
-    void onExpandVariablesTree(MutableVariable variable);
+    void onExpandVariablesTree(Variable variable);
+
+    void onExpandVariablesTree(VariableNode varNode);
 
     /** Is invoked when a new thread is selected. */
     void onSelectedThread(long threadId);
@@ -74,6 +78,8 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
 
   /** Updates variable in the list */
   void setVariableValue(@NotNull Variable variable, @NotNull SimpleValue value);
+
+  void updateVariableNodeValue(VariableNode node, SimpleValue value);
 
   Variable createWatchExpression(@NotNull String expression, String result);
 

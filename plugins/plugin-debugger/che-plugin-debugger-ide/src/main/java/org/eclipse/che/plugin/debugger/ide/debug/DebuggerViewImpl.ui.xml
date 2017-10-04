@@ -95,6 +95,11 @@
                                 <g:ScrollPanel ui:field="variablesPanel" addStyleNames="{coreRes.coreCss.simpleListContainer}"
                                                debugId="debugger-variablesPanel"/>
                             </g:center>
+                            <!--todo delete it !!!-->
+                            <g:east size="300">
+                                <g:ScrollPanel ui:field="variablesPanel2" addStyleNames="{coreRes.coreCss.simpleListContainer}"
+                                                debugId="debugger-variablesPanel"/>
+                            </g:east>
                         </g:DockLayoutPanel>
                     </g:FlowPanel>
                 </g:center>

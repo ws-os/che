@@ -27,13 +27,13 @@ import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
 import org.eclipse.che.api.debug.shared.model.Location;
-import org.eclipse.che.api.debug.shared.model.MutableVariable;
 import org.eclipse.che.api.debug.shared.model.SimpleValue;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
+import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
 import org.eclipse.che.ide.api.debug.BreakpointManagerObserver;
 import org.eclipse.che.ide.api.notification.NotificationManager;
@@ -51,6 +51,7 @@ import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
 /**
@@ -150,7 +151,7 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   @Override
-  public void onExpandVariablesTree(MutableVariable variable) {
+  public void onExpandVariablesTree(Variable variable) {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       Promise<? extends SimpleValue> promise =
@@ -165,6 +166,22 @@ public class DebuggerPresenter extends BasePresenter
               error -> {
                 Log.error(DebuggerPresenter.class, error.getCause());
               });
+    }
+  }
+
+  @Override
+  public void onExpandVariablesTree(VariableNode varNode) {
+    Debugger debugger = debuggerManager.getActiveDebugger();
+    if (debugger != null && debugger.isSuspended()) {
+      Promise<? extends SimpleValue> promise =
+              debugger.getValue(varNode.getData(), view.getSelectedThreadId(), view.getSelectedFrameIndex());
+      promise.then(value -> {
+                        view.updateVariableNodeValue(varNode, value);
+                      })
+              .catchError(
+                      error -> {
+                        Log.error(DebuggerPresenter.class, error.getCause());
+                      });
     }
   }
 

@@ -10,13 +10,9 @@
  */
 package org.eclipse.che.api.debug.shared.model;
 
-import java.util.List;
+public interface Expression {
 
-/** @author Anatoliy Bazko */
-public interface SimpleValue {
-  /** The nested variables. */
-  List<? extends Variable> getVariables();
+    String getExpression();
 
-  /** Returns string representation of the value. */
-  String getString();
+    String getResult();
 }

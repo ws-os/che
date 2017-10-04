@@ -31,6 +31,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogVi
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogViewImpl;
 import org.eclipse.che.plugin.debugger.ide.debug.expression.EvaluateExpressionView;
 import org.eclipse.che.plugin.debugger.ide.debug.expression.EvaluateExpressionViewImpl;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebuggerNodeFactory;
 
 /**
  * GIN module for Debugger extension.
@@ -56,17 +57,18 @@ public class DebuggerGinModule extends AbstractGinModule {
         new GinFactoryModuleBuilder()
             .implement(Action.class, DebugConfigurationAction.class)
             .build(DebugConfigurationActionFactory.class));
-
     install(
         new GinFactoryModuleBuilder()
             .implement(TextAreaDialogView.class, TextAreaDialogViewImpl.class)
             .build(DebuggerDialogFactory.class));
+    install(
+            new GinFactoryModuleBuilder()
+                    .build(DebuggerNodeFactory.class));
 
     bind(ToolbarPresenter.class)
         .annotatedWith(DebuggerToolbar.class)
         .to(ToolbarPresenter.class)
         .in(Singleton.class);
-
     bind(ToolbarPresenter.class)
         .annotatedWith(DebuggerWatchToolBar.class)
         .to(ToolbarPresenter.class)
