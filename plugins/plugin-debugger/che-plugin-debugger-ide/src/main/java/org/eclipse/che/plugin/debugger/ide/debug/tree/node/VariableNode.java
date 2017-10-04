@@ -31,7 +31,7 @@ public class VariableNode extends SyntheticNode<Variable> {
     public VariableNode(@Assisted Variable data, PromiseProvider promiseProvider) {
         super(data, null);
         this.data = data;
-        this.children = new ArrayList<>();
+        this.children = new ArrayList<Node>();
         this.promiseProvider = promiseProvider;
     }
 

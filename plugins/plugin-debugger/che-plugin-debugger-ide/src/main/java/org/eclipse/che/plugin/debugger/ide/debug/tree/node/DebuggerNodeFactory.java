@@ -12,9 +12,6 @@ package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
 import com.google.inject.assistedinject.Assisted;
 import org.eclipse.che.api.debug.shared.model.Variable;
-import org.eclipse.che.ide.api.data.tree.Node;
-
-import java.util.List;
 
 public interface DebuggerNodeFactory {
 

@@ -17,7 +17,7 @@ import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.data.tree.settings.NodeSettings;
 import org.eclipse.che.ide.project.node.SyntheticNode;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
-;
+
 import java.util.List;
 
 public class WatchExpressionNode extends SyntheticNode<SimpleValue> {

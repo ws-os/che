@@ -25,14 +25,6 @@ public class DebuggerTreeRenderer extends DefaultPresentationRenderer<Node> {
     @Override
     public Element render(Node node, String domID, Tree.Joint joint, int depth) {
         final Element element = super.render(node, domID, joint, depth);
-
-        Element root = element.getFirstChildElement();
-//        SpanElement label = Elements.createSpanElement(css.variableLabel());
-//        String content = node.getName() + "=" + data.getValue().getString();
-//        label.setTextContent(content);
-
-//        root.appendChild(label);
-
         return element;
     }
 }
