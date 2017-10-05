@@ -55,14 +55,14 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   }
 
   public void showDialog() {
-      Variable selectedVariable = ((VariableNode)debuggerPresenter.getSelectedN()).getData();
+    Variable selectedVariable = ((VariableNode) debuggerPresenter.getSelectedN()).getData();
 
-      view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
-      view.setValue(selectedVariable.getValue().getString());
-      view.focusInValueField();
-      view.selectAllText();
-      view.setEnableChangeButton(false);
-      view.show();
+    view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
+    view.setValue(selectedVariable.getValue().getString());
+    view.focusInValueField();
+    view.selectAllText();
+    view.setEnableChangeButton(false);
+    view.show();
   }
 
   @Override
@@ -77,8 +77,9 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
       Node selectedNode = debuggerPresenter.getSelectedN();
 
       if (selectedNode != null) {
-            Variable selectedVariable = ((VariableNode)selectedNode).getData();
-            Variable newVariable = new VariableImpl(
+        Variable selectedVariable = ((VariableNode) selectedNode).getData();
+        Variable newVariable =
+            new VariableImpl(
                 selectedVariable.getType(),
                 selectedVariable.getName(),
                 new SimpleValueImpl(view.getValue()),

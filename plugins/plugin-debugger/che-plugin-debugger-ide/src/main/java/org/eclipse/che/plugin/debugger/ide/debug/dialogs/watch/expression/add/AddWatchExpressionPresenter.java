@@ -12,7 +12,6 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
@@ -26,46 +25,48 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogVi
 @Singleton
 public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDelegate {
 
-    private final TextAreaDialogView view;
-    private final DebuggerPresenter debuggerPresenter;
+  private final TextAreaDialogView view;
+  private final DebuggerPresenter debuggerPresenter;
 
-    @Inject
-    public AddWatchExpressionPresenter(DebuggerDialogFactory dialogFactory,
-                                       DebuggerLocalizationConstant constant,
-                                       DebuggerPresenter debuggerPresenter) {
-        this.view = dialogFactory.createTextAreaDialogView(constant.addExpressionTextAreaDialogView(),
-                                                           constant.addExpressionViewAddButtonTitle(),
-                                                           constant.addExpressionViewCancelButtonTitle(),
-                                                           "debugger-add-expression"
-                                                           );
-        view.setValueTitle(constant.addExpressionViewExpressionFieldTitle());
-        this.view.setDelegate(this);
-        this.debuggerPresenter = debuggerPresenter;
-    }
+  @Inject
+  public AddWatchExpressionPresenter(
+      DebuggerDialogFactory dialogFactory,
+      DebuggerLocalizationConstant constant,
+      DebuggerPresenter debuggerPresenter) {
+    this.view =
+        dialogFactory.createTextAreaDialogView(
+            constant.addExpressionTextAreaDialogView(),
+            constant.addExpressionViewAddButtonTitle(),
+            constant.addExpressionViewCancelButtonTitle(),
+            "debugger-add-expression");
+    view.setValueTitle(constant.addExpressionViewExpressionFieldTitle());
+    this.view.setDelegate(this);
+    this.debuggerPresenter = debuggerPresenter;
+  }
 
-    @Override
-    public void showDialog() {
-        view.focusInValueField();
-        view.selectAllText();
-        view.setEnableChangeButton(false);
-        view.show();
-    }
+  @Override
+  public void showDialog() {
+    view.focusInValueField();
+    view.selectAllText();
+    view.setEnableChangeButton(false);
+    view.show();
+  }
 
-    @Override
-    public void onCancelClicked() {
-        view.close();
-    }
+  @Override
+  public void onCancelClicked() {
+    view.close();
+  }
 
-    @Override
-    public void onAgreeClicked() {
-        debuggerPresenter.onAddWatchExpression(view.getValue());
-        view.close();
-    }
+  @Override
+  public void onAgreeClicked() {
+    debuggerPresenter.onAddWatchExpression(view.getValue());
+    view.close();
+  }
 
-    @Override
-    public void onValueChanged() {
-        final String value = view.getValue();
-        boolean isExpressionFieldNotEmpty = !value.trim().isEmpty();
-        view.setEnableChangeButton(isExpressionFieldNotEmpty);
-    }
+  @Override
+  public void onValueChanged() {
+    final String value = view.getValue();
+    boolean isExpressionFieldNotEmpty = !value.trim().isEmpty();
+    view.setEnableChangeButton(isExpressionFieldNotEmpty);
+  }
 }

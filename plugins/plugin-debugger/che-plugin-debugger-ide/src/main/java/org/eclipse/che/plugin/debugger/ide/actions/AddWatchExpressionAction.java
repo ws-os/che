@@ -27,7 +27,8 @@ public class AddWatchExpressionAction extends AbstractPerspectiveAction {
 
   @Inject
   public AddWatchExpressionAction(
-      DebuggerLocalizationConstant locale, DebuggerResources resources,
+      DebuggerLocalizationConstant locale,
+      DebuggerResources resources,
       AddWatchExpressionPresenter addWatchExpressionPresenter) {
     super(
         Collections.singletonList(PROJECT_PERSPECTIVE_ID),

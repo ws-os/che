@@ -14,5 +14,9 @@ public interface Expression {
 
     String getExpression();
 
+    void setExpression(String expression);
+
     String getResult();
+
+    void setResult(String result);
 }

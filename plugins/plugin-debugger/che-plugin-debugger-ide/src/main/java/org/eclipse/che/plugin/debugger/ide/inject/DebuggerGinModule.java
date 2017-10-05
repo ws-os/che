@@ -61,9 +61,7 @@ public class DebuggerGinModule extends AbstractGinModule {
         new GinFactoryModuleBuilder()
             .implement(TextAreaDialogView.class, TextAreaDialogViewImpl.class)
             .build(DebuggerDialogFactory.class));
-    install(
-            new GinFactoryModuleBuilder()
-                    .build(DebuggerNodeFactory.class));
+    install(new GinFactoryModuleBuilder().build(DebuggerNodeFactory.class));
 
     bind(ToolbarPresenter.class)
         .annotatedWith(DebuggerToolbar.class)

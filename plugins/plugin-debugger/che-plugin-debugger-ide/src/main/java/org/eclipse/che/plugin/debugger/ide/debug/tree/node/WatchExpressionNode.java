@@ -10,41 +10,70 @@
  */
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
+import static java.util.Collections.emptyList;
+
 import com.google.inject.Inject;
-import org.eclipse.che.api.debug.shared.model.SimpleValue;
-import org.eclipse.che.api.promises.client.Promise;
-import org.eclipse.che.ide.api.data.tree.Node;
-import org.eclipse.che.ide.api.data.tree.settings.NodeSettings;
-import org.eclipse.che.ide.project.node.SyntheticNode;
-import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
-
 import java.util.List;
+import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.promises.client.Promise;
+import org.eclipse.che.api.promises.client.PromiseProvider;
+import org.eclipse.che.ide.api.data.tree.Node;
+import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
+import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 
-public class WatchExpressionNode extends SyntheticNode<SimpleValue> {
+public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
 
-    @Inject
-    public WatchExpressionNode(SimpleValue data, NodeSettings nodeSettings) {
-        super(data, nodeSettings);
-    }
+  private final PromiseProvider promiseProvider;
 
-    @Override
-    protected Promise<List<Node>> getChildrenImpl() {
-        return null;
-    }
+  private Expression expression;
+  private DebuggerResources debuggerResources;
 
-    @Override
-    public String getName() {
-        return null;
-    }
+  @Inject
+  public WatchExpressionNode(
+      Expression expression, PromiseProvider promiseProvider, DebuggerResources debuggerResources) {
+    this.promiseProvider = promiseProvider;
+    this.expression = expression;
+    this.debuggerResources = debuggerResources;
+  }
 
-    // todo
-    @Override
-    public boolean isLeaf() {
-        return true;
-    }
+  @Override
+  protected Promise<List<Node>> getChildrenImpl() {
+    // Todo: current server side returns result of evaluation expression like simple string line,
+    // so we have not ability to get and render children.
+    return promiseProvider.resolve(emptyList());
+  }
 
-    @Override
-    public void updatePresentation(NodePresentation presentation) {
+  @Override
+  public String getName() {
+    return expression.getExpression();
+  }
 
-    }
+  @Override
+  public boolean isLeaf() {
+    // Todo: for current implementation it's an always leaf.
+    return true;
+  }
+
+  @Override
+  public void updatePresentation(NodePresentation presentation) {
+    String content = expression.getExpression() + "=" + expression.getResult();
+    presentation.setPresentableText(content);
+    presentation.setPresentableIcon(debuggerResources.watchExpressionIcon());
+  }
+
+  //todo generate unique id and set up it like a key...
+  @Override
+  public String getKey() {
+    return null;
+  }
+
+  @Override
+  public Expression getData() {
+    return expression;
+  }
+
+  @Override
+  public void setData(Expression expression) {
+    this.expression = expression;
+  }
 }

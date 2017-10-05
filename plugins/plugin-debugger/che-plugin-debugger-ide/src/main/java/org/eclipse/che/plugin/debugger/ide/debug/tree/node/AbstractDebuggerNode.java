@@ -15,23 +15,22 @@ import org.eclipse.che.ide.api.data.tree.AbstractTreeNode;
 import org.eclipse.che.ide.ui.smartTree.presentation.HasPresentation;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 
-/**
- * @author Alexander Andrienko
- */
-public abstract class AbstractDebuggerNode<D> extends AbstractTreeNode implements HasDataObject<D>, HasUniqueKeyProvider, HasPresentation {
-    private NodePresentation nodePresentation;
+/** @author Alexander Andrienko */
+public abstract class AbstractDebuggerNode<D> extends AbstractTreeNode
+    implements HasDataObject<D>, HasUniqueKeyProvider, HasPresentation {
+  private NodePresentation nodePresentation;
 
-    /** {@inheritDoc} */
-    @Override
-    public final NodePresentation getPresentation(boolean update) {
-        if (nodePresentation == null) {
-            nodePresentation = new NodePresentation();
-            updatePresentation(nodePresentation);
-        }
-
-        if (update) {
-            updatePresentation(nodePresentation);
-        }
-        return nodePresentation;
+  /** {@inheritDoc} */
+  @Override
+  public final NodePresentation getPresentation(boolean update) {
+    if (nodePresentation == null) {
+      nodePresentation = new NodePresentation();
+      updatePresentation(nodePresentation);
     }
+
+    if (update) {
+      updatePresentation(nodePresentation);
+    }
+    return nodePresentation;
+  }
 }

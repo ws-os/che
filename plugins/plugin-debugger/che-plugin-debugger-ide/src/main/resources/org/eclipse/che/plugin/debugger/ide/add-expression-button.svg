@@ -11,10 +11,12 @@
       Red Hat, Inc. - initial API and implementation
 
 -->
-<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="-5 -5 85 85">
-    <g fill="none" stroke="green" stroke-width="7">
-        <rect x="2.5" y="2.5" width="70" height="70" rx="7"></rect>
-        <line x1="15" y1="36.25" x2="60" y2="36.25"></line>
-        <line y2="60" x2="36.25" y1="15" x1="36.25"></line>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     x="0px" y="0px"
+     width="32px" height="32px"
+     viewBox="6 6 20 20"
+     version="1.1">
+    <path style="fill:#3193d4;fill-opacity:1"
+          d="M 16 7 A 1.5 1.5 0 0 0 14.5 8.5 L 14.5 14.5 L 8.5 14.5 A 1.5 1.5 0 0 0 7 16 A 1.5 1.5 0 0 0 8.5 17.5 L 14.5 17.5 L 14.5 23.5 A 1.5 1.5 0 0 0 16 25 A 1.5 1.5 0 0 0 17.5 23.5 L 17.5 17.5 L 23.5 17.5 A 1.5 1.5 0 0 0 25 16 A 1.5 1.5 0 0 0 23.5 14.5 L 17.5 14.5 L 17.5 8.5 A 1.5 1.5 0 0 0 16 7 z "
+          transform="matrix(0.62499999,0,0,0.62499999,6,6)"/>
 </svg>

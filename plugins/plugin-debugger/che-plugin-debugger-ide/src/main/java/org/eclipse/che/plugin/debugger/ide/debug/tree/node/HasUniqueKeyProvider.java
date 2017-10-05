@@ -10,9 +10,7 @@
  */
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
-/**
- * @author Alexander Andrienko
- */
+/** @author Alexander Andrienko */
 public interface HasUniqueKeyProvider {
-    String getKey();
+  String getKey();
 }

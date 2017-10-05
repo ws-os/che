@@ -23,9 +23,7 @@ public interface TextAreaDialogView extends View<TextAreaDialogView.ActionDelega
   /** Needs for delegate some function into ChangeValue view. */
   interface ActionDelegate {
 
-    /**
-     * Show text area dialog view.
-      */
+    /** Show text area dialog view. */
     void showDialog();
 
     /**

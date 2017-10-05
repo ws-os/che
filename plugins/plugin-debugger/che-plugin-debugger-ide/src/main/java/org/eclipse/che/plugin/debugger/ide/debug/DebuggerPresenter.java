@@ -25,7 +25,6 @@ import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.eclipse.che.api.debug.shared.model.*;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
@@ -171,17 +170,20 @@ public class DebuggerPresenter extends BasePresenter
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       Promise<? extends SimpleValue> promise =
-              debugger.getValue(varNode.getData(), view.getSelectedThreadId(), view.getSelectedFrameIndex());
-      promise.then(value -> {
-                        MutableVariable updatedVariable = new MutableVariableImpl(varNode.getData());
-                        updatedVariable.setValue(value);
-                        varNode.setData(updatedVariable);
-                        view.updateVariableNodeValue(varNode);
-                      })
-              .catchError(
-                      error -> {
-                        Log.error(DebuggerPresenter.class, error.getCause());
-                      });
+          debugger.getValue(
+              varNode.getData(), view.getSelectedThreadId(), view.getSelectedFrameIndex());
+      promise
+          .then(
+              value -> {
+                MutableVariable updatedVariable = new MutableVariableImpl(varNode.getData());
+                updatedVariable.setValue(value);
+                varNode.setData(updatedVariable);
+                view.updateVariableNodeValue(varNode);
+              })
+          .catchError(
+              error -> {
+                Log.error(DebuggerPresenter.class, error.getCause());
+              });
     }
   }
 
@@ -306,24 +308,24 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  private void updateWatchExpressions(long threadId, int frameIndex) {
-
-  }
+  private void updateWatchExpressions(long threadId, int frameIndex) {}
 
   //todo think about synch
   private void updateWatchExpression(String expression, Variable variable) {
     final long threadId = getSelectedThreadId();
     final int frameIndex = getSelectedFrameIndex();
-    debuggerManager.getActiveDebugger()
-                   .evaluate(expression, threadId, frameIndex)
-                   .then(result   -> {
-                     view.updateWatchExpression(variable, expression, result);
-                   })
-                   .catchError(
-                           error -> {
-                             //todo think about adding error icon and some exception node...
-                             view.updateWatchExpression(variable, expression, error.getMessage());
-                           });
+    debuggerManager
+        .getActiveDebugger()
+        .evaluate(expression, threadId, frameIndex)
+        .then(
+            result -> {
+              view.updateWatchExpression(variable, expression, result);
+            })
+        .catchError(
+            error -> {
+              //todo think about adding error icon and some exception node...
+              view.updateWatchExpression(variable, expression, error.getMessage());
+            });
   }
 
   //todo check, maybe throw away cashed variable and get this data from selection manager.
@@ -456,7 +458,7 @@ public class DebuggerPresenter extends BasePresenter
         promise
             .then(
                 value -> {
-//                  view.setVariableValue(variable, value);
+                  //                  view.setVariableValue(variable, value);
 
                   MutableVariable mutableVariable = new MutableVariableImpl(variable);
                   mutableVariable.setValue(value);
