@@ -57,8 +57,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("suspend")
   String suspend();
 
-  @Key("changeVariableValue")
-  String changeVariableValue();
+  @Key("changeDebugNode")
+  String changeDebugNode();
 
   @Key("evaluateExpression")
   String evaluateExpression();
@@ -94,8 +94,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("deleteAllBreakpointsDescription")
   String deleteAllBreakpointsDescription();
 
-  @Key("changeVariableValueDescription")
-  String changeVariableValueDescription();
+  @Key("changeDebugNodeDescription")
+  String changeDebugNodeDescription();
 
   @Key("evaluateExpressionDescription")
   String evaluateExpressionDescription();
@@ -209,17 +209,11 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("remove.watch.expression")
   String removeWatchExpression();
 
-  @Key("edit.watch.expression")
-  String editWatchExpression();
-
   @Key("addWatchExpressionDescription")
   String addWatchExpressionDescription();
 
   @Key("removeWatchExpressionDescription")
   String removeWatchExpressionDescription();
-
-  @Key("editWatchExpressionDescription")
-  String editWatchExpressionDescription();
 
   @Key("add.expression.text.area.dialog.view")
   String addExpressionTextAreaDialogView();
@@ -239,6 +233,6 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("edit.expression.view.cancel.button.title")
   String editExpressionViewCancelButtonTitle();
 
-  @Key("add.expression.view.expression.field.title")
-  String addExpressionViewExpressionFieldTitle();
+  @Key("edit.expression.view.expression.field.title")
+  String editExpressionViewExpressionFieldTitle();
 }

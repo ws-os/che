@@ -16,44 +16,59 @@ import com.google.inject.Inject;
 import java.util.Collections;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
+import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit.EditWatchExpressionPresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * Action which allows change value of selected variable with debugger
  *
  * @author Mykola Morhun
  */
-public class ChangeVariableValueAction extends AbstractPerspectiveAction {
+public class ChangeDebugNodeAction extends AbstractPerspectiveAction {
 
   private final ChangeValuePresenter changeValuePresenter;
   private final DebuggerPresenter debuggerPresenter;
+  private final EditWatchExpressionPresenter editWatchExpressionPresenter;
+
+  private Node selectedNode;
 
   @Inject
-  public ChangeVariableValueAction(
+  public ChangeDebugNodeAction(
       DebuggerLocalizationConstant locale,
       DebuggerResources resources,
       ChangeValuePresenter changeValuePresenter,
+      EditWatchExpressionPresenter editWatchExpressionPresenter,
       DebuggerPresenter debuggerPresenter) {
     super(
         Collections.singletonList(PROJECT_PERSPECTIVE_ID),
-        locale.changeVariableValue(),
-        locale.changeVariableValueDescription(),
+        locale.changeDebugNode(),
+        locale.changeDebugNodeDescription(),
         null,
-        resources.changeVariableValue());
+        resources.changeDebugNode());
     this.changeValuePresenter = changeValuePresenter;
     this.debuggerPresenter = debuggerPresenter;
+    this.editWatchExpressionPresenter = editWatchExpressionPresenter;
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    changeValuePresenter.showDialog();
+    if (selectedNode instanceof VariableNode) {
+      changeValuePresenter.showDialog();
+    }
+    if (selectedNode instanceof WatchExpressionNode) {
+      editWatchExpressionPresenter.showDialog();
+    }
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
     event.getPresentation().setEnabled(debuggerPresenter.getSelectedDebugNode() != null);
+    selectedNode = debuggerPresenter.getSelectedDebugNode();
   }
 }

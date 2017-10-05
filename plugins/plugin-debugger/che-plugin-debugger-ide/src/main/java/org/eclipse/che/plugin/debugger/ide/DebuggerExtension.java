@@ -26,7 +26,7 @@ import org.eclipse.che.ide.api.keybinding.KeyBuilder;
 import org.eclipse.che.ide.util.browser.UserAgent;
 import org.eclipse.che.ide.util.input.KeyCodeMap;
 import org.eclipse.che.plugin.debugger.ide.actions.AddWatchExpressionAction;
-import org.eclipse.che.plugin.debugger.ide.actions.ChangeVariableValueAction;
+import org.eclipse.che.plugin.debugger.ide.actions.ChangeDebugNodeAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DebugAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DeleteAllBreakpointsAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DisconnectDebuggerAction;
@@ -64,7 +64,7 @@ public class DebuggerExtension {
   public static final String RESUME_EXECUTION_ID = "resumeExecution";
   public static final String SUSPEND_EXECUTION_ID = "suspendExecution";
   public static final String EVALUATE_EXPRESSION_ID = "evaluateExpression";
-  public static final String CHANGE_VARIABLE_VALUE_ID = "changeVariableValue";
+  public static final String CHANGE_VARIABLE_VALUE_ID = "changeDebugNode";
   public static final String SHOW_HIDE_DEBUGGER_PANEL_ID = "showHideDebuggerPanel";
 
   @Inject
@@ -81,7 +81,7 @@ public class DebuggerExtension {
       SuspendAction suspendAction,
       EvaluateExpressionAction evaluateExpressionAction,
       DeleteAllBreakpointsAction deleteAllBreakpointsAction,
-      ChangeVariableValueAction changeVariableValueAction,
+      ChangeDebugNodeAction changeDebugNodeAction,
       ShowHideDebuggerPanelAction showHideDebuggerPanelAction,
       EditConfigurationsAction editConfigurationsAction,
       AddWatchExpressionAction addWatchExpressionAction,
@@ -103,7 +103,7 @@ public class DebuggerExtension {
     actionManager.registerAction(RESUME_EXECUTION_ID, resumeExecutionAction);
     actionManager.registerAction(SUSPEND_EXECUTION_ID, suspendAction);
     actionManager.registerAction(EVALUATE_EXPRESSION_ID, evaluateExpressionAction);
-    actionManager.registerAction(CHANGE_VARIABLE_VALUE_ID, changeVariableValueAction);
+    actionManager.registerAction(CHANGE_VARIABLE_VALUE_ID, changeDebugNodeAction);
     actionManager.registerAction(SHOW_HIDE_DEBUGGER_PANEL_ID, showHideDebuggerPanelAction);
 
     // create group for selecting (changing) debug configurations
@@ -143,7 +143,7 @@ public class DebuggerExtension {
     watchDebuggerActionGroup.add(addWatchExpressionAction);
     watchDebuggerActionGroup.add(removeWatchExpressionAction);
 
-    watchDebuggerActionGroup.add(changeVariableValueAction);
+    watchDebuggerActionGroup.add(changeDebugNodeAction);
 
     //create watch debugger toolbar action group
     debuggerPresenter.getWatchToolbar().bindMainGroup(watchDebuggerActionGroup);

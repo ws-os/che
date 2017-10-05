@@ -35,6 +35,7 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
   private final DebuggerLocalizationConstant constant;
+  private VariableNode selectedNode;
 
   @Inject
   public ChangeValuePresenter(
@@ -55,14 +56,18 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   }
 
   public void showDialog() {
-    Variable selectedVariable = ((VariableNode) debuggerPresenter.getSelectedDebugNode()).getData();
+    Node selectedNode = debuggerPresenter.getSelectedDebugNode();
+    if (selectedNode instanceof VariableNode) {
+      this.selectedNode = (VariableNode)selectedNode;
+      Variable selectedVariable = this.selectedNode.getData();
 
-    view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
-    view.setValue(selectedVariable.getValue().getString());
-    view.focusInValueField();
-    view.selectAllText();
-    view.setEnableChangeButton(false);
-    view.show();
+      view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
+      view.setValue(selectedVariable.getValue().getString());
+      view.focusInValueField();
+      view.selectAllText();
+      view.setEnableChangeButton(false);
+      view.show();
+    }
   }
 
   @Override
@@ -73,23 +78,19 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   @Override
   public void onAgreeClicked() {
     Debugger debugger = debuggerManager.getActiveDebugger();
-    if (debugger != null && debugger.isSuspended()) {
-      Node selectedNode = debuggerPresenter.getSelectedDebugNode();
+    if (debugger != null && debugger.isSuspended() && selectedNode != null) {
+      Variable selectedVariable = selectedNode.getData();
+      Variable newVariable =
+          new VariableImpl(
+              selectedVariable.getType(),
+              selectedVariable.getName(),
+              new SimpleValueImpl(view.getValue()),
+              selectedVariable.isPrimitive(),
+              selectedVariable.getVariablePath());
 
-      if (selectedNode != null) {
-        Variable selectedVariable = ((VariableNode) selectedNode).getData();
-        Variable newVariable =
-            new VariableImpl(
-                selectedVariable.getType(),
-                selectedVariable.getName(),
-                new SimpleValueImpl(view.getValue()),
-                selectedVariable.isPrimitive(),
-                selectedVariable.getVariablePath());
-
-        final long threadId = debuggerPresenter.getSelectedThreadId();
-        final int frameIndex = debuggerPresenter.getSelectedFrameIndex();
-        debugger.setValue(newVariable, threadId, frameIndex);
-      }
+      final long threadId = debuggerPresenter.getSelectedThreadId();
+      final int frameIndex = debuggerPresenter.getSelectedFrameIndex();
+      debugger.setValue(newVariable, threadId, frameIndex);
     }
 
     view.close();

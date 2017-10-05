@@ -293,11 +293,12 @@ public class DebuggerPresenter extends BasePresenter
 
   public void removeWatchExpressionNode(WatchExpressionNode node) {
     view.removeWatchExpressionNode(node);
+    expressions.remove(node.getData());
   }
 
   private void updateWatchExpressions(long threadId, int frameIndex) {}
 
-  private void updateWatchExpression(WatchExpressionNode watchExpressionNode) {
+  public void updateWatchExpression(WatchExpressionNode watchExpressionNode) {
     final long threadId = getSelectedThreadId();
     final int frameIndex = getSelectedFrameIndex();
     final String exprContent = watchExpressionNode.getData().getExpression();

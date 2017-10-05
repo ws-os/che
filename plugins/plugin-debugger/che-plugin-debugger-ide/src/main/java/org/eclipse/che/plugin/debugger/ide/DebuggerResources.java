@@ -39,7 +39,7 @@ public interface DebuggerResources extends ClientBundle {
   SVGResource debug();
 
   @Source("edit.svg")
-  SVGResource changeVariableValue();
+  SVGResource changeDebugNode();
 
   @Source("evaluate.svg")
   SVGResource evaluateExpression();
