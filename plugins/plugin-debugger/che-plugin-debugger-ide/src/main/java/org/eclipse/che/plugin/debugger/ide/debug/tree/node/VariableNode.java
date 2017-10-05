@@ -10,26 +10,25 @@
  */
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
+import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
 import org.eclipse.che.ide.api.data.tree.Node;
-import org.eclipse.che.ide.project.node.SyntheticNode;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VariableNode extends SyntheticNode<Variable> {
+public class VariableNode extends AbstractDebuggerNode<Variable> {
 
     private Variable data;
     private PromiseProvider promiseProvider;
 
     @Inject
     public VariableNode(@Assisted Variable data, PromiseProvider promiseProvider) {
-        super(data, null);
         this.data = data;
         this.children = new ArrayList<Node>();
         this.promiseProvider = promiseProvider;
@@ -55,5 +54,20 @@ public class VariableNode extends SyntheticNode<Variable> {
     public void updatePresentation(NodePresentation presentation) {
         String content = data.getName() + "=" + data.getValue().getString();
         presentation.setPresentableText(content);
+    }
+
+    @Override
+    public String getKey() {
+        return String.valueOf(Objects.hashCode(data.getVariablePath()));
+    }
+
+    @Override
+    public Variable getData() {
+        return data;
+    }
+
+    @Override
+    public void setData(Variable data) {
+        this.data = data;
     }
 }

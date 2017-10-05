@@ -45,6 +45,7 @@ import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.debug.shared.model.impl.SimpleValueImpl;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.Resources;
+import org.eclipse.che.ide.api.data.HasDataObject;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.parts.PartStackUIResources;
 import org.eclipse.che.ide.api.parts.base.BaseView;
@@ -63,7 +64,9 @@ import org.eclipse.che.ide.util.input.SignalEvent;
 import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.AbstractDebuggerNode;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebuggerNodeFactory;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.HasUniqueKeyProvider;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.renderer.DebuggerTreeRenderer;
 
@@ -140,7 +143,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     this.nodeFactory = nodeFactory;
 
     //create new tree
-    tree = new org.eclipse.che.ide.ui.smartTree.Tree(new NodeStorage(), new NodeLoader());
+    tree = new org.eclipse.che.ide.ui.smartTree.Tree(new NodeStorage(item -> ((HasUniqueKeyProvider)item).getKey()), new NodeLoader());
     tree.ensureDebugId("debugger-explorer");
     this.treeRenderer = new DebuggerTreeRenderer(tree.getTreeStyles());
     tree.setPresentationRenderer(treeRenderer);
@@ -149,8 +152,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
           Log.info(getClass(), "expand " + event.getNode().getName());
           Node expandedNode = event.getNode();
           if (expandedNode instanceof VariableNode) {
-            Variable variable = ((VariableNode) expandedNode).getData();
-            delegate.onExpandVariablesTree(variable);
+            delegate.onExpandVariablesTree(((VariableNode)expandedNode));
           }
         });
 
@@ -270,16 +272,46 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public void updateVariableNodeValue(VariableNode node, SimpleValue newValue) {
-    Variable oldVar = node.getData();
+  public void updateVariableNodeValue(VariableNode variable) { // todo generic it's a real here ?
+//    Node nodeToUpdate = nodeFactory.createVariableNode(variable);
+//    Node nodeToUpdate = tree.getNodeStorage().findNode(node); //todo find by key
 
-    MutableVariableImpl mutableVariable = new MutableVariableImpl(oldVar.getType(),
-                                                                  oldVar.getName(),
-                                                                  newValue,
-                                                                  oldVar.getVariablePath(),
-                                                                  oldVar.isPrimitive());
-    node.setData(mutableVariable);
-    tree.refresh(node);
+    if (variable != null) {
+      tree.getNodeStorage().update(variable);
+      tree.refresh(variable);
+
+      List<Node> nodes = new ArrayList<>();
+      List<? extends Variable> varChildren = variable.getData().getValue().getVariables();
+      for (int i = 0; i < varChildren.size(); i++) {
+        Node childNode = nodeFactory.createVariableNode(varChildren.get(i));
+        nodes.add(childNode);
+        tree.getNodeStorage().insert(variable, i, childNode);
+      }
+
+        tree.getNodeStorage().replaceChildren(variable, nodes);
+
+      //todo refresh only if we really have children...
+//        for (Variable nestedVariable : variable.getData().getValue().getVariables()) {
+//          Node nodeToUpdate = nodeFactory.createVariableNode(nestedVariable);
+//          updateVariableNodeValue(nodeToUpdate);
+//        }
+    }
+  }
+
+  @Override
+  public void updateVariable(Variable variable) { // todo generic it's a real here ?
+    Node nodeToUpdate = nodeFactory.createVariableNode(variable);
+//    Node nodeToUpdate = tree.getNodeStorage().findNode(node); //todo find by key
+
+    if (nodeToUpdate != null) {
+      tree.getNodeStorage().update(nodeToUpdate);
+      tree.refresh(nodeToUpdate);
+
+      //todo refresh only if we really have children...
+        for (Variable nestedVariable : variable.getValue().getVariables()) {
+          updateVariable(nestedVariable);
+        }
+    }
   }
 
   //todo maybe we should rename to add expression and use string like param?!!
@@ -447,5 +479,10 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
         coreRes.defaultSimpleListCss(),
         new FrameItemRender(),
         frameListEventDelegate);
+  }
+
+  @Override
+  public Node getSelected() {
+    return tree.getSelectionModel().getSelectedNodes().isEmpty() ? null : tree.getSelectionModel().getSelectedNodes().get(0) ;
   }
 }

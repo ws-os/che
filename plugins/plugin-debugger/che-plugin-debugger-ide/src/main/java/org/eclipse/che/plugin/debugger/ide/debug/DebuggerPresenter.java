@@ -25,12 +25,9 @@ import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Location;
-import org.eclipse.che.api.debug.shared.model.SimpleValue;
-import org.eclipse.che.api.debug.shared.model.StackFrameDump;
-import org.eclipse.che.api.debug.shared.model.ThreadState;
-import org.eclipse.che.api.debug.shared.model.Variable;
+
+import org.eclipse.che.api.debug.shared.model.*;
+import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.data.tree.Node;
@@ -176,7 +173,10 @@ public class DebuggerPresenter extends BasePresenter
       Promise<? extends SimpleValue> promise =
               debugger.getValue(varNode.getData(), view.getSelectedThreadId(), view.getSelectedFrameIndex());
       promise.then(value -> {
-                        view.updateVariableNodeValue(varNode, value);
+                        MutableVariable updatedVariable = new MutableVariableImpl(varNode.getData());
+                        updatedVariable.setValue(value);
+                        varNode.setData(updatedVariable);
+                        view.updateVariableNodeValue(varNode);
                       })
               .catchError(
                       error -> {
@@ -456,7 +456,11 @@ public class DebuggerPresenter extends BasePresenter
         promise
             .then(
                 value -> {
-                  view.setVariableValue(variable, value);
+//                  view.setVariableValue(variable, value);
+
+                  MutableVariable mutableVariable = new MutableVariableImpl(variable);
+                  mutableVariable.setValue(value);
+                  view.updateVariable(mutableVariable);
                 })
             .catchError(
                 error -> {
@@ -485,5 +489,9 @@ public class DebuggerPresenter extends BasePresenter
 
   public boolean isDebuggerPanelOpened() {
     return partStack.getActivePart() == this;
+  }
+
+  public Node getSelectedN() {
+    return view.getSelected();
   }
 }

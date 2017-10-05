@@ -15,12 +15,14 @@ import com.google.inject.Singleton;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.debug.shared.model.impl.SimpleValueImpl;
 import org.eclipse.che.api.debug.shared.model.impl.VariableImpl;
+import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 
 /**
  * Presenter for changing variables value.
@@ -53,13 +55,14 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   }
 
   public void showDialog() {
-    Variable selectedVariable = debuggerPresenter.getSelectedVariable();
-    view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
-    view.setValue(selectedVariable.getValue().getString());
-    view.focusInValueField();
-    view.selectAllText();
-    view.setEnableChangeButton(false);
-    view.show();
+      Variable selectedVariable = ((VariableNode)debuggerPresenter.getSelectedN()).getData();
+
+      view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
+      view.setValue(selectedVariable.getValue().getString());
+      view.focusInValueField();
+      view.selectAllText();
+      view.setEnableChangeButton(false);
+      view.show();
   }
 
   @Override
@@ -71,11 +74,11 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   public void onAgreeClicked() {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
-      Variable selectedVariable = debuggerPresenter.getSelectedVariable();
+      Node selectedNode = debuggerPresenter.getSelectedN();
 
-      if (selectedVariable != null) {
-        Variable newVariable =
-            new VariableImpl(
+      if (selectedNode != null) {
+            Variable selectedVariable = ((VariableNode)selectedNode).getData();
+            Variable newVariable = new VariableImpl(
                 selectedVariable.getType(),
                 selectedVariable.getName(),
                 new SimpleValueImpl(view.getValue()),

@@ -54,6 +54,6 @@ public class ChangeVariableValueAction extends AbstractPerspectiveAction {
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    event.getPresentation().setEnabled(debuggerPresenter.getSelectedVariable() != null);
+    event.getPresentation().setEnabled(debuggerPresenter.getSelectedN() != null);
   }
 }

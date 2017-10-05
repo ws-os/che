@@ -35,6 +35,8 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
  * @author Dmitry Shnurenko
  */
 public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
+  Node getSelected();
+
   /** Needs for delegate some function into Debugger view. */
   interface ActionDelegate extends BaseActionDelegate {
     /**
@@ -79,7 +81,9 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   /** Updates variable in the list */
   void setVariableValue(@NotNull Variable variable, @NotNull SimpleValue value);
 
-  void updateVariableNodeValue(VariableNode node, SimpleValue value);
+  void updateVariable(Variable variable);
+
+  void updateVariableNodeValue(VariableNode variable);
 
   Variable createWatchExpression(@NotNull String expression, String result);
 
