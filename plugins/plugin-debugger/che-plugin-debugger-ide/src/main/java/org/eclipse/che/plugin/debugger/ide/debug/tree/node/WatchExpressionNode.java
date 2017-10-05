@@ -14,6 +14,8 @@ import static java.util.Collections.emptyList;
 
 import com.google.inject.Inject;
 import java.util.List;
+
+import com.google.inject.assistedinject.Assisted;
 import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
@@ -30,7 +32,9 @@ public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
 
   @Inject
   public WatchExpressionNode(
-      Expression expression, PromiseProvider promiseProvider, DebuggerResources debuggerResources) {
+          @Assisted Expression expression,
+          PromiseProvider promiseProvider,
+          DebuggerResources debuggerResources) {
     this.promiseProvider = promiseProvider;
     this.expression = expression;
     this.debuggerResources = debuggerResources;

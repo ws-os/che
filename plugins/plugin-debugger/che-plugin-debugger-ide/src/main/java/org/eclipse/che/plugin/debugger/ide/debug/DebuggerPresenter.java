@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.che.api.debug.shared.model.*;
+import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
@@ -48,6 +49,7 @@ import org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
 /**
@@ -78,7 +80,7 @@ public class DebuggerPresenter extends BasePresenter
 
   private List<Variable> variables;
   //todo it should map int to string, where is int key is unique id!!!
-  private List<String> expressions;
+  private List<Expression> expressions;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
   private DebuggerDescriptor debuggerDescriptor;
@@ -144,25 +146,6 @@ public class DebuggerPresenter extends BasePresenter
     container.setWidget(view);
     debuggerToolbar.go(view.getDebuggerToolbarPanel());
     watchToolbar.go(view.getDebuggerWatchToolbarPanel());
-  }
-
-  @Override
-  public void onExpandVariablesTree(Variable variable) {
-    Debugger debugger = debuggerManager.getActiveDebugger();
-    if (debugger != null && debugger.isSuspended()) {
-      Promise<? extends SimpleValue> promise =
-          debugger.getValue(variable, view.getSelectedThreadId(), view.getSelectedFrameIndex());
-
-      promise
-          .then(
-              value -> {
-                view.setVariableValue(variable, value);
-              })
-          .catchError(
-              error -> {
-                Log.error(DebuggerPresenter.class, error.getCause());
-              });
-    }
   }
 
   @Override
@@ -295,42 +278,46 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   //todo comparator!!!
-  public void onAddWatchExpression(String expression) {
-    //render empty expression value
+  public void onAddWatchExpression(Expression expression) {
+    // render empty expression value
     this.expressions.add(expression);
-    Variable exprVar = view.createWatchExpression(expression, "");
+    WatchExpressionNode watchExpressionNode = view.createWatchExpressionNode(expression);
 
-    //run and update expression
+    // run and asynchronous update expression
     Debugger activeDebugger = debuggerManager.getActiveDebugger();
     if (activeDebugger != null && activeDebugger.isConnected()) {
 
-      updateWatchExpression(expression, exprVar);
+      updateWatchExpression(watchExpressionNode);
     }
   }
 
   private void updateWatchExpressions(long threadId, int frameIndex) {}
 
-  //todo think about synch
-  private void updateWatchExpression(String expression, Variable variable) {
+  private void updateWatchExpression(WatchExpressionNode watchExpressionNode) {
     final long threadId = getSelectedThreadId();
     final int frameIndex = getSelectedFrameIndex();
+    final String exprContent = watchExpressionNode.getData().getExpression();
     debuggerManager
         .getActiveDebugger()
-        .evaluate(expression, threadId, frameIndex)
+        .evaluate(exprContent, threadId, frameIndex)
         .then(
             result -> {
-              view.updateWatchExpression(variable, expression, result);
+
+              Expression expression = new ExpressionImpl(exprContent, result);
+              watchExpressionNode.setData(expression);
+              view.updateWatchExpressionNode(watchExpressionNode);
             })
         .catchError(
             error -> {
               //todo think about adding error icon and some exception node...
-              view.updateWatchExpression(variable, expression, error.getMessage());
+              Expression expression = new ExpressionImpl(exprContent, error.getMessage());
+              watchExpressionNode.setData(expression);
+              view.updateWatchExpressionNode(watchExpressionNode);
             });
   }
 
-  //todo check, maybe throw away cashed variable and get this data from selection manager.
-  public Variable getSelectedVariable() {
-    return view.getSelectedDebuggerVariable();
+  public Node getSelectedDebugNode() {
+    return view.getSelectedTeeNode();
   }
 
   public ToolbarPresenter getDebuggerToolbar() {
@@ -491,9 +478,5 @@ public class DebuggerPresenter extends BasePresenter
 
   public boolean isDebuggerPanelOpened() {
     return partStack.getActivePart() == this;
-  }
-
-  public Node getSelectedN() {
-    return view.getSelected();
   }
 }

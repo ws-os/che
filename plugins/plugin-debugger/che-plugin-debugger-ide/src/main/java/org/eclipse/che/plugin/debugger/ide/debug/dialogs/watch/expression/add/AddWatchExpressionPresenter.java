@@ -12,6 +12,8 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
@@ -59,7 +61,8 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
 
   @Override
   public void onAgreeClicked() {
-    debuggerPresenter.onAddWatchExpression(view.getValue());
+    Expression expression = new ExpressionImpl(view.getValue(), "");
+    debuggerPresenter.onAddWatchExpression(expression);
     view.close();
   }
 

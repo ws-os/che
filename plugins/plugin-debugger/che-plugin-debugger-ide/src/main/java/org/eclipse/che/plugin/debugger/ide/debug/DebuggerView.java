@@ -13,18 +13,14 @@ package org.eclipse.che.plugin.debugger.ide.debug;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Location;
-import org.eclipse.che.api.debug.shared.model.MutableVariable;
-import org.eclipse.che.api.debug.shared.model.SimpleValue;
-import org.eclipse.che.api.debug.shared.model.StackFrameDump;
-import org.eclipse.che.api.debug.shared.model.ThreadState;
-import org.eclipse.che.api.debug.shared.model.Variable;
+
+import org.eclipse.che.api.debug.shared.model.*;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.mvp.View;
 import org.eclipse.che.ide.api.parts.base.BaseActionDelegate;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * Provides methods which allow change view representation of debugger panel. Also the interface
@@ -35,7 +31,6 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
  * @author Dmitry Shnurenko
  */
 public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
-  Node getSelected();
 
   /** Needs for delegate some function into Debugger view. */
   interface ActionDelegate extends BaseActionDelegate {
@@ -43,8 +38,6 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
      * Performs any actions appropriate in response to the user having pressed the expand button in
      * variables tree.
      */
-    void onExpandVariablesTree(Variable variable);
-
     void onExpandVariablesTree(VariableNode varNode);
 
     /** Is invoked when a new thread is selected. */
@@ -79,15 +72,13 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   void setVariables(@NotNull List<? extends Variable> variables);
 
   /** Updates variable in the list */
-  void setVariableValue(@NotNull Variable variable, @NotNull SimpleValue value);
-
   void updateVariable(Variable variable);
 
   void updateVariableNodeValue(VariableNode variable);
 
-  Variable createWatchExpression(@NotNull String expression, String result);
+  WatchExpressionNode createWatchExpressionNode(@NotNull Expression expression);
 
-  void updateWatchExpression(Variable variable, @NotNull String newExpression, String result);
+  void updateWatchExpressionNode(WatchExpressionNode exprNode);
 
   /**
    * Sets breakpoints.
@@ -130,7 +121,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
    *
    * @return selected variable or null if no selection.
    */
-  MutableVariable getSelectedDebuggerVariable();
+  Node getSelectedTeeNode();
 
   /** Returns debugger toolbar panel widget. */
   AcceptsOneWidget getDebuggerToolbarPanel();

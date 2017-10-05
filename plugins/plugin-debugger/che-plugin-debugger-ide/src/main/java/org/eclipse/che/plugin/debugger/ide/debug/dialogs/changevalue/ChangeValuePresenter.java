@@ -55,7 +55,7 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   }
 
   public void showDialog() {
-    Variable selectedVariable = ((VariableNode) debuggerPresenter.getSelectedN()).getData();
+    Variable selectedVariable = ((VariableNode) debuggerPresenter.getSelectedDebugNode()).getData();
 
     view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
     view.setValue(selectedVariable.getValue().getString());
@@ -74,7 +74,7 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   public void onAgreeClicked() {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
-      Node selectedNode = debuggerPresenter.getSelectedN();
+      Node selectedNode = debuggerPresenter.getSelectedDebugNode();
 
       if (selectedNode != null) {
         Variable selectedVariable = ((VariableNode) selectedNode).getData();

@@ -11,9 +11,12 @@
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
 import com.google.inject.assistedinject.Assisted;
+import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Variable;
 
 public interface DebuggerNodeFactory {
 
   VariableNode createVariableNode(@Assisted Variable variable);
+
+  WatchExpressionNode createExpressionNode(@Assisted Expression expression);
 }

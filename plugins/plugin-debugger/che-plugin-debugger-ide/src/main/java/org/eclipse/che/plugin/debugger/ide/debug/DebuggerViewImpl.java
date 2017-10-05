@@ -26,43 +26,33 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import elemental.dom.Element;
-import elemental.events.KeyboardEvent;
-import elemental.events.MouseEvent;
-import elemental.html.SpanElement;
 import elemental.html.TableElement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
 import org.eclipse.che.api.debug.shared.model.Location;
-import org.eclipse.che.api.debug.shared.model.MutableVariable;
-import org.eclipse.che.api.debug.shared.model.SimpleValue;
+import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
-import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
-import org.eclipse.che.api.debug.shared.model.impl.SimpleValueImpl;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.Resources;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.parts.PartStackUIResources;
 import org.eclipse.che.ide.api.parts.base.BaseView;
-import org.eclipse.che.ide.dto.DtoFactory;
 import org.eclipse.che.ide.resource.Path;
 import org.eclipse.che.ide.ui.list.SimpleList;
 import org.eclipse.che.ide.ui.smartTree.NodeLoader;
 import org.eclipse.che.ide.ui.smartTree.NodeStorage;
-import org.eclipse.che.ide.ui.tree.Tree;
-import org.eclipse.che.ide.ui.tree.TreeNodeElement;
+import org.eclipse.che.ide.ui.smartTree.Tree;
 import org.eclipse.che.ide.util.dom.Elements;
-import org.eclipse.che.ide.util.input.SignalEvent;
-import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebuggerNodeFactory;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.HasUniqueKeyProvider;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * The class business logic which allow us to change visual representation of debugger panel.
@@ -80,7 +70,6 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   @UiField Label executionPoint;
   @UiField SimplePanel toolbarPanel;
   @UiField ScrollPanel variablesPanel;
-  @UiField ScrollPanel variablesPanel2;
   @UiField ScrollPanel breakpointsPanel;
   @UiField SimplePanel watchExpressionPanel;
 
@@ -96,15 +85,11 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   @UiField ListBox threads;
   @UiField ScrollPanel framesPanel;
 
-  private final Tree<MutableVariable> variables;
   private final SimpleList<Breakpoint> breakpoints;
   private final SimpleList<StackFrameDump> frames;
   private final DebuggerResources debuggerResources;
-  private final DtoFactory dtoFactory;
-  private final org.eclipse.che.ide.ui.smartTree.Tree tree;
+  private final Tree tree;
   private final DebuggerNodeFactory nodeFactory;
-
-  private TreeNodeElement<MutableVariable> selectedVariable;
 
   @Inject
   protected DebuggerViewImpl(
@@ -112,16 +97,13 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
       DebuggerResources resources,
       DebuggerLocalizationConstant locale,
       Resources coreRes,
-      VariableTreeNodeRenderer.Resources rendererResources,
       DebuggerViewImplUiBinder uiBinder,
-      DtoFactory dtoFactory,
       DebuggerNodeFactory nodeFactory) {
     super(partStackUIResources);
 
     this.locale = locale;
     this.debuggerResources = resources;
     this.coreRes = coreRes;
-    this.dtoFactory = dtoFactory;
 
     setContentWidget(uiBinder.createAndBindUi(this));
 
@@ -132,74 +114,22 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     this.framesPanel.add(frames);
     this.nodeFactory = nodeFactory;
 
-    //create new tree
-    tree = new org.eclipse.che.ide.ui.smartTree.Tree(
-            new NodeStorage(item -> ((HasUniqueKeyProvider) item).getKey()),
-            new NodeLoader());
+    tree =
+        new org.eclipse.che.ide.ui.smartTree.Tree(
+            new NodeStorage(item -> ((HasUniqueKeyProvider) item).getKey()), new NodeLoader());
     tree.ensureDebugId("debugger-explorer");
 
     tree.getSelectionModel().setSelectionMode(SINGLE);
 
     tree.addExpandHandler(
         event -> {
-          Log.info(getClass(), "expand " + event.getNode().getName());
           Node expandedNode = event.getNode();
           if (expandedNode instanceof VariableNode) {
             delegate.onExpandVariablesTree(((VariableNode) expandedNode));
           }
         });
 
-    this.variables =
-        Tree.create(
-            rendererResources,
-            new VariableNodeDataAdapter(),
-            new VariableTreeNodeRenderer(rendererResources));
-    this.variables.setTreeEventHandler(
-        new Tree.Listener<MutableVariable>() {
-          @Override
-          public void onNodeAction(@NotNull TreeNodeElement<MutableVariable> node) {}
-
-          @Override
-          public void onNodeClosed(@NotNull TreeNodeElement<MutableVariable> node) {
-            selectedVariable = node;
-          }
-
-          @Override
-          public void onNodeContextMenu(
-              int mouseX, int mouseY, @NotNull TreeNodeElement<MutableVariable> node) {}
-
-          @Override
-          public void onNodeDragStart(
-              @NotNull TreeNodeElement<MutableVariable> node, @NotNull MouseEvent event) {}
-
-          @Override
-          public void onNodeDragDrop(
-              @NotNull TreeNodeElement<MutableVariable> node, @NotNull MouseEvent event) {}
-
-          @Override
-          public void onNodeExpanded(@NotNull final TreeNodeElement<MutableVariable> node) {
-            selectedVariable = node;
-            delegate.onExpandVariablesTree(node.getData());
-          }
-
-          @Override
-          public void onNodeSelected(
-              @NotNull TreeNodeElement<MutableVariable> node, @NotNull SignalEvent event) {
-            selectedVariable = node;
-          }
-
-          @Override
-          public void onRootContextMenu(int mouseX, int mouseY) {}
-
-          @Override
-          public void onRootDragDrop(@NotNull MouseEvent event) {}
-
-          @Override
-          public void onKeyboard(@NotNull KeyboardEvent event) {}
-        });
-
-    this.variablesPanel.add(variables);
-    this.variablesPanel2.add(tree);
+    this.variablesPanel.add(tree);
     minimizeButton.ensureDebugId("debugger-minimizeBut");
 
     watchExpressionPanel.addStyleName(resources.getCss().watchExpressionsPanel());
@@ -222,15 +152,6 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
   @Override
   public void setVariables(@NotNull List<? extends Variable> variables) {
-    MutableVariable root = this.variables.getModel().getRoot();
-    if (root == null) {
-      root = new MutableVariableImpl();
-      this.variables.getModel().setRoot(root);
-    }
-    root.setValue(new SimpleValueImpl(variables, null));
-    this.variables.renderTree(0);
-
-    //render new tree
     tree.getNodeStorage().clear();
     for (Variable variable : variables) {
       VariableNode node = nodeFactory.createVariableNode(variable);
@@ -239,118 +160,44 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public void setVariableValue(Variable variable, SimpleValue value) {
-    MutableVariableImpl nodeData = new MutableVariableImpl(variable);
-
-    TreeNodeElement<MutableVariable> node = variables.getNode(nodeData);
-    if (node != null) {
-      node.getData().setValue(value);
-
-      SpanElement element = variables.getModel().getNodeRenderer().renderNodeContents(nodeData);
-      node.getNodeLabel().setInnerHTML(element.getInnerHTML());
-
-      for (Variable nestedVariable : value.getVariables()) {
-        setVariableValue(nestedVariable, nestedVariable.getValue());
-      }
-
-      if (node.isOpen()) {
-        if (value.getVariables().isEmpty()) {
-          variables.closeNode(node);
-        } else {
-          variables.expandNode(node);
-        }
-      }
-    }
-  }
-
-  @Override
-  public void updateVariableNodeValue(VariableNode variable) { // todo generic it's a real here ?
-    //    Node nodeToUpdate = nodeFactory.createVariableNode(variable);
-    //    Node nodeToUpdate = tree.getNodeStorage().findNode(node); //todo find by key
-
+  public void updateVariableNodeValue(VariableNode variable) {
     if (variable != null) {
       tree.getNodeStorage().update(variable);
       tree.refresh(variable);
 
-      List<Node> nodes = new ArrayList<>();
       List<? extends Variable> varChildren = variable.getData().getValue().getVariables();
       for (int i = 0; i < varChildren.size(); i++) {
         Node childNode = nodeFactory.createVariableNode(varChildren.get(i));
-        nodes.add(childNode);
         tree.getNodeStorage().insert(variable, i, childNode);
       }
-
-      //todo refresh only if we really have children...
-      //        for (Variable nestedVariable : variable.getData().getValue().getVariables()) {
-      //          Node nodeToUpdate = nodeFactory.createVariableNode(nestedVariable);
-      //          updateVariableNodeValue(nodeToUpdate);
-      //        }
     }
   }
 
   @Override
-  public void updateVariable(Variable variable) { // todo generic it's a real here ?
+  public void updateVariable(Variable variable) {
     Node nodeToUpdate = nodeFactory.createVariableNode(variable);
-    //    Node nodeToUpdate = tree.getNodeStorage().findNode(node); //todo find by key
 
     if (nodeToUpdate != null) {
       tree.getNodeStorage().update(nodeToUpdate);
       tree.refresh(nodeToUpdate);
 
-      //todo refresh only if we really have children...
       for (Variable nestedVariable : variable.getValue().getVariables()) {
         updateVariable(nestedVariable);
       }
     }
   }
 
-  //todo maybe we should rename to add expression and use string like param?!!
   @Override
-  public Variable createWatchExpression(String expression, String result) {
-    //todo rework this code ...
-    //    List<MutableVariable> vars = variables.getModel().getDataAdapter().getChildren(root);
-    //    MutableVariable var = createVariable(expression, result);
-    //    vars.add(var);
-    //    setVariables(vars);
-    //    MutableVariable root = variables.getModel().getRoot();
-    //    Log.info(getClass(), root  + " root... ?");
-    //    TreeNodeElement<MutableVariable> rootNode = variables.getNode(root);
-    //    Log.info(getClass(), rootNode + " ?");
-    //    Log.info(getClass(), "root node is not empty" + rootNode.hasChildNodes());
-
-    //    MutableVariable newVariable = createVariable(expression, result);
-    //    TreeNodeElement<MutableVariable> node = variables.createNode(newVariable);
-    //    rootNode.addChild(adapter, node, variables.getResources().treeCss());
-
-    //    Log.info(getClass(), variables.getModel().getNodeRenderer().updateNodeContents(););
-    //    SpanElement element = variables.getModel().getNodeRenderer().renderNodeContents(nodeData);
-    return null;
+  public WatchExpressionNode createWatchExpressionNode(@NotNull Expression expression) {
+    WatchExpressionNode exprNode = nodeFactory.createExpressionNode(expression);
+    tree.getNodeStorage().add(exprNode);
+    return exprNode;
   }
 
   @Override
-  public void updateWatchExpression(Variable oldVariable, String expression, String result) {
-    //    if (oldVariable instanceof MutableVariable) {
-    //
-    //      SimpleValueDto simpleValueDto = dtoFactory.createDto(SimpleValueDto.class);
-    //      simpleValueDto.setString();
-    //      ((MutableVariable)oldVariable).setName();
-    //
-    //      setVariableValue((MutableVariable)oldVariable, simpleValueDto);
-    //    }
-
-  }
-
-  private MutableVariable createVariable(String expression, String result) {
-    SimpleValueDto simpleValueDto = dtoFactory.createDto(SimpleValueDto.class);
-
-    String value = result == null ? "null" : result;
-    simpleValueDto.setString(value);
-
-    MutableVariable variable = new MutableVariableImpl();
-    variable.setValue(simpleValueDto);
-    variable.setName(expression);
-
-    return variable;
+  public void updateWatchExpressionNode(WatchExpressionNode expressionNode) {
+    tree.getNodeStorage().update(expressionNode);
+    tree.refresh(expressionNode);
   }
 
   @Override
@@ -396,11 +243,10 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public MutableVariable getSelectedDebuggerVariable() {
-    if (selectedVariable != null) {
-      return selectedVariable.getData();
-    }
-    return null;
+  public Node getSelectedTeeNode() {
+    return tree.getSelectionModel().getSelectedNodes().isEmpty()
+        ? null
+        : tree.getSelectionModel().getSelectedNodes().get(0);
   }
 
   @Override
@@ -468,12 +314,5 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
         coreRes.defaultSimpleListCss(),
         new FrameItemRender(),
         frameListEventDelegate);
-  }
-
-  @Override
-  public Node getSelected() {
-    return tree.getSelectionModel().getSelectedNodes().isEmpty()
-        ? null
-        : tree.getSelectionModel().getSelectedNodes().get(0);
   }
 }
