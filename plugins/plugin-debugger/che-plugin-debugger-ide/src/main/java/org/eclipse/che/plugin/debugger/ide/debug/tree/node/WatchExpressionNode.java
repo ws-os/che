@@ -68,7 +68,7 @@ public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
   //todo generate unique id and set up it like a key...
   @Override
   public String getKey() {
-    return null;
+    return String.valueOf(hashCode());
   }
 
   @Override

@@ -32,6 +32,12 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
  */
 public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
 
+  /**
+   * Remove watch expression from debugger tree.
+   * @param node watch expression node to delete
+   */
+  void removeWatchExpressionNode(WatchExpressionNode node);
+
   /** Needs for delegate some function into Debugger view. */
   interface ActionDelegate extends BaseActionDelegate {
     /**

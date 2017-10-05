@@ -291,6 +291,10 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
+  public void removeWatchExpressionNode(WatchExpressionNode node) {
+    view.removeWatchExpressionNode(node);
+  }
+
   private void updateWatchExpressions(long threadId, int frameIndex) {}
 
   private void updateWatchExpression(WatchExpressionNode watchExpressionNode) {

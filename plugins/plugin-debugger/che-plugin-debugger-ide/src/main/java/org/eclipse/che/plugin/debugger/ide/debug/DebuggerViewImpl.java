@@ -195,6 +195,11 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
+  public void removeWatchExpressionNode(WatchExpressionNode node) {
+    tree.getNodeStorage().remove(node);
+  }
+
+  @Override
   public void updateWatchExpressionNode(WatchExpressionNode expressionNode) {
     tree.getNodeStorage().update(expressionNode);
     tree.refresh(expressionNode);
