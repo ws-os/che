@@ -25,7 +25,15 @@ import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import org.eclipse.che.api.debug.shared.model.*;
+
+import org.eclipse.che.api.debug.shared.model.Location;
+import org.eclipse.che.api.debug.shared.model.MutableVariable;
+import org.eclipse.che.api.debug.shared.model.ThreadState;
+import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.SimpleValue;
+import org.eclipse.che.api.debug.shared.model.StackFrameDump;
+import org.eclipse.che.api.debug.shared.model.Breakpoint;
 import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
@@ -79,8 +87,7 @@ public class DebuggerPresenter extends BasePresenter
   private final DebuggerResourceHandlerFactory resourceHandlerManager;
 
   private List<Variable> variables;
-  //todo it should map int to string, where is int key is unique id!!!
-  private List<Expression> expressions;
+  private List<WatchExpressionNode> exprNodes;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
   private DebuggerDescriptor debuggerDescriptor;
@@ -115,7 +122,7 @@ public class DebuggerPresenter extends BasePresenter
     this.debuggerManager.addObserver(this);
     this.breakpointManager.addObserver(this);
 
-    this.expressions = new LinkedList<>();
+    this.exprNodes = new ArrayList<>();
 
     resetView();
     addDebuggerPanel();
@@ -179,7 +186,7 @@ public class DebuggerPresenter extends BasePresenter
   @Override
   public void onSelectedFrame(int frameIndex) {
     long selectedThreadId = view.getSelectedThreadId();
-    updateVariables(selectedThreadId, frameIndex);
+    updateVariablesAndExpressions(selectedThreadId, frameIndex);
 
     for (ThreadState ts : threadDump) {
       if (ts.getId() == selectedThreadId) {
@@ -236,7 +243,7 @@ public class DebuggerPresenter extends BasePresenter
                 if (executionPoint != null) {
                   view.setThreadDump(threadDump, executionPoint.getThreadId());
                   updateStackFrameDump(executionPoint.getThreadId());
-                  updateVariables(executionPoint.getThreadId(), 0);
+                  updateVariablesAndExpressions(executionPoint.getThreadId(), 0);
                 }
               })
           .catchError(
@@ -254,7 +261,7 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  protected void updateVariables(long threadId, int frameIndex) {
+  protected void updateVariablesAndExpressions(long threadId, int frameIndex) {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       Promise<? extends StackFrameDump> promise = debugger.getStackFrameDump(threadId, frameIndex);
@@ -268,6 +275,7 @@ public class DebuggerPresenter extends BasePresenter
                   variables.addAll(stackFrameDump.getFields());
                   variables.addAll(stackFrameDump.getVariables());
                   view.setVariables(variables);
+                  setWatchExpressions(threadId, frameIndex);
                 }
               })
           .catchError(
@@ -277,44 +285,43 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  //todo comparator!!!
-  public void onAddWatchExpression(Expression expression) {
-    // render empty expression value
-    this.expressions.add(expression);
-    WatchExpressionNode watchExpressionNode = view.createWatchExpressionNode(expression);
-
-    // run and asynchronous update expression
-    Debugger activeDebugger = debuggerManager.getActiveDebugger();
-    if (activeDebugger != null && activeDebugger.isConnected()) {
-
-      updateWatchExpression(watchExpressionNode);
+  private void setWatchExpressions(long threadId, int frameIndex) {
+    for (WatchExpressionNode exprNode: exprNodes) {
+      addWatchExpressionNode(exprNode.getData());
+      calculateWatchExpression(exprNode, threadId, frameIndex);
     }
+  }
+
+  //todo comparator!!!
+  public WatchExpressionNode addWatchExpressionNode(Expression expression) {
+    WatchExpressionNode watchExpressionNode = view.createWatchExpressionNode(expression);
+    exprNodes.add(watchExpressionNode);
+
+    return watchExpressionNode;
   }
 
   public void removeWatchExpressionNode(WatchExpressionNode node) {
     view.removeWatchExpressionNode(node);
-    expressions.remove(node.getData());
+    exprNodes.remove(node);
   }
 
-  private void updateWatchExpressions(long threadId, int frameIndex) {}
+  public void updateWatchExpressionNode(WatchExpressionNode node) {
+    view.updateWatchExpressionNode(node);
+  }
 
-  public void updateWatchExpression(WatchExpressionNode watchExpressionNode) {
-    final long threadId = getSelectedThreadId();
-    final int frameIndex = getSelectedFrameIndex();
+  public void calculateWatchExpression(WatchExpressionNode watchExpressionNode, long threadId, int frameIndex) {
     final String exprContent = watchExpressionNode.getData().getExpression();
     debuggerManager
         .getActiveDebugger()
         .evaluate(exprContent, threadId, frameIndex)
         .then(
             result -> {
-
               Expression expression = new ExpressionImpl(exprContent, result);
               watchExpressionNode.setData(expression);
               view.updateWatchExpressionNode(watchExpressionNode);
             })
         .catchError(
             error -> {
-              //todo think about adding error icon and some exception node...
               Expression expression = new ExpressionImpl(exprContent, error.getMessage());
               watchExpressionNode.setData(expression);
               view.updateWatchExpressionNode(watchExpressionNode);
@@ -450,8 +457,6 @@ public class DebuggerPresenter extends BasePresenter
         promise
             .then(
                 value -> {
-                  //                  view.setVariableValue(variable, value);
-
                   MutableVariable mutableVariable = new MutableVariableImpl(variable);
                   mutableVariable.setValue(value);
                   view.updateVariable(mutableVariable);

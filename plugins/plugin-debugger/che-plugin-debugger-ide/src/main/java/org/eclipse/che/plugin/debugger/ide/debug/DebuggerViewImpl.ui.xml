@@ -44,6 +44,7 @@
                 <g:SimplePanel width="100%" height="100%" ui:field="toolbarPanel" addStyleNames="{style.alignLeft}"
                                debugId="debugger-toolbar">
                 </g:SimplePanel>
+                <g:Label ui:field="executionPoint"/>
                 <g:Label ui:field="vmName" addStyleNames="{style.debuggerInfoLabel} {style.labelBorder}"/>
             </g:FlowPanel>
         </g:north>
@@ -88,9 +89,6 @@
                             <g:west size="28">
                                 <g:SimplePanel ui:field="watchExpressionPanel" debugId="watch-expression-panel"/>
                             </g:west>
-                            <g:north size="20">
-                                <g:Label ui:field="executionPoint"/>
-                            </g:north>
                             <g:center>
                                 <g:ScrollPanel ui:field="variablesPanel" addStyleNames="{coreRes.coreCss.simpleListContainer}"
                                                debugId="debugger-variablesPanel"/>
