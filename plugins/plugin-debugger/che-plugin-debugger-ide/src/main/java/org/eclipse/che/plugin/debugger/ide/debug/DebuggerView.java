@@ -13,7 +13,6 @@ package org.eclipse.che.plugin.debugger.ide.debug;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-
 import org.eclipse.che.api.debug.shared.model.*;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.data.tree.Node;
@@ -34,6 +33,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
 
   /**
    * Remove watch expression from debugger tree.
+   *
    * @param node watch expression node to delete
    */
   void removeWatchExpressionNode(WatchExpressionNode node);

@@ -45,13 +45,14 @@ public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
   public void actionPerformed(ActionEvent event) {
     Node selectedNode = debuggerPresenter.getSelectedDebugNode();
 
-    debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode)selectedNode);
-
+    debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode) selectedNode);
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
     Node selectedNode = debuggerPresenter.getSelectedDebugNode();
-    event.getPresentation().setEnabled(selectedNode != null && selectedNode instanceof WatchExpressionNode);
+    event
+        .getPresentation()
+        .setEnabled(selectedNode != null && selectedNode instanceof WatchExpressionNode);
   }
 }

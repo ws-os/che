@@ -33,7 +33,6 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
     this.promiseProvider = promiseProvider;
   }
 
-  //todo maybe should be here delegate and request to get children?
   @Override
   protected Promise<List<Node>> getChildrenImpl() {
     return promiseProvider.resolve(children);

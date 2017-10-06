@@ -10,15 +10,11 @@
  */
 package org.eclipse.che.plugin.debugger.ide;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
 import org.eclipse.che.api.debug.shared.dto.VariableDto;
 import org.eclipse.che.api.debug.shared.dto.VariablePathDto;
@@ -66,18 +62,18 @@ public class ChangeVariableValueTest extends BaseTest {
 
   @Test
   public void shouldShowDialog() throws Exception {
-//    when(debuggerPresenter.getSelectedVariable()).thenReturn(variable);
-//    when(variable.getValue()).thenReturn(simpleValueDto);
-//
-//    presenter.showDialog();
+    //    when(debuggerPresenter.getSelectedVariable()).thenReturn(variable);
+    //    when(variable.getValue()).thenReturn(simpleValueDto);
+    //
+    //    presenter.showDialog();
 
-//    verify(debuggerPresenter).getSelectedVariable();
-//    verify(view).setValueTitle(constants.changeValueViewExpressionFieldTitle(VAR_NAME));
-//    verify(view).setValue(VAR_VALUE);
-//    verify(view).focusInValueField();
-//    verify(view).selectAllText();
-//    verify(view).setEnableChangeButton(eq(DISABLE_BUTTON));
-//    verify(view).show();
+    //    verify(debuggerPresenter).getSelectedVariable();
+    //    verify(view).setValueTitle(constants.changeValueViewExpressionFieldTitle(VAR_NAME));
+    //    verify(view).setValue(VAR_VALUE);
+    //    verify(view).focusInValueField();
+    //    verify(view).selectAllText();
+    //    verify(view).setEnableChangeButton(eq(DISABLE_BUTTON));
+    //    verify(view).show();
   }
 
   @Test
@@ -107,17 +103,17 @@ public class ChangeVariableValueTest extends BaseTest {
 
   @Test
   public void testChangeValueRequest() throws Exception {
-//    when(debuggerPresenter.getSelectedDebugNode()).thenReturn(variable);
-//    when(debuggerManager.getActiveDebugger()).thenReturn(debugger);
-//    when(view.getValue()).thenReturn(VAR_VALUE);
-//    when(variable.getVariablePath()).thenReturn(variablePathDto);
-//    when(variable.getValue()).thenReturn(mock(SimpleValueDto.class));
-//    when(variablePathDto.getPath()).thenReturn(new ArrayList<>());
+    //    when(debuggerPresenter.getSelectedDebugNode()).thenReturn(variable);
+    //    when(debuggerManager.getActiveDebugger()).thenReturn(debugger);
+    //    when(view.getValue()).thenReturn(VAR_VALUE);
+    //    when(variable.getVariablePath()).thenReturn(variablePathDto);
+    //    when(variable.getValue()).thenReturn(mock(SimpleValueDto.class));
+    //    when(variablePathDto.getPath()).thenReturn(new ArrayList<>());
 
-//    presenter.showDialog();
-//    presenter.onAgreeClicked();
+    //    presenter.showDialog();
+    //    presenter.onAgreeClicked();
 
-//    verify(debugger).setValue(anyObject(), anyLong(), anyInt());
-//    verify(view).close();
+    //    verify(debugger).setValue(anyObject(), anyLong(), anyInt());
+    //    verify(view).close();
   }
 }

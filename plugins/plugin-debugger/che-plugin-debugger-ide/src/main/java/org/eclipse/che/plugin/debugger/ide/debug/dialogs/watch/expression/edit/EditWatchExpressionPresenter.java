@@ -31,73 +31,74 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 @Singleton
 public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDelegate {
 
-    private final TextAreaDialogView view;
-    private final DebuggerPresenter debuggerPresenter;
-    private final DebuggerLocalizationConstant constant;
-    private final DebuggerManager debuggerManager;
-    private WatchExpressionNode selectedNode;
+  private final TextAreaDialogView view;
+  private final DebuggerPresenter debuggerPresenter;
+  private final DebuggerLocalizationConstant constant;
+  private final DebuggerManager debuggerManager;
+  private WatchExpressionNode selectedNode;
 
-    @Inject
-    public EditWatchExpressionPresenter(DebuggerDialogFactory dialogFactory,
-                                        DebuggerLocalizationConstant constant,
-                                        DebuggerPresenter debuggerPresenter,
-                                        DebuggerManager debuggerManager) {
-        this.view =
-                dialogFactory.createTextAreaDialogView(
-                        constant.editExpressionTextAreaDialogView(),
-                        constant.editExpressionViewAddButtonTitle(),
-                        constant.editExpressionViewCancelButtonTitle(),
-                        "debugger-edit-expression");
-        this.view.setDelegate(this);
-        this.debuggerPresenter = debuggerPresenter;
-        this.constant = constant;
-        this.debuggerManager = debuggerManager;
+  @Inject
+  public EditWatchExpressionPresenter(
+      DebuggerDialogFactory dialogFactory,
+      DebuggerLocalizationConstant constant,
+      DebuggerPresenter debuggerPresenter,
+      DebuggerManager debuggerManager) {
+    this.view =
+        dialogFactory.createTextAreaDialogView(
+            constant.editExpressionTextAreaDialogView(),
+            constant.editExpressionViewAddButtonTitle(),
+            constant.editExpressionViewCancelButtonTitle(),
+            "debugger-edit-expression");
+    this.view.setDelegate(this);
+    this.debuggerPresenter = debuggerPresenter;
+    this.constant = constant;
+    this.debuggerManager = debuggerManager;
+  }
+
+  @Override
+  public void showDialog() {
+    Node selectedNode = debuggerPresenter.getSelectedDebugNode();
+    if (selectedNode instanceof WatchExpressionNode) {
+      this.selectedNode = (WatchExpressionNode) selectedNode;
+      view.setValueTitle(constant.editExpressionViewExpressionFieldTitle());
+      view.setValue(this.selectedNode.getData().getExpression());
+      view.focusInValueField();
+      view.selectAllText();
+      view.setEnableChangeButton(false);
+      view.show();
     }
+  }
 
-    @Override
-    public void showDialog() {
-        Node selectedNode = debuggerPresenter.getSelectedDebugNode();
-        if (selectedNode instanceof WatchExpressionNode) {
-            this.selectedNode = (WatchExpressionNode)selectedNode;
-            view.setValueTitle(constant.editExpressionViewExpressionFieldTitle());
-            view.setValue(this.selectedNode.getData().getExpression());
-            view.focusInValueField();
-            view.selectAllText();
-            view.setEnableChangeButton(false);
-            view.show();
-        }
+  @Override
+  public void onCancelClicked() {
+    view.close();
+  }
+
+  @Override
+  public void onAgreeClicked() {
+    if (selectedNode != null) {
+      Expression expression = new ExpressionImpl(view.getValue(), "");
+      selectedNode.setData(expression);
+
+      debuggerPresenter.updateWatchExpressionNode(selectedNode);
+
+      //todo what about busy node with in progress calculation?!!
+      Debugger debugger = debuggerManager.getActiveDebugger();
+      if (debugger != null && debugger.isSuspended() && selectedNode != null) {
+        debuggerPresenter.calculateWatchExpression(
+            selectedNode,
+            debuggerPresenter.getSelectedThreadId(),
+            debuggerPresenter.getSelectedFrameIndex());
+      }
+
+      view.close();
     }
+  }
 
-    @Override
-    public void onCancelClicked() {
-        view.close();
-    }
-
-    @Override
-    public void onAgreeClicked() {
-        if (selectedNode != null) {
-            Expression expression = new ExpressionImpl(view.getValue(), "");
-            selectedNode.setData(expression);
-
-            debuggerPresenter.updateWatchExpressionNode(selectedNode);
-
-            //todo what about busy node with in progress calculation?!!
-            Debugger debugger = debuggerManager.getActiveDebugger();
-            if (debugger != null && debugger.isSuspended() && selectedNode != null) {
-                debuggerPresenter.calculateWatchExpression(
-                        selectedNode,
-                        debuggerPresenter.getSelectedThreadId(),
-                        debuggerPresenter.getSelectedFrameIndex());
-            }
-
-            view.close();
-        }
-    }
-
-    @Override
-    public void onValueChanged() {
-        final String value = view.getValue();
-        boolean isExpressionFieldNotEmpty = !value.trim().isEmpty();
-        view.setEnableChangeButton(isExpressionFieldNotEmpty);
-    }
+  @Override
+  public void onValueChanged() {
+    final String value = view.getValue();
+    boolean isExpressionFieldNotEmpty = !value.trim().isEmpty();
+    view.setEnableChangeButton(isExpressionFieldNotEmpty);
+  }
 }

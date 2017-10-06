@@ -26,8 +26,7 @@ import org.eclipse.che.ide.websocket.rest.Unmarshallable;
  * Unmarshaller for deserializing debugger event which is received over WebSocket connection.
  *
  * @author Artem Zatsarynnyi
- *
- * Todo do we really use this class ? Seems, no...
+ *     <p>Todo do we really use this class ? Seems, no...
  */
 public class DebuggerEventUnmarshaller implements Unmarshallable<DebuggerEventDto> {
   private DtoFactory dtoFactory;

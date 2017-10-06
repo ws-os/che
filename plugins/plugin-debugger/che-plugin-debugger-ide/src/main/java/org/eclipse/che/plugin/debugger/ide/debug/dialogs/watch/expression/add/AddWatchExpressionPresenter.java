@@ -36,10 +36,10 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
 
   @Inject
   public AddWatchExpressionPresenter(
-          DebuggerDialogFactory dialogFactory,
-          DebuggerLocalizationConstant constant,
-          DebuggerPresenter debuggerPresenter,
-          DebuggerManager debuggerManager) {
+      DebuggerDialogFactory dialogFactory,
+      DebuggerLocalizationConstant constant,
+      DebuggerPresenter debuggerPresenter,
+      DebuggerManager debuggerManager) {
     this.view =
         dialogFactory.createTextAreaDialogView(
             constant.addExpressionTextAreaDialogView(),
@@ -74,9 +74,9 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       debuggerPresenter.calculateWatchExpression(
-              createdNode,
-              debuggerPresenter.getSelectedThreadId(),
-              debuggerPresenter.getSelectedFrameIndex());
+          createdNode,
+          debuggerPresenter.getSelectedThreadId(),
+          debuggerPresenter.getSelectedFrameIndex());
     }
 
     view.close();

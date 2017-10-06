@@ -25,15 +25,14 @@ import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
+import org.eclipse.che.api.debug.shared.model.Breakpoint;
+import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.MutableVariable;
-import org.eclipse.che.api.debug.shared.model.ThreadState;
-import org.eclipse.che.api.debug.shared.model.Variable;
-import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.SimpleValue;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
-import org.eclipse.che.api.debug.shared.model.Breakpoint;
+import org.eclipse.che.api.debug.shared.model.ThreadState;
+import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
@@ -286,9 +285,11 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   private void setWatchExpressions(long threadId, int frameIndex) {
-    for (WatchExpressionNode exprNode: exprNodes) {
-      addWatchExpressionNode(exprNode.getData());
-      calculateWatchExpression(exprNode, threadId, frameIndex);
+    for (WatchExpressionNode exprNode : exprNodes) {
+      Expression expression = exprNode.getData();
+      expression.setResult("");
+      WatchExpressionNode newNode = view.createWatchExpressionNode(expression);
+      calculateWatchExpression(newNode, threadId, frameIndex);
     }
   }
 
@@ -309,7 +310,8 @@ public class DebuggerPresenter extends BasePresenter
     view.updateWatchExpressionNode(node);
   }
 
-  public void calculateWatchExpression(WatchExpressionNode watchExpressionNode, long threadId, int frameIndex) {
+  public void calculateWatchExpression(
+      WatchExpressionNode watchExpressionNode, long threadId, int frameIndex) {
     final String exprContent = watchExpressionNode.getData().getExpression();
     debuggerManager
         .getActiveDebugger()

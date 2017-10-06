@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
@@ -115,8 +115,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     this.nodeFactory = nodeFactory;
 
     tree =
-        new org.eclipse.che.ide.ui.smartTree.Tree(
-            new NodeStorage(item -> ((HasUniqueKeyProvider) item).getKey()), new NodeLoader());
+        new Tree(new NodeStorage(item -> ((HasUniqueKeyProvider) item).getKey()), new NodeLoader());
     tree.ensureDebugId("debugger-explorer");
 
     tree.getSelectionModel().setSelectionMode(SINGLE);
@@ -201,8 +200,11 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
   @Override
   public void updateWatchExpressionNode(WatchExpressionNode expressionNode) {
-    tree.getNodeStorage().update(expressionNode);
-    tree.refresh(expressionNode);
+    Node node = tree.getNodeStorage().findNode(expressionNode);
+    if (node != null) {
+      tree.getNodeStorage().update(expressionNode);
+      tree.refresh(expressionNode);
+    }
   }
 
   @Override
