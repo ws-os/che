@@ -90,7 +90,7 @@
                                 <g:SimplePanel ui:field="watchExpressionPanel" debugId="watch-expression-panel"/>
                             </g:west>
                             <g:center>
-                                <g:ScrollPanel ui:field="variablesPanel" addStyleNames="{coreRes.coreCss.simpleListContainer}"
+                                <g:SimplePanel ui:field="variablesPanel" addStyleNames="{coreRes.coreCss.simpleListContainer}"
                                                debugId="debugger-variablesPanel"/>
                             </g:center>
                         </g:DockLayoutPanel>

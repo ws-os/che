@@ -69,7 +69,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   @UiField Label vmName;
   @UiField Label executionPoint;
   @UiField SimplePanel toolbarPanel;
-  @UiField ScrollPanel variablesPanel;
+  @UiField SimplePanel variablesPanel;
   @UiField ScrollPanel breakpointsPanel;
   @UiField SimplePanel watchExpressionPanel;
 
@@ -119,6 +119,8 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     tree.ensureDebugId("debugger-explorer");
 
     tree.getSelectionModel().setSelectionMode(SINGLE);
+
+    tree.addStyleName(resources.getCss().debugTreeContainer());
 
     tree.addExpandHandler(
         event -> {
