@@ -26,6 +26,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   private final DebuggerPresenter debuggerPresenter;
+  private Node selectedNode;
 
   @Inject
   public RemoveWatchExpressionAction(
@@ -43,14 +44,12 @@ public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    Node selectedNode = debuggerPresenter.getSelectedDebugNode();
-
-    debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode) selectedNode);
+    debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode)selectedNode);
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    Node selectedNode = debuggerPresenter.getSelectedDebugNode();
+    selectedNode = debuggerPresenter.getSelectedDebugNode();
     event
         .getPresentation()
         .setEnabled(selectedNode != null && selectedNode instanceof WatchExpressionNode);

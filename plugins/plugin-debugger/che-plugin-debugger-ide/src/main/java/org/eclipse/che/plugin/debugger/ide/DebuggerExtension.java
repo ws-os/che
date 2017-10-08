@@ -64,7 +64,9 @@ public class DebuggerExtension {
   public static final String RESUME_EXECUTION_ID = "resumeExecution";
   public static final String SUSPEND_EXECUTION_ID = "suspendExecution";
   public static final String EVALUATE_EXPRESSION_ID = "evaluateExpression";
-  public static final String CHANGE_VARIABLE_VALUE_ID = "changeDebugNode";
+  public static final String CHANGE_DEBUG_NODE_ID = "changeDebugNode";
+  public static final String ADD_WATCH_EXPRESSION = "addWatchExpression";
+  public static final String REMOVE_WATCH_EXPRESSION = "removeWatchExpression";
   public static final String SHOW_HIDE_DEBUGGER_PANEL_ID = "showHideDebuggerPanel";
 
   @Inject
@@ -103,7 +105,9 @@ public class DebuggerExtension {
     actionManager.registerAction(RESUME_EXECUTION_ID, resumeExecutionAction);
     actionManager.registerAction(SUSPEND_EXECUTION_ID, suspendAction);
     actionManager.registerAction(EVALUATE_EXPRESSION_ID, evaluateExpressionAction);
-    actionManager.registerAction(CHANGE_VARIABLE_VALUE_ID, changeDebugNodeAction);
+    actionManager.registerAction(CHANGE_DEBUG_NODE_ID, changeDebugNodeAction);
+    actionManager.registerAction(ADD_WATCH_EXPRESSION, addWatchExpressionAction);
+    actionManager.registerAction(REMOVE_WATCH_EXPRESSION, removeWatchExpressionAction);
     actionManager.registerAction(SHOW_HIDE_DEBUGGER_PANEL_ID, showHideDebuggerPanelAction);
 
     // create group for selecting (changing) debug configurations
@@ -177,7 +181,7 @@ public class DebuggerExtension {
         .addKey(new KeyBuilder().alt().charCode(KeyCodeMap.F8).build(), EVALUATE_EXPRESSION_ID);
     keyBinding
         .getGlobal()
-        .addKey(new KeyBuilder().charCode(KeyCodeMap.F2).build(), CHANGE_VARIABLE_VALUE_ID);
+        .addKey(new KeyBuilder().charCode(KeyCodeMap.F2).build(), CHANGE_DEBUG_NODE_ID);
 
     if (UserAgent.isMac()) {
       keyBinding

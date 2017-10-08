@@ -218,8 +218,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("add.expression.text.area.dialog.view")
   String addExpressionTextAreaDialogView();
 
-  @Key("add.expression.view.add.button.title")
-  String addExpressionViewAddButtonTitle();
+  @Key("add.expression.view.save.button.title")
+  String addExpressionViewSaveButtonTitle();
 
   @Key("add.expression.view.cancel.button.title")
   String addExpressionViewCancelButtonTitle();
@@ -227,8 +227,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("edit.expression.text.area.dialog.view")
   String editExpressionTextAreaDialogView();
 
-  @Key("edit.expression.view.add.button.title")
-  String editExpressionViewAddButtonTitle();
+  @Key("edit.expression.view.save.button.title")
+  String editExpressionViewSaveButtonTitle();
 
   @Key("edit.expression.view.cancel.button.title")
   String editExpressionViewCancelButtonTitle();

@@ -68,7 +68,7 @@ public class ChangeDebugNodeAction extends AbstractPerspectiveAction {
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    event.getPresentation().setEnabled(debuggerPresenter.getSelectedDebugNode() != null);
     selectedNode = debuggerPresenter.getSelectedDebugNode();
+    event.getPresentation().setEnabled(selectedNode != null);
   }
 }
