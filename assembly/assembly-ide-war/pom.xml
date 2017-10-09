@@ -357,6 +357,9 @@
                         <arg>-Xss512m</arg>
                         <arg>-Xmx2048m</arg>
                     </jvmArgs>
+                    <!-- TODO: Since gwt-dev, servlet-api are provided, -->
+                    <!-- we need to add compile time dependencies to CodeServer's classpath -->
+                    <classpathScope>compile+runtime</classpathScope>
                 </configuration>
             </plugin>
             <!-- GWT Maven Plugin -->
