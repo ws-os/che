@@ -147,7 +147,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
           .append(location.getLineNumber())
           .append("} ");
     }
-    executionPoint.getElement().setClassName(coreRes.coreCss().defaultFont());
+    executionPoint.getElement().addClassName(coreRes.coreCss().defaultFont());
     executionPoint.setText(labelText.toString());
   }
 
