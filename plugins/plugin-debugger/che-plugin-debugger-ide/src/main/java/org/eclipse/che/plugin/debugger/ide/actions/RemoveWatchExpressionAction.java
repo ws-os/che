@@ -44,7 +44,7 @@ public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode)selectedNode);
+    debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode) selectedNode);
   }
 
   @Override

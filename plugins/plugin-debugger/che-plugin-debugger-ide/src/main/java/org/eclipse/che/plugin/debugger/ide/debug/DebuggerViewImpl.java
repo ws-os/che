@@ -11,6 +11,7 @@
 package org.eclipse.che.plugin.debugger.ide.debug;
 
 import static org.eclipse.che.ide.ui.smartTree.SelectionModel.Mode.SINGLE;
+import static org.eclipse.che.ide.ui.smartTree.SortDir.ASC;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -49,6 +50,7 @@ import org.eclipse.che.ide.ui.smartTree.Tree;
 import org.eclipse.che.ide.util.dom.Elements;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebugNodeTypeComparator;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebuggerNodeFactory;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.HasUniqueKeyProvider;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
@@ -129,6 +131,9 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
             delegate.onExpandVariablesTree(((VariableNode) expandedNode));
           }
         });
+
+    tree.getNodeStorage()
+        .addSortInfo(new NodeStorage.StoreSortInfo(new DebugNodeTypeComparator(), ASC));
 
     this.variablesPanel.add(tree);
     minimizeButton.ensureDebugId("debugger-minimizeBut");

@@ -293,7 +293,6 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  //todo comparator!!!
   public WatchExpressionNode addWatchExpressionNode(Expression expression) {
     WatchExpressionNode watchExpressionNode = view.createWatchExpressionNode(expression);
     exprNodes.add(watchExpressionNode);
