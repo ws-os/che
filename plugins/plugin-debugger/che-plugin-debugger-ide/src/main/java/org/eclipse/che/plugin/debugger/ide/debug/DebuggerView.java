@@ -13,13 +13,16 @@ package org.eclipse.che.plugin.debugger.ide.debug;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import org.eclipse.che.api.debug.shared.model.*;
+import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.Location;
+import org.eclipse.che.api.debug.shared.model.ThreadState;
+import org.eclipse.che.api.debug.shared.model.Breakpoint;
+import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.mvp.View;
 import org.eclipse.che.ide.api.parts.base.BaseActionDelegate;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * Provides methods which allow change view representation of debugger panel. Also the interface
@@ -31,21 +34,8 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
  */
 public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
 
-  /**
-   * Remove watch expression from debugger tree.
-   *
-   * @param node watch expression node to delete
-   */
-  void removeWatchExpressionNode(WatchExpressionNode node);
-
   /** Needs for delegate some function into Debugger view. */
   interface ActionDelegate extends BaseActionDelegate {
-    /**
-     * Performs any actions appropriate in response to the user having pressed the expand button in
-     * variables tree.
-     */
-    void onExpandVariablesTree(VariableNode varNode);
-
     /** Is invoked when a new thread is selected. */
     void onSelectedThread(long threadId);
 
@@ -56,11 +46,20 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
      */
     void onSelectedFrame(int frameIndex);
 
+    /**
+     * Performs any actions appropriate in response to the user having pressed the expand button in
+     * variables tree.
+     */
+    void onExpandVariable(Variable varNode);
+
     /** Is invoked when a add watch expression button clicked */
-    void onAddExpressionBtnClicked();
+    void onAddExpressionBtnClicked(Expression expression);
 
     /** Is invoked when remove watch expression button clicked. */
-    void onRemoveExpressionBtnClicked();
+    void onRemoveExpressionBtnClicked(Expression expression);
+
+    /** Is invoked when edit watch expression button clicked. */
+    void onEditExpressionBtnClicked(Expression expression);
   }
 
   /**
@@ -71,7 +70,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   void setExecutionPoint(@NotNull Location location);
 
   /**
-   * Sets variables.
+   * Clear debugger tree(remove all variables and expressions). Sets variables.
    *
    * @param variables available variables
    */
@@ -80,11 +79,25 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   /** Updates variable in the list */
   void updateVariable(Variable variable);
 
-  void updateVariableNodeValue(VariableNode variable);
+  void expandVariable(Variable variable);
 
-  WatchExpressionNode createWatchExpressionNode(@NotNull Expression expression);
+  /**
+   * Add new watch expression.
+   * @param expression to add
+   */
+  void addExpression(Expression expression);
 
-  void updateWatchExpressionNode(WatchExpressionNode exprNode);
+  /**
+   * Update new expression.
+   * @param expression to update
+   */
+  void updateExpression(Expression expression);
+
+  /**
+   * Remove expression.
+   * @param expression to remove
+   */
+  void removeExpression(Expression expression);
 
   /**
    * Sets breakpoints.

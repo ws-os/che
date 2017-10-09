@@ -15,8 +15,6 @@ import com.google.inject.Singleton;
 import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.ide.api.data.tree.Node;
-import org.eclipse.che.ide.debug.Debugger;
-import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
@@ -34,15 +32,12 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
   private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
   private final DebuggerLocalizationConstant constant;
-  private final DebuggerManager debuggerManager;
-  private WatchExpressionNode selectedNode;
 
   @Inject
   public EditWatchExpressionPresenter(
       DebuggerDialogFactory dialogFactory,
       DebuggerLocalizationConstant constant,
-      DebuggerPresenter debuggerPresenter,
-      DebuggerManager debuggerManager) {
+      DebuggerPresenter debuggerPresenter) {
     this.view =
         dialogFactory.createTextAreaDialogView(
             constant.editExpressionTextAreaDialogView(),
@@ -52,16 +47,16 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
     this.view.setDelegate(this);
     this.debuggerPresenter = debuggerPresenter;
     this.constant = constant;
-    this.debuggerManager = debuggerManager;
   }
 
   @Override
   public void showDialog() {
     Node selectedNode = debuggerPresenter.getSelectedDebugNode();
     if (selectedNode instanceof WatchExpressionNode) {
-      this.selectedNode = (WatchExpressionNode) selectedNode;
+      WatchExpressionNode watchExpressionNode = (WatchExpressionNode) selectedNode;
+
       view.setValueTitle(constant.editExpressionViewExpressionFieldTitle());
-      view.setValue(this.selectedNode.getData().getExpression());
+      view.setValue(watchExpressionNode.getData().getExpression());
       view.focusInValueField();
       view.selectAllText();
       view.setEnableChangeButton(false);
@@ -76,23 +71,10 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
 
   @Override
   public void onAgreeClicked() {
-    if (selectedNode != null) {
       Expression expression = new ExpressionImpl(view.getValue(), "");
-      selectedNode.setData(expression);
-
-      debuggerPresenter.updateWatchExpressionNode(selectedNode);
-
-      //todo what about busy node with in progress calculation?!!
-      Debugger debugger = debuggerManager.getActiveDebugger();
-      if (debugger != null && debugger.isSuspended() && selectedNode != null) {
-        debuggerPresenter.calculateWatchExpression(
-            selectedNode,
-            debuggerPresenter.getSelectedThreadId(),
-            debuggerPresenter.getSelectedFrameIndex());
-      }
+      debuggerPresenter.onEditExpressionBtnClicked(expression);
 
       view.close();
-    }
   }
 
   @Override

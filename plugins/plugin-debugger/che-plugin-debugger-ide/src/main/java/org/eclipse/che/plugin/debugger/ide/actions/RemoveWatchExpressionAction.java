@@ -14,6 +14,8 @@ import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspect
 
 import com.google.inject.Inject;
 import java.util.Collections;
+
+import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.ide.api.data.tree.Node;
@@ -44,7 +46,8 @@ public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    debuggerPresenter.removeWatchExpressionNode((WatchExpressionNode) selectedNode);
+    Expression expression = ((WatchExpressionNode) selectedNode).getData();
+    debuggerPresenter.onRemoveExpressionBtnClicked(expression);
   }
 
   @Override

@@ -55,8 +55,6 @@ import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 import org.vectomatic.dom.svg.ui.SVGResource;
 
 /**
@@ -86,7 +84,7 @@ public class DebuggerPresenter extends BasePresenter
   private final DebuggerResourceHandlerFactory resourceHandlerManager;
 
   private List<Variable> variables;
-  private List<WatchExpressionNode> exprNodes;
+  private List<Expression> expressions;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
   private DebuggerDescriptor debuggerDescriptor;
@@ -121,7 +119,7 @@ public class DebuggerPresenter extends BasePresenter
     this.debuggerManager.addObserver(this);
     this.breakpointManager.addObserver(this);
 
-    this.exprNodes = new ArrayList<>();
+    this.expressions = new ArrayList<>();
 
     resetView();
     addDebuggerPanel();
@@ -155,19 +153,17 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   @Override
-  public void onExpandVariablesTree(VariableNode varNode) {
+  public void onExpandVariable(Variable variable) {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       Promise<? extends SimpleValue> promise =
-          debugger.getValue(
-              varNode.getData(), view.getSelectedThreadId(), view.getSelectedFrameIndex());
+          debugger.getValue(variable, view.getSelectedThreadId(), view.getSelectedFrameIndex());
       promise
           .then(
               value -> {
-                MutableVariable updatedVariable = new MutableVariableImpl(varNode.getData());
+                MutableVariable updatedVariable = new MutableVariableImpl(variable);
                 updatedVariable.setValue(value);
-                varNode.setData(updatedVariable);
-                view.updateVariableNodeValue(varNode);
+                view.expandVariable(updatedVariable);
               })
           .catchError(
               error -> {
@@ -194,12 +190,6 @@ public class DebuggerPresenter extends BasePresenter
       }
     }
   }
-
-  @Override
-  public void onAddExpressionBtnClicked() {}
-
-  @Override
-  public void onRemoveExpressionBtnClicked() {}
 
   protected void open(Location location) {
     Debugger debugger = debuggerManager.getActiveDebugger();
@@ -285,47 +275,55 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   private void setWatchExpressions(long threadId, int frameIndex) {
-    for (WatchExpressionNode exprNode : exprNodes) {
-      Expression expression = exprNode.getData();
+    for (Expression expression : expressions) {
       expression.setResult("");
-      WatchExpressionNode newNode = view.createWatchExpressionNode(expression);
-      calculateWatchExpression(newNode, threadId, frameIndex);
+      view.addExpression(expression);
+
+      calculateWatchExpression(expression, threadId, frameIndex);
     }
   }
 
-  public WatchExpressionNode addWatchExpressionNode(Expression expression) {
-    WatchExpressionNode watchExpressionNode = view.createWatchExpressionNode(expression);
-    exprNodes.add(watchExpressionNode);
+  @Override
+  public void onAddExpressionBtnClicked(Expression expression) {
+    view.updateExpression(expression);
+    expressions.add(expression);
 
-    return watchExpressionNode;
+    calculateWatchExpression(expression, view.getSelectedThreadId(), view.getSelectedFrameIndex());
   }
 
-  public void removeWatchExpressionNode(WatchExpressionNode node) {
-    view.removeWatchExpressionNode(node);
-    exprNodes.remove(node);
+  @Override
+  public void onRemoveExpressionBtnClicked(Expression expression) {
+    view.removeExpression(expression);
+    expressions.remove(expression);
   }
 
-  public void updateWatchExpressionNode(WatchExpressionNode node) {
-    view.updateWatchExpressionNode(node);
+  @Override
+  public void onEditExpressionBtnClicked(Expression expression) {
+    view.updateExpression(expression);
+
+    calculateWatchExpression(expression, view.getSelectedThreadId(), view.getSelectedFrameIndex());
   }
 
-  public void calculateWatchExpression(
-      WatchExpressionNode watchExpressionNode, long threadId, int frameIndex) {
-    final String exprContent = watchExpressionNode.getData().getExpression();
+  private void calculateWatchExpression(Expression expression, long threadId, int frameIndex) {
+    Debugger activeDebugger = debuggerManager.getActiveDebugger();
+
+    if (activeDebugger == null || !activeDebugger.isConnected()) {
+      return;
+    }
+
+    final String exprContent = expression.getExpression();
     debuggerManager
         .getActiveDebugger()
         .evaluate(exprContent, threadId, frameIndex)
         .then(
             result -> {
-              Expression expression = new ExpressionImpl(exprContent, result);
-              watchExpressionNode.setData(expression);
-              view.updateWatchExpressionNode(watchExpressionNode);
+              Expression updatedExpr = new ExpressionImpl(exprContent, result);
+              view.updateExpression(updatedExpr);
             })
         .catchError(
             error -> {
-              Expression expression = new ExpressionImpl(exprContent, error.getMessage());
-              watchExpressionNode.setData(expression);
-              view.updateWatchExpressionNode(watchExpressionNode);
+              Expression updatedExpr = new ExpressionImpl(exprContent, error.getMessage());
+              view.updateExpression(updatedExpr);
             });
   }
 
@@ -427,6 +425,7 @@ public class DebuggerPresenter extends BasePresenter
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
     view.setVariables(emptyList());
+    setWatchExpressions(view.getSelectedThreadId(), view.getSelectedFrameIndex());
   }
 
   private void resetView() {
@@ -440,6 +439,7 @@ public class DebuggerPresenter extends BasePresenter
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
     view.setVariables(emptyList());
+    setWatchExpressions(view.getSelectedThreadId(), view.getSelectedFrameIndex());
   }
 
   @Override

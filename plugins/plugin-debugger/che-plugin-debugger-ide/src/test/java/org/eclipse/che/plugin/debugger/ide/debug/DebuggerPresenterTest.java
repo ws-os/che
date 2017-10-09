@@ -121,7 +121,7 @@ public class DebuggerPresenterTest extends BaseTest {
   //        .getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
   //    doReturn(promiseValue).when(promiseValue).then((Operation<SimpleValueDto>) any());
   //
-  //    presenter.onExpandVariablesTree(selectedVariable);
+  //    presenter.onExpandVariable(selectedVariable);
   //
   //    verify(promiseValue).then(operationValueCaptor.capture());
   //    operationValueCaptor.getValue().apply(valueDto);
