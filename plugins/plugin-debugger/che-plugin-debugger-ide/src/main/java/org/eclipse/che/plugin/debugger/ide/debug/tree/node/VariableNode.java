@@ -10,7 +10,6 @@
  */
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
-import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.util.ArrayList;
@@ -52,11 +51,6 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
   public void updatePresentation(NodePresentation presentation) {
     String content = data.getName() + "=" + data.getValue().getString();
     presentation.setPresentableText(content);
-  }
-
-  @Override
-  public String getKey() {
-    return String.valueOf(Objects.hashCode(data.getVariablePath()));
   }
 
   @Override

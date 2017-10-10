@@ -13,7 +13,6 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.che.api.debug.shared.model.Expression;
-import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
@@ -32,6 +31,7 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
   private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
   private final DebuggerLocalizationConstant constant;
+  private WatchExpressionNode watchExpressionNode;
 
   @Inject
   public EditWatchExpressionPresenter(
@@ -53,7 +53,7 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
   public void showDialog() {
     Node selectedNode = debuggerPresenter.getSelectedDebugNode();
     if (selectedNode instanceof WatchExpressionNode) {
-      WatchExpressionNode watchExpressionNode = (WatchExpressionNode) selectedNode;
+      watchExpressionNode = (WatchExpressionNode) selectedNode;
 
       view.setValueTitle(constant.editExpressionViewExpressionFieldTitle());
       view.setValue(watchExpressionNode.getData().getExpression());
@@ -71,10 +71,13 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
 
   @Override
   public void onAgreeClicked() {
-      Expression expression = new ExpressionImpl(view.getValue(), "");
+    if (watchExpressionNode != null) {
+      Expression expression = watchExpressionNode.getData();
+      expression.setExpression(view.getValue());
       debuggerPresenter.onEditExpressionBtnClicked(expression);
+    }
 
-      view.close();
+    view.close();
   }
 
   @Override

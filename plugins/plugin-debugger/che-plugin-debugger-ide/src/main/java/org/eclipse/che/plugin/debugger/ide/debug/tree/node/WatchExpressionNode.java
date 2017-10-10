@@ -64,12 +64,6 @@ public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
     presentation.setPresentableIcon(debuggerResources.watchExpressionIcon());
   }
 
-  //todo generate unique id and set up it like a key...
-  @Override
-  public String getKey() {
-    return String.valueOf(hashCode());
-  }
-
   @Override
   public Expression getData() {
     return expression;

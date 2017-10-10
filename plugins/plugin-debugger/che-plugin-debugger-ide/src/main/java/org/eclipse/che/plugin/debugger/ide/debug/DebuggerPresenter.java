@@ -285,10 +285,10 @@ public class DebuggerPresenter extends BasePresenter
 
   @Override
   public void onAddExpressionBtnClicked(Expression expression) {
-    view.updateExpression(expression);
+    view.addExpression(expression);
     expressions.add(expression);
 
-    calculateWatchExpression(expression, view.getSelectedThreadId(), view.getSelectedFrameIndex());
+    calculateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
   }
 
   @Override
@@ -299,9 +299,10 @@ public class DebuggerPresenter extends BasePresenter
 
   @Override
   public void onEditExpressionBtnClicked(Expression expression) {
+    expression.setResult("");
     view.updateExpression(expression);
 
-    calculateWatchExpression(expression, view.getSelectedThreadId(), view.getSelectedFrameIndex());
+    calculateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
   }
 
   private void calculateWatchExpression(Expression expression, long threadId, int frameIndex) {
@@ -311,19 +312,18 @@ public class DebuggerPresenter extends BasePresenter
       return;
     }
 
-    final String exprContent = expression.getExpression();
     debuggerManager
         .getActiveDebugger()
-        .evaluate(exprContent, threadId, frameIndex)
+        .evaluate(expression.getExpression(), threadId, frameIndex)
         .then(
             result -> {
-              Expression updatedExpr = new ExpressionImpl(exprContent, result);
-              view.updateExpression(updatedExpr);
+              expression.setResult(result);
+              view.updateExpression(expression);
             })
         .catchError(
             error -> {
-              Expression updatedExpr = new ExpressionImpl(exprContent, error.getMessage());
-              view.updateExpression(updatedExpr);
+              expression.setResult(error.getMessage());
+              view.updateExpression(expression);
             });
   }
 

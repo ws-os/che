@@ -16,8 +16,7 @@ import org.eclipse.che.ide.ui.smartTree.presentation.HasPresentation;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 
 /** @author Alexander Andrienko */
-public abstract class AbstractDebuggerNode<D> extends AbstractTreeNode
-    implements HasDataObject<D>, HasUniqueKeyProvider, HasPresentation {
+public abstract class AbstractDebuggerNode<D> extends AbstractTreeNode implements HasDataObject<D>, HasPresentation {
   private NodePresentation nodePresentation;
 
   /** {@inheritDoc} */

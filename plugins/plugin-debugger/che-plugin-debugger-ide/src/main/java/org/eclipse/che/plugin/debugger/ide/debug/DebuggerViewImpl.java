@@ -48,13 +48,13 @@ import org.eclipse.che.ide.ui.smartTree.NodeLoader;
 import org.eclipse.che.ide.ui.smartTree.NodeStorage;
 import org.eclipse.che.ide.ui.smartTree.Tree;
 import org.eclipse.che.ide.util.dom.Elements;
-import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebugNodeTypeComparator;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebuggerNodeFactory;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.HasUniqueKeyProvider;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.key.DebugNodeUniqueKeyProvider;
 
 /**
  * The class business logic which allow us to change visual representation of debugger panel.
@@ -93,6 +93,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   private final DebuggerResources debuggerResources;
   private final Tree tree;
   private final DebuggerNodeFactory nodeFactory;
+  private final DebugNodeUniqueKeyProvider nodeKeyProvider;
 
   @Inject
   protected DebuggerViewImpl(
@@ -101,12 +102,14 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
       DebuggerLocalizationConstant locale,
       Resources coreRes,
       DebuggerViewImplUiBinder uiBinder,
-      DebuggerNodeFactory nodeFactory) {
+      DebuggerNodeFactory nodeFactory,
+      DebugNodeUniqueKeyProvider nodeKeyProvider) {
     super(partStackUIResources);
 
     this.locale = locale;
     this.debuggerResources = resources;
     this.coreRes = coreRes;
+    this.nodeKeyProvider = nodeKeyProvider;
 
     setContentWidget(uiBinder.createAndBindUi(this));
 
@@ -117,9 +120,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     this.framesPanel.add(frames);
     this.nodeFactory = nodeFactory;
 
-    //todo HasUniqueKeyProvider ?
-    tree =
-        new Tree(new NodeStorage(item -> ((HasUniqueKeyProvider) item).getKey()), new NodeLoader());
+    tree = new Tree(new NodeStorage(nodeKeyProvider), new NodeLoader());
     tree.ensureDebugId("debugger-tree");
 
     tree.getSelectionModel().setSelectionMode(SINGLE);
@@ -169,13 +170,12 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
   @Override
   public void expandVariable(Variable variable) {
-    Node nodeToUpdate = nodeFactory.createVariableNode(variable);
-//    Log.info(getClass(), tree.getNodeStorage().findNode(nodeToUpdate));
-    if (variable != null) {
+    String key = nodeKeyProvider.evaluateKey(variable);
+    Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
+    if (nodeToUpdate != null) {
       tree.getNodeStorage().update(nodeToUpdate);
-      tree.refresh(nodeToUpdate);
 
-      Log.info(getClass(), variable.getValue().getVariables().size());
+      //todo remove child before insert new ...
       List<? extends Variable> varChildren = variable.getValue().getVariables();
       for (int i = 0; i < varChildren.size(); i++) {
         Node childNode = nodeFactory.createVariableNode(varChildren.get(i));
@@ -186,37 +186,46 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
   @Override
   public void updateVariable(Variable variable) {
-    Node nodeToUpdate = nodeFactory.createVariableNode(variable);
+    String key = nodeKeyProvider.evaluateKey(variable);
+    Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
+    if (nodeToUpdate != null && nodeToUpdate instanceof VariableNode) {
+//      NodeDescriptor nodeDescriptor = tree.getNodeDescriptor(nodeToUpdate);
+      VariableNode variableNode = ((VariableNode)nodeToUpdate);
+      variableNode.setData(variable);
 
-    if (nodeToUpdate != null) {
-      tree.getNodeStorage().update(nodeToUpdate);
+      if (tree.isExpanded(variableNode)) {
+        tree.getNodeStorage().replaceChildren(nodeToUpdate, new ArrayList<>());
+      }
+
       tree.refresh(nodeToUpdate);
-
-      for (Variable nestedVariable : variable.getValue().getVariables()) {
-        updateVariable(nestedVariable);
-      }
-
-      if (tree.isExpanded(nodeToUpdate)) {
-        tree.setExpanded(nodeToUpdate, true);
-      }
     }
   }
 
   @Override
   public void addExpression(Expression expression) {
-//    WatchExpressionNode expressionNode = nodeFactory.createExpressionNode();
-//    tree
+    WatchExpressionNode node = nodeFactory.createExpressionNode(expression);
+    tree.getNodeStorage().add(node);
   }
 
   @Override
   public void updateExpression(Expression expression) {
-
-//    tree.getNodeStorage().remove(node);
+    String key = nodeKeyProvider.evaluateKey(expression);
+    Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
+    if (nodeToUpdate != null && nodeToUpdate instanceof WatchExpressionNode) {
+      WatchExpressionNode expNode = ((WatchExpressionNode) nodeToUpdate);
+      expNode.setData(expression);
+      tree.getNodeStorage().update(nodeToUpdate);
+      tree.refresh(nodeToUpdate);
+    }
   }
 
   @Override
   public void removeExpression(Expression expression) {
-
+    String key = nodeKeyProvider.evaluateKey(expression);
+    Node nodeToRemove = tree.getNodeStorage().findNodeWithKey(key);
+    if (nodeToRemove != null) {
+      tree.getNodeStorage().remove(nodeToRemove);
+    }
   }
 
   //  @Override
