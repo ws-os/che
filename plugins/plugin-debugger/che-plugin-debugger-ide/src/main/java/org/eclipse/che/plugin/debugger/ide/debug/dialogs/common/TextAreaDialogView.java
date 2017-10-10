@@ -12,10 +12,9 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.common;
 
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.mvp.View;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
 
 /**
- * The view of {@link ChangeValuePresenter}.
+ * Dialog Window based on TextArea widget.
  *
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
  */
