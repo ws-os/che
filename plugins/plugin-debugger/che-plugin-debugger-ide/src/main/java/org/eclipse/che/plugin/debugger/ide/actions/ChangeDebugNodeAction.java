@@ -14,7 +14,6 @@ import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspect
 
 import com.google.inject.Inject;
 import java.util.Collections;
-
 import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;

@@ -54,13 +54,13 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   }
 
   public void showDialog() {
-      this.selectedVariable = debuggerPresenter.getSelectedVariable();
-      view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
-      view.setValue(selectedVariable.getValue().getString());
-      view.focusInValueField();
-      view.selectAllText();
-      view.setEnableChangeButton(false);
-      view.show();
+    this.selectedVariable = debuggerPresenter.getSelectedVariable();
+    view.setValueTitle(constant.changeValueViewExpressionFieldTitle(selectedVariable.getName()));
+    view.setValue(selectedVariable.getValue().getString());
+    view.focusInValueField();
+    view.selectAllText();
+    view.setEnableChangeButton(false);
+    view.show();
   }
 
   @Override

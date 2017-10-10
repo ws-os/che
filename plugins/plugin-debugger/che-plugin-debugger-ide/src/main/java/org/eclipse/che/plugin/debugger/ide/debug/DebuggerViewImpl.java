@@ -273,7 +273,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   public Variable getSelectedVariable() {
     Node selectedNode = getSelectedNode();
     if (selectedNode instanceof VariableNode) {
-      return ((VariableNode)selectedNode).getData();
+      return ((VariableNode) selectedNode).getData();
     }
     return null;
   }
@@ -282,7 +282,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   public Expression getSelectedExpression() {
     Node selectedNode = getSelectedNode();
     if (selectedNode instanceof WatchExpressionNode) {
-      return ((WatchExpressionNode)selectedNode).getData();
+      return ((WatchExpressionNode) selectedNode).getData();
     }
     return null;
   }

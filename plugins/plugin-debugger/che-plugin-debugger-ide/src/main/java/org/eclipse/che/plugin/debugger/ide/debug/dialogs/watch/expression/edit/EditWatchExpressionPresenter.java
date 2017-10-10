@@ -65,8 +65,8 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
 
   @Override
   public void onAgreeClicked() {
-      selectedExpression.setExpression(view.getValue());
-      debuggerPresenter.onEditExpressionBtnClicked(selectedExpression);
+    selectedExpression.setExpression(view.getValue());
+    debuggerPresenter.onEditExpressionBtnClicked(selectedExpression);
 
     view.close();
   }
