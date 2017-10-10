@@ -12,6 +12,7 @@ package org.eclipse.che.plugin.debugger.ide.debug.tree.node.key;
 
 import static java.lang.String.valueOf;
 
+import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.Objects;
@@ -42,8 +43,7 @@ public class DebugNodeUniqueKeyProvider implements UniqueKeyProvider<Node> {
   }
 
   public String evaluateKey(Variable variable) {
-    int hash = Objects.hashCode(variable.getVariablePath());
-    return valueOf(hash);
+    return Joiner.on("/").join(variable.getVariablePath().getPath());
   }
 
   public String evaluateKey(Expression expression) {
