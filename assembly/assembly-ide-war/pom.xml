@@ -342,6 +342,7 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- set-up plugin for compilation -->
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
                 <executions>
@@ -353,13 +354,6 @@
                 </executions>
                 <configuration>
                     <moduleName>org.eclipse.che.ide.IDE</moduleName>
-                    <jvmArgs>
-                        <arg>-Xss512m</arg>
-                        <arg>-Xmx2048m</arg>
-                    </jvmArgs>
-                    <!-- TODO: Since gwt-dev, servlet-api are provided, -->
-                    <!-- we need to add compile time dependencies to CodeServer's classpath -->
-                    <classpathScope>compile+runtime</classpathScope>
                 </configuration>
             </plugin>
             <plugin>
