@@ -10,10 +10,12 @@
  */
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
+import static java.util.Collections.emptyList;
+
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
@@ -22,14 +24,28 @@ import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 
 public class VariableNode extends AbstractDebuggerNode<Variable> {
 
+  private final PromiseProvider promiseProvider;
+  private final DebuggerNodeFactory nodeFactory;
   private Variable data;
-  private PromiseProvider promiseProvider;
 
   @Inject
-  public VariableNode(@Assisted Variable data, PromiseProvider promiseProvider) {
-    this.data = data;
-    this.children = new ArrayList<>();
+  public VariableNode(@Assisted Variable data,
+                      PromiseProvider promiseProvider,
+                      DebuggerNodeFactory nodeFactory) {
     this.promiseProvider = promiseProvider;
+    this.nodeFactory = nodeFactory;
+    this.data = data;
+    updateChildren();
+  }
+
+  private void updateChildren() {
+    children = data.getValue() != null
+            ? data.getValue()
+            .getVariables()
+            .stream()
+            .map(nodeFactory::createVariableNode)
+            .collect(Collectors.toList())
+            : emptyList();
   }
 
   @Override
@@ -61,5 +77,6 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
   @Override
   public void setData(Variable data) {
     this.data = data;
+    updateChildren();
   }
 }
