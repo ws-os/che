@@ -14,16 +14,16 @@ import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspect
 
 import com.google.inject.Inject;
 import java.util.Collections;
+
+import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit.EditWatchExpressionPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * Action which allows change value of selected variable with debugger
@@ -35,8 +35,8 @@ public class ChangeDebugNodeAction extends AbstractPerspectiveAction {
   private final ChangeValuePresenter changeValuePresenter;
   private final DebuggerPresenter debuggerPresenter;
   private final EditWatchExpressionPresenter editWatchExpressionPresenter;
-
-  private Node selectedNode;
+  private Variable selectedVariable;
+  private Expression selectedExpression;
 
   @Inject
   public ChangeDebugNodeAction(
@@ -58,17 +58,18 @@ public class ChangeDebugNodeAction extends AbstractPerspectiveAction {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (selectedNode instanceof VariableNode) {
+    if (selectedVariable != null) {
       changeValuePresenter.showDialog();
     }
-    if (selectedNode instanceof WatchExpressionNode) {
+    if (selectedExpression != null) {
       editWatchExpressionPresenter.showDialog();
     }
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    selectedNode = debuggerPresenter.getSelectedDebugNode();
-    event.getPresentation().setEnabled(selectedNode != null);
+    selectedExpression = debuggerPresenter.getSelectedWatchExpression();
+    selectedVariable = debuggerPresenter.getSelectedVariable();
+    event.getPresentation().setEnabled(selectedExpression != null || selectedVariable != null);
   }
 }

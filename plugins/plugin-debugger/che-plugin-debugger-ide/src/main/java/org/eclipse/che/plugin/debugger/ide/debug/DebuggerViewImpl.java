@@ -50,10 +50,11 @@ import org.eclipse.che.ide.ui.smartTree.Tree;
 import org.eclipse.che.ide.util.dom.Elements;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebugNodeTypeComparator;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebuggerNodeFactory;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.comparator.DebugNodeTypeComparator;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.comparator.VariableNodeComparator;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.key.DebugNodeUniqueKeyProvider;
 
 /**
@@ -137,6 +138,8 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
     tree.getNodeStorage()
         .addSortInfo(new NodeStorage.StoreSortInfo(new DebugNodeTypeComparator(), ASC));
+    tree.getNodeStorage()
+        .addSortInfo(new NodeStorage.StoreSortInfo(new VariableNodeComparator(), ASC));
 
     this.variablesPanel.add(tree);
     minimizeButton.ensureDebugId("debugger-minimizeBut");
@@ -174,8 +177,6 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
     if (nodeToUpdate != null) {
       tree.getNodeStorage().update(nodeToUpdate);
-
-      //todo remove child before insert new ...
       List<? extends Variable> varChildren = variable.getValue().getVariables();
       for (int i = 0; i < varChildren.size(); i++) {
         Node childNode = nodeFactory.createVariableNode(varChildren.get(i));
@@ -189,15 +190,13 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     String key = nodeKeyProvider.evaluateKey(variable);
     Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
     if (nodeToUpdate != null && nodeToUpdate instanceof VariableNode) {
-//      NodeDescriptor nodeDescriptor = tree.getNodeDescriptor(nodeToUpdate);
-      VariableNode variableNode = ((VariableNode)nodeToUpdate);
+      VariableNode variableNode = ((VariableNode) nodeToUpdate);
       variableNode.setData(variable);
-
-      if (tree.isExpanded(variableNode)) {
-        tree.getNodeStorage().replaceChildren(nodeToUpdate, new ArrayList<>());
+      if (tree.isExpanded(nodeToUpdate)) {
+        tree.getNodeLoader().loadChildren(variableNode, true);
+      } else {
+        tree.refresh(nodeToUpdate);
       }
-
-      tree.refresh(nodeToUpdate);
     }
   }
 
@@ -227,43 +226,6 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
       tree.getNodeStorage().remove(nodeToRemove);
     }
   }
-
-  //  @Override
-//  public void updateVariableNodeValue(VariableNode variable) {
-//    if (variable != null) {
-//      tree.getNodeStorage().update(variable);
-//      tree.refresh(variable);
-//
-//      List<? extends VariableNode> varChildren = variable.getData().getValue().getVariables();
-//      for (int i = 0; i < varChildren.size(); i++) {
-//        Node childNode = nodeFactory.createVariableNode(varChildren.get(i));
-//        tree.getNodeStorage().insert(variable, i, childNode);
-//      }
-//    }
-//  }
-//
-
-//
-//  @Override
-//  public WatchExpressionNode createWatchExpressionNode(@NotNull Expression expression) {
-//    WatchExpressionNode exprNode = nodeFactory.createExpressionNode(expression);
-//    tree.getNodeStorage().add(exprNode);
-//    return exprNode;
-//  }
-//
-//  @Override
-//  public void removeWatchExpressionNode(WatchExpressionNode node) {
-//    tree.getNodeStorage().remove(node);
-//  }
-//
-//  @Override
-//  public void updateWatchExpressionNode(WatchExpressionNode expressionNode) {
-//    Node node = tree.getNodeStorage().findNode(expressionNode);
-//    if (node != null) {
-//      tree.getNodeStorage().update(expressionNode);
-//      tree.refresh(expressionNode);
-//    }
-//  }
 
   @Override
   public void setBreakpoints(@NotNull List<Breakpoint> breakpoints) {
@@ -308,10 +270,28 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public Node getSelectedTeeNode() {
-    return tree.getSelectionModel().getSelectedNodes().isEmpty()
-        ? null
-        : tree.getSelectionModel().getSelectedNodes().get(0);
+  public Variable getSelectedVariable() {
+    Node selectedNode = getSelectedNode();
+    if (selectedNode instanceof VariableNode) {
+      return ((VariableNode)selectedNode).getData();
+    }
+    return null;
+  }
+
+  @Override
+  public Expression getSelectedExpression() {
+    Node selectedNode = getSelectedNode();
+    if (selectedNode instanceof WatchExpressionNode) {
+      return ((WatchExpressionNode)selectedNode).getData();
+    }
+    return null;
+  }
+
+  private Node getSelectedNode() {
+    if (tree.getSelectionModel().getSelectedNodes().isEmpty()) {
+      return null;
+    }
+    return tree.getSelectionModel().getSelectedNodes().get(0);
   }
 
   @Override
