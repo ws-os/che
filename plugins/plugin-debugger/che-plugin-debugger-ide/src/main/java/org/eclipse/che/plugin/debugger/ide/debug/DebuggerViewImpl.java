@@ -48,6 +48,7 @@ import org.eclipse.che.ide.ui.smartTree.NodeLoader;
 import org.eclipse.che.ide.ui.smartTree.NodeStorage;
 import org.eclipse.che.ide.ui.smartTree.Tree;
 import org.eclipse.che.ide.util.dom.Elements;
+import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.DebuggerNodeFactory;
@@ -131,8 +132,10 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     tree.addExpandHandler(
         event -> {
           Node expandedNode = event.getNode();
-          if (expandedNode instanceof VariableNode) {
-            delegate.onExpandVariable(((VariableNode) expandedNode).getData());
+          if (!tree.getNodeStorage().hasChildren(expandedNode)) {
+            if (expandedNode instanceof VariableNode) {
+              delegate.onExpandVariable(((VariableNode) expandedNode).getData());
+            }
           }
         });
 
@@ -172,31 +175,19 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public void expandVariable(Variable variable) {
-    String key = nodeKeyProvider.evaluateKey(variable);
-    Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
-    if (nodeToUpdate != null) {
-      tree.getNodeStorage().update(nodeToUpdate);
-      List<? extends Variable> varChildren = variable.getValue().getVariables();
-      for (int i = 0; i < varChildren.size(); i++) {
-        Node childNode = nodeFactory.createVariableNode(varChildren.get(i));
-        tree.getNodeStorage().insert(nodeToUpdate, i, childNode);
-      }
-    }
-  }
-
-  @Override
   public void updateVariable(Variable variable) {
     String key = nodeKeyProvider.evaluateKey(variable);
     Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
+    Log.info(getClass(), nodeToUpdate == null);
     if (nodeToUpdate != null && nodeToUpdate instanceof VariableNode) {
       VariableNode variableNode = ((VariableNode) nodeToUpdate);
       variableNode.setData(variable);
+      tree.getNodeStorage().update(variableNode);
 
-      if (tree.isExpanded(nodeToUpdate)) {
+      if (tree.isExpanded(nodeToUpdate) && variable.getValue().getVariables().size() > 0) {
         tree.getNodeLoader().loadChildren(variableNode);
       } else {
-//        tree.refresh(nodeToUpdate);
+        tree.refresh(nodeToUpdate);
       }
     }
   }
