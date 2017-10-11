@@ -138,11 +138,11 @@ public class ChangeVariableWithEvaluatingTest {
     debugPanel.waitDebugHighlightedText("result = \"Sorry, you failed. Try again later!\";");
     debugPanel.waitVariablesPanel();
     debugPanel.selectVarInVariablePanel("numGuessByUser=\"11\"");
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.CHANGE_VARIABLE);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.CHANGE_DEBUG_TREE_NODE);
     String secretNum = getValueOfSecretNumFromVarWidget().trim();
-    debugPanel.typeAndChangeVariable(secretNum);
+    debugPanel.typeAndSaveDialog(secretNum);
     debugPanel.selectVarInVariablePanel(String.format("numGuessByUser=%s", secretNum));
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.EVALUATE_EXPRESSIONS);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.EVALUATE_EXPRESSIONS);
     debugPanel.typeEvaluateExpression("numGuessByUser.length()");
     debugPanel.clickEvaluateBtn();
     debugPanel.waitExpectedResultInEvaluateExpression("1");
@@ -150,7 +150,7 @@ public class ChangeVariableWithEvaluatingTest {
     debugPanel.clickEvaluateBtn();
     debugPanel.waitExpectedResultInEvaluateExpression("false");
     debugPanel.clickCloseEvaluateBtn();
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.RESUME_BTN_ID);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.RESUME_BTN_ID);
     assertTrue(instToRequestThread.get().contains("Sorry, you failed. Try again later!"));
   }
 
@@ -166,7 +166,7 @@ public class ChangeVariableWithEvaluatingTest {
   }
 
   private String getValueOfSecretNumFromVarWidget() {
-    Pattern compile = Pattern.compile("secretNum=(.*)\n");
+    Pattern compile = Pattern.compile("secretNum=(.*)(\n)?");
     Matcher matcher = compile.matcher(debugPanel.getVariables());
     return matcher.find() ? matcher.group(1) : null;
   }

@@ -134,7 +134,7 @@ public class PhpProjectDebuggingTest {
     debugPanel.waitTextInVariablesPanel("$_GET=array [0]");
 
     // when
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.RESUME_BTN_ID);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.RESUME_BTN_ID);
 
     // then
     editor.waitTabFileWithSavedStatus("lib.php");
@@ -143,7 +143,7 @@ public class PhpProjectDebuggingTest {
     debugPanel.waitTextInVariablesPanel("$name=\"man\"");
 
     // when
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.STEP_OUT);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.STEP_OUT);
 
     //then
     editor.waitTabFileWithSavedStatus("index.php");
@@ -188,7 +188,7 @@ public class PhpProjectDebuggingTest {
     debugPanel.waitTextInVariablesPanel("$name=\"man\"");
 
     // when
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.STEP_OUT);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.STEP_OUT);
 
     //then
     editor.waitTabFileWithSavedStatus("index.php");

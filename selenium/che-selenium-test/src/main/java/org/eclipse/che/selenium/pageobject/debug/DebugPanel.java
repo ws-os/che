@@ -65,26 +65,28 @@ public class DebugPanel {
     String FRAMES_LIST_ID = "gwt-debug-debugger-frames-list";
     String THREADS_LIST_ID = "gwt-debug-debugger-threads-list";
     String VARIABLES_PANEL_ID = "gwt-debug-debugger-variablesPanel";
-    String VARIABLE_PANEL_SELECT_VAL =
-        "//div[@id='gwt-debug-debugger-variablesPanel']//span[text()='%s']";
+    String VARIABLES_TREE_ID = "gwt-debug-debugger-tree";
+    String VARIABLE_PANEL_SELECT_VAL = "//div[@id='" + VARIABLES_TREE_ID + "']//div[text()='%s']";
   }
 
-  interface LocatorsChangeVariable {
-    String CHANGE_VARIABLE_BTN = "//button[text()='Change']";
-    String CANCEL_BTN = "//button[text()='Cancel']";
-    String TEXTAREA =
-        "//div[text()='Enter a new value for ']/parent::div/following-sibling::div/textarea";
+  private interface LocatorsTextAreaDialogWindow {
+    String AGREE_BUTTON = "debugger-change-value-agree-btn";
+    String CANCEL_BTN = "debugger-change-value-cancel-btn";
+    String TEXTAREA = "gwt-debug-text-area-dialog";
   }
 
-  public interface DebuggerButtonsPanel {
+  public interface DebuggerActionButtons {
     String RESUME_BTN_ID = "gwt-debug-ActionButton/resumeExecution-true";
     String STEP_INTO = "gwt-debug-ActionButton/stepInto-true";
     String STEP_OVER = "gwt-debug-ActionButton/stepOver-true";
     String STEP_OUT = "gwt-debug-ActionButton/stepOut-true";
     String BTN_DISCONNECT = "gwt-debug-ActionButton/disconnectDebug-true";
     String REMOVE_ALL_BREAKPOINTS = "gwt-debug-ActionButton/null-true";
-    String CHANGE_VARIABLE = "gwt-debug-ActionButton/changeVariableValue-true";
     String EVALUATE_EXPRESSIONS = "gwt-debug-ActionButton/evaluateExpression-true";
+
+    String CHANGE_DEBUG_TREE_NODE = "gwt-debug-ActionButton/changeDebugNode-true";
+    String ADD_WATCH_EXPRESSION = "gwt-debug-ActionButton/addWatchExpression-true";
+    String REMOVE_WATCH_EXPRESSION = "gwt-debug-ActionButton/removeWatchExpression-true";
   }
 
   @FindBy(id = Locators.DEBUGGER_BREAKPOINTS_PANEL_ID)
@@ -96,14 +98,14 @@ public class DebugPanel {
   @FindBy(id = Locators.VARIABLES_PANEL_ID)
   WebElement variablesPanel;
 
-  @FindBy(xpath = LocatorsChangeVariable.TEXTAREA)
-  WebElement changeVariableTextAreaForm;
+  @FindBy(id = LocatorsTextAreaDialogWindow.TEXTAREA)
+  WebElement textAreaForm;
 
-  @FindBy(xpath = LocatorsChangeVariable.CHANGE_VARIABLE_BTN)
-  WebElement changeVariableBtn;
+  @FindBy(id = LocatorsTextAreaDialogWindow.AGREE_BUTTON)
+  WebElement saveDialogChangesBtn;
 
-  @FindBy(xpath = LocatorsChangeVariable.CANCEL_BTN)
-  WebElement cancelVariableBtn;
+  @FindBy(id = LocatorsTextAreaDialogWindow.CANCEL_BTN)
+  WebElement cancelDialogChangesBtn;
 
   @FindBy(id = Locators.FRAMES_LIST_ID)
   WebElement frames;
@@ -173,7 +175,7 @@ public class DebugPanel {
   /**
    * Click on specific button on Debugger panel
    *
-   * @param buttonIdLocator use interface DebuggerButtonsPanel for select buttonIdLocator
+   * @param buttonIdLocator use interface DebuggerActionButtons for select buttonIdLocator
    */
   public void clickOnButton(String buttonIdLocator) {
     loader.waitOnClosed();
@@ -185,8 +187,7 @@ public class DebugPanel {
 
   /** Wait appearance change variable form */
   public void waitAppearChangeVariableForm() {
-    new WebDriverWait(seleniumWebDriver, 20)
-        .until(ExpectedConditions.visibilityOf(changeVariableTextAreaForm));
+    new WebDriverWait(seleniumWebDriver, 20).until(ExpectedConditions.visibilityOf(textAreaForm));
   }
 
   /** Wait disappear variable form */
@@ -194,28 +195,28 @@ public class DebugPanel {
     new WebDriverWait(seleniumWebDriver, 20)
         .until(
             ExpectedConditions.invisibilityOfElementLocated(
-                By.xpath(LocatorsChangeVariable.TEXTAREA)));
+                By.xpath(LocatorsTextAreaDialogWindow.TEXTAREA)));
   }
 
   /**
-   * Clear the debugger variable field and type new value
+   * Clear text from dialog and type new value
    *
-   * @param value new variable value
+   * @param value new value
    */
-  public void typeNewValueInVariableForm(String value) {
+  public void typeNewValueInTheDialog(String value) {
     waitAppearChangeVariableForm();
-    changeVariableTextAreaForm.clear();
-    changeVariableTextAreaForm.sendKeys(value);
+    textAreaForm.clear();
+    textAreaForm.sendKeys(value);
   }
 
   /**
-   * Clear aria with variables, type new value and click change button
+   * Clear text area, type new value and click ("Apply" or "Change" or "Edit") button.
    *
-   * @param newVariable new value for variable
+   * @param newValue new value to save
    */
-  public void typeAndChangeVariable(String newVariable) {
-    typeNewValueInVariableForm(newVariable);
-    changeVariableBtn.click();
+  public void typeAndSaveDialog(String newValue) {
+    typeNewValueInTheDialog(newValue);
+    saveDialogChangesBtn.click();
     waitDisappearChangeVariableForm();
     loader.waitOnClosed();
   }
@@ -281,7 +282,7 @@ public class DebugPanel {
 
     try {
       return seleniumWebDriver
-          .findElement(By.id(DebuggerButtonsPanel.REMOVE_ALL_BREAKPOINTS))
+          .findElement(By.id(DebuggerActionButtons.REMOVE_ALL_BREAKPOINTS))
           .isDisplayed();
     } catch (Exception ex) {
       return false;
@@ -351,7 +352,7 @@ public class DebugPanel {
    * Debug panel.
    */
   public void removeAllBreakpoints() {
-    clickOnButton(DebugPanel.DebuggerButtonsPanel.REMOVE_ALL_BREAKPOINTS);
+    clickOnButton(DebuggerActionButtons.REMOVE_ALL_BREAKPOINTS);
     waitWhileAllBreakPointsOnEditorPanelDisapper();
     waitBreakPointsPanelIsEmpty();
   }
@@ -373,9 +374,9 @@ public class DebugPanel {
       } catch (WebDriverException ex) {
         LOG.error(ex.getLocalizedMessage(), ex);
         seleniumWebDriver.navigate().refresh();
-        clickOnButton(DebugPanel.DebuggerButtonsPanel.REMOVE_ALL_BREAKPOINTS);
+        clickOnButton(DebuggerActionButtons.REMOVE_ALL_BREAKPOINTS);
       }
-      clickOnButton(DebugPanel.DebuggerButtonsPanel.BTN_DISCONNECT);
+      clickOnButton(DebuggerActionButtons.BTN_DISCONNECT);
     }
 
     try {
