@@ -35,6 +35,7 @@ import org.eclipse.che.ide.ui.smartTree.event.StoreRemoveEvent;
 import org.eclipse.che.ide.ui.smartTree.event.StoreSortEvent;
 import org.eclipse.che.ide.ui.smartTree.event.StoreUpdateEvent;
 import org.eclipse.che.ide.ui.smartTree.handler.GroupingHandlerRegistration;
+import org.eclipse.che.ide.util.loging.Log;
 
 /**
  * Hierarchical type storage. Based on Parent-Child relationship, which is uses internally by tree.
@@ -695,6 +696,7 @@ public class NodeStorage implements StoreHandlers.HasStoreHandlers {
 
   public NodeDescriptor wrap(Node node) {
     NodeDescriptor nodeDescriptor = new NodeDescriptor(this, node);
+    Log.info(getClass(), "id: " + getKeyProvider().getKey(node));
     idToNodeMap.put(getKeyProvider().getKey(node), nodeDescriptor);
     return nodeDescriptor;
   }

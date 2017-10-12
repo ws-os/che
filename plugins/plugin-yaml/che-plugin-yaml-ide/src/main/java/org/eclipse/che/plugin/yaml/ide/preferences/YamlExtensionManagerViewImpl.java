@@ -58,9 +58,9 @@ public class YamlExtensionManagerViewImpl extends Composite implements YamlExten
 
   @Inject
   protected YamlExtensionManagerViewImpl(CellTableResources res, YamlLocalizationConstant local) {
-    initYamlExtensionTable(res);
-    initWidget(uiBinder.createAndBindUi(this));
-    this.local = local;
+      this.local = local;
+      initYamlExtensionTable(res);
+      initWidget(uiBinder.createAndBindUi(this));
   }
 
   /**

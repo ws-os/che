@@ -20,6 +20,7 @@ import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.ui.smartTree.UniqueKeyProvider;
+import org.eclipse.che.ide.util.loging.Log;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 

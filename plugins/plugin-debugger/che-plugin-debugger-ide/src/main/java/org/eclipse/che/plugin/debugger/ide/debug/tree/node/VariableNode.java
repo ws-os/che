@@ -12,15 +12,19 @@ package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
 import static java.util.Collections.emptyList;
 
+import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
+import org.eclipse.che.api.promises.client.callback.AsyncPromiseHelper;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
+import org.eclipse.che.ide.util.loging.Log;
 
 public class VariableNode extends AbstractDebuggerNode<Variable> {
 
@@ -35,22 +39,26 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
     this.promiseProvider = promiseProvider;
     this.nodeFactory = nodeFactory;
     this.data = data;
-    updateChildren();
+    Log.info(getClass(), "created node: " + data);
+//    updateChildren();
   }
 
-  private void updateChildren() {
-    children = data.getValue() != null
-            ? data.getValue()
-            .getVariables()
-            .stream()
-            .map(nodeFactory::createVariableNode)
-            .collect(Collectors.toList())
-            : emptyList();
-  }
+//  private void updateChildren() {
+//    children = ;
+//  }
 
   @Override
   protected Promise<List<Node>> getChildrenImpl() {
-    return promiseProvider.resolve(children);
+    return AsyncPromiseHelper.createFromAsyncRequest(callback ->
+    {
+      callback.onSuccess(data.getValue() != null
+              ? data.getValue()
+              .getVariables()
+              .stream()
+              .map(nodeFactory::createVariableNode)
+              .collect(Collectors.toList())
+              : emptyList());
+  });
   }
 
   @Override
@@ -65,8 +73,8 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
 
   @Override
   public void updatePresentation(NodePresentation presentation) {
-    String content = data.getName() + "=" + data.getValue().getString();
-    presentation.setPresentableText(content);
+//    String content = data.getName() + "=" + data.getValue().getString();
+    presentation.setPresentableText(data.getName());
   }
 
   @Override
@@ -77,6 +85,19 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
   @Override
   public void setData(Variable data) {
     this.data = data;
-    updateChildren();
+//    updateChildren();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    VariableNode node = (VariableNode) o;
+    return Objects.equals(data, node.data);
+  }
+
+  @Override
+  public int hashCode() {
+    return Joiner.on("/").join(data.getVariablePath().getPath()).hashCode();
   }
 }

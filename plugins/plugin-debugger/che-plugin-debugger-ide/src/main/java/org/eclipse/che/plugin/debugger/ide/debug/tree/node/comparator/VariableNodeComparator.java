@@ -11,6 +11,9 @@
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node.comparator;
 
 import java.util.Comparator;
+
+import com.google.common.base.Joiner;
+import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 
@@ -19,11 +22,18 @@ public class VariableNodeComparator implements Comparator<Node> {
   @Override
   public int compare(Node o1, Node o2) {
     if (o1 instanceof VariableNode && o2 instanceof VariableNode) {
-      return ((VariableNode) o1)
-          .getData()
-          .getName()
-          .compareTo(((VariableNode) o2).getData().getName());
+      return getPath(((VariableNode) o1)
+              .getData()).compareTo(getPath(((VariableNode) o2)
+              .getData()));
+//      return ((VariableNode) o1)
+//          .getData()
+//          .getName()
+//          .compareTo(((VariableNode) o2).getData().getName());
     }
     return 0;
+  }
+
+  private String getPath(Variable variable) {
+    return Joiner.on("/").join(variable.getVariablePath().getPath());
   }
 }

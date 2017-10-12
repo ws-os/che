@@ -16,7 +16,7 @@ import org.eclipse.che.api.debug.shared.model.Variable;
 
 public interface DebuggerNodeFactory {
 
-  VariableNode createVariableNode(@Assisted Variable variable);
+  VariableNode createVariableNode(@Assisted Variable data);
 
   WatchExpressionNode createExpressionNode(@Assisted Expression expression);
 }

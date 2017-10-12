@@ -34,6 +34,7 @@ import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
+import org.eclipse.che.api.debug.shared.model.impl.VariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
@@ -159,8 +160,8 @@ public class DebuggerPresenter extends BasePresenter
       promise
           .then(
               value -> {
-                MutableVariable updatedVariable = new MutableVariableImpl(variable);
-                updatedVariable.setValue(value);
+                VariableImpl updatedVariable = new VariableImpl(variable.getValue(), variable.getVariablePath());
+//                updatedVariable.setValue(value);
                 view.updateVariable(updatedVariable);
                 //view.expandVariable(updatedVariable);
               })
@@ -260,11 +261,11 @@ public class DebuggerPresenter extends BasePresenter
                         && frameIndex == view.getSelectedFrameIndex())
                     || view.getSelectedThreadId() == -1) {
 
-                  variables = new LinkedList<>();
+                  variables = new ArrayList<>();
                   variables.addAll(stackFrameDump.getFields());
                   variables.addAll(stackFrameDump.getVariables());
                   view.setVariables(variables);
-                  setWatchExpressions(threadId, frameIndex);
+//                  setWatchExpressions(threadId, frameIndex);
                 }
               })
           .catchError(

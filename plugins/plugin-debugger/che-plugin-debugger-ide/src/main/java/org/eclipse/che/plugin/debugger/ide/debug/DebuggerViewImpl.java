@@ -13,6 +13,7 @@ package org.eclipse.che.plugin.debugger.ide.debug;
 import static org.eclipse.che.ide.ui.smartTree.SelectionModel.Mode.SINGLE;
 import static org.eclipse.che.ide.ui.smartTree.SortDir.ASC;
 
+import com.google.common.base.Predicates;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -28,15 +29,20 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import elemental.dom.Element;
 import elemental.html.TableElement;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
+
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
 import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.impl.VariableImpl;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.Resources;
 import org.eclipse.che.ide.api.data.tree.Node;
@@ -66,291 +72,317 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.key.DebugNodeUniqueKe
  */
 @Singleton
 public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
-    implements DebuggerView {
+        implements DebuggerView {
 
-  interface DebuggerViewImplUiBinder extends UiBinder<Widget, DebuggerViewImpl> {}
-
-  @UiField Label vmName;
-  @UiField Label executionPoint;
-  @UiField SimplePanel toolbarPanel;
-  @UiField SimplePanel variablesPanel;
-  @UiField ScrollPanel breakpointsPanel;
-  @UiField SimplePanel watchExpressionPanel;
-
-  @UiField(provided = true)
-  DebuggerLocalizationConstant locale;
-
-  @UiField(provided = true)
-  Resources coreRes;
-
-  @UiField(provided = true)
-  SplitLayoutPanel splitPanel = new SplitLayoutPanel(3);
-
-  @UiField ListBox threads;
-  @UiField ScrollPanel framesPanel;
-
-  private final SimpleList<Breakpoint> breakpoints;
-  private final SimpleList<StackFrameDump> frames;
-  private final DebuggerResources debuggerResources;
-  private final Tree tree;
-  private final DebuggerNodeFactory nodeFactory;
-  private final DebugNodeUniqueKeyProvider nodeKeyProvider;
-
-  @Inject
-  protected DebuggerViewImpl(
-      PartStackUIResources partStackUIResources,
-      DebuggerResources resources,
-      DebuggerLocalizationConstant locale,
-      Resources coreRes,
-      DebuggerViewImplUiBinder uiBinder,
-      DebuggerNodeFactory nodeFactory,
-      DebugNodeUniqueKeyProvider nodeKeyProvider) {
-    super(partStackUIResources);
-
-    this.locale = locale;
-    this.debuggerResources = resources;
-    this.coreRes = coreRes;
-    this.nodeKeyProvider = nodeKeyProvider;
-
-    setContentWidget(uiBinder.createAndBindUi(this));
-
-    this.breakpoints = createBreakpointList();
-    this.breakpointsPanel.add(breakpoints);
-
-    this.frames = createFramesList();
-    this.framesPanel.add(frames);
-    this.nodeFactory = nodeFactory;
-
-    tree = new Tree(new NodeStorage(nodeKeyProvider), new NodeLoader());
-    tree.ensureDebugId("debugger-tree");
-
-    tree.getSelectionModel().setSelectionMode(SINGLE);
-
-    tree.addStyleName(resources.getCss().debugTreeContainer());
-
-    tree.addExpandHandler(
-        event -> {
-          Node expandedNode = event.getNode();
-            if (!tree.getNodeStorage().hasChildren(expandedNode) && expandedNode instanceof VariableNode) {
-              delegate.onExpandVariable(((VariableNode) expandedNode).getData());
-            }
-        });
-
-    tree.getNodeStorage()
-        .addSortInfo(new NodeStorage.StoreSortInfo(new DebugNodeTypeComparator(), ASC));
-    tree.getNodeStorage()
-        .addSortInfo(new NodeStorage.StoreSortInfo(new VariableNodeComparator(), ASC));
-
-    this.variablesPanel.add(tree);
-    minimizeButton.ensureDebugId("debugger-minimizeBut");
-
-    watchExpressionPanel.addStyleName(resources.getCss().watchExpressionsPanel());
-  }
-
-  @Override
-  public void setExecutionPoint(@Nullable Location location) {
-    StringBuilder labelText = new StringBuilder();
-    if (location != null) {
-      labelText
-          .append("{")
-          .append(Path.valueOf(location.getTarget()).lastSegment())
-          .append(":")
-          .append(location.getLineNumber())
-          .append("} ");
+    interface DebuggerViewImplUiBinder extends UiBinder<Widget, DebuggerViewImpl> {
     }
-    executionPoint.getElement().addClassName(coreRes.coreCss().defaultFont());
-    executionPoint.setText(labelText.toString());
-  }
 
-  @Override
-  public void setVariables(@NotNull List<? extends Variable> variables) {
-    tree.getNodeStorage().clear();
-    for (Variable variable : variables) {
-      VariableNode node = nodeFactory.createVariableNode(variable);
-      tree.getNodeStorage().add(node);
+    @UiField
+    Label vmName;
+    @UiField
+    Label executionPoint;
+    @UiField
+    SimplePanel toolbarPanel;
+//    @UiField
+//    SimplePanel variablesPanel;
+    @UiField
+    ScrollPanel breakpointsPanel;
+    @UiField
+    SimplePanel watchExpressionPanel;
+
+    @UiField(provided = true)
+    DebuggerLocalizationConstant locale;
+
+    @UiField(provided = true)
+    Resources coreRes;
+
+    @UiField(provided = true)
+    SplitLayoutPanel splitPanel = new SplitLayoutPanel(3);
+
+    @UiField
+    ListBox threads;
+    @UiField
+    ScrollPanel framesPanel;
+
+    private final SimpleList<Breakpoint> breakpoints;
+    private final SimpleList<StackFrameDump> frames;
+    private final DebuggerResources debuggerResources;
+    @UiField(provided = true)
+    Tree tree;
+    private final DebuggerNodeFactory nodeFactory;
+    private final DebugNodeUniqueKeyProvider nodeKeyProvider;
+
+    @Inject
+    protected DebuggerViewImpl(
+            PartStackUIResources partStackUIResources,
+            DebuggerResources resources,
+            DebuggerLocalizationConstant locale,
+            Resources coreRes,
+            DebuggerViewImplUiBinder uiBinder,
+            DebuggerNodeFactory nodeFactory,
+            DebugNodeUniqueKeyProvider nodeKeyProvider) {
+        super(partStackUIResources);
+
+        this.locale = locale;
+        this.debuggerResources = resources;
+        this.coreRes = coreRes;
+        this.nodeKeyProvider = nodeKeyProvider;
+
+        tree = new Tree(new NodeStorage(nodeKeyProvider), new NodeLoader());
+        setContentWidget(uiBinder.createAndBindUi(this));
+
+        this.breakpoints = createBreakpointList();
+        this.breakpointsPanel.add(breakpoints);
+
+        this.frames = createFramesList();
+        this.framesPanel.add(frames);
+        this.nodeFactory = nodeFactory;
+
+        tree.ensureDebugId("debugger-tree");
+
+        tree.getSelectionModel().setSelectionMode(SINGLE);
+        tree.setAutoSelect(true);
+
+        tree.addStyleName(resources.getCss().debugTreeContainer());
+
+//        tree.addExpandHandler(
+//                event -> {
+//                    Node expandedNode = event.getNode();
+//                    if (!tree.getNodeStorage().hasChildren(expandedNode) && expandedNode instanceof VariableNode) {
+//                        delegate.onExpandVariable(((VariableNode) expandedNode).getData());
+//                    }
+//                });
+
+//    tree.getNodeStorage()
+//        .addSortInfo(new NodeStorage.StoreSortInfo(new DebugNodeTypeComparator(), ASC));
+        tree.getNodeStorage()
+                .addSortInfo(new NodeStorage.StoreSortInfo(new VariableNodeComparator(), ASC));
+
+//        this.variablesPanel.add(tree);
+        minimizeButton.ensureDebugId("debugger-minimizeBut");
+
+        watchExpressionPanel.addStyleName(resources.getCss().watchExpressionsPanel());
     }
-  }
 
-  //@Override
+    @Override
+    public void setExecutionPoint(@Nullable Location location) {
+        StringBuilder labelText = new StringBuilder();
+        if (location != null) {
+            labelText
+                    .append("{")
+                    .append(Path.valueOf(location.getTarget()).lastSegment())
+                    .append(":")
+                    .append(location.getLineNumber())
+                    .append("} ");
+        }
+        executionPoint.getElement().addClassName(coreRes.coreCss().defaultFont());
+        executionPoint.setText(labelText.toString());
+    }
+
+    @Override
+    public void setVariables(@NotNull List<Variable> variables) {
+        tree.getNodeStorage().clear();
+        variables.
+                stream()
+                .map(variable ->
+                        nodeFactory.createVariableNode(
+                                new VariableImpl(
+                                        variable.getType(),
+                                        variable.getName(),
+                                        null,
+                                        variable.isPrimitive(),
+                                        variable.getVariablePath()))).forEach(node -> tree.getNodeStorage().add(node));
+//        tree.getNodeStorage().add(nodeFactory.createVariableNode(new VariableImpl("type1", "name1", null, false, null)));
+//        tree.getNodeStorage().add(nodeFactory.createVariableNode(new VariableImpl("type2", "name2", null, false, null)));
+//        tree.getNodeStorage().add(nodeFactory.createVariableNode(new VariableImpl("type3", "name3", null, false, null)));
+//    for (Variable variable : variables) {
+//      VariableNode node = nodeFactory.createVariableNode(variable);
+//      tree.getNodeStorage().add(node);
+//    }
+    }
+
+    //@Override
 //  public void expandVariable(Variable variable) {
 //
 //  }
 
-  @Override
-  public void updateVariable(Variable variable) {
-    String key = nodeKeyProvider.evaluateKey(variable);
-    Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
-    if (nodeToUpdate != null && nodeToUpdate instanceof VariableNode) {
-      VariableNode variableNode = ((VariableNode) nodeToUpdate);
-      variableNode.setData(variable);
-      tree.getNodeStorage().update(variableNode);
-
-      if (tree.isExpanded(nodeToUpdate) && variable.getValue().getVariables().size() > 0) {
-        tree.getNodeLoader().loadChildren(variableNode);
-      } else {
-        tree.refresh(nodeToUpdate);
-      }
+    @Override
+    public void updateVariable(Variable variable) {
+//        String key = nodeKeyProvider.evaluateKey(variable);
+//        Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
+//        if (nodeToUpdate != null && nodeToUpdate instanceof VariableNode) {
+//            VariableNode variableNode = ((VariableNode) nodeToUpdate);
+//            variableNode.setData(variable);
+//            tree.getNodeStorage().update(variableNode);
+//
+//            if (tree.isExpanded(nodeToUpdate) && variable.getValue().getVariables().size() > 0) {
+//                tree.getNodeLoader().loadChildren(variableNode);
+//            } else {
+//                tree.refresh(nodeToUpdate);
+//            }
+//        }
     }
-  }
 
-  @Override
-  public void addExpression(Expression expression) {
-    WatchExpressionNode node = nodeFactory.createExpressionNode(expression);
-    tree.getNodeStorage().add(node);
-  }
-
-  @Override
-  public void updateExpression(Expression expression) {
-    String key = nodeKeyProvider.evaluateKey(expression);
-    Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
-    if (nodeToUpdate != null && nodeToUpdate instanceof WatchExpressionNode) {
-      WatchExpressionNode expNode = ((WatchExpressionNode) nodeToUpdate);
-      expNode.setData(expression);
-      tree.getNodeStorage().update(nodeToUpdate);
-      tree.refresh(nodeToUpdate);
+    @Override
+    public void addExpression(Expression expression) {
+//        WatchExpressionNode node = nodeFactory.createExpressionNode(expression);
+//        tree.getNodeStorage().add(node);
     }
-  }
 
-  @Override
-  public void removeExpression(Expression expression) {
-    String key = nodeKeyProvider.evaluateKey(expression);
-    Node nodeToRemove = tree.getNodeStorage().findNodeWithKey(key);
-    if (nodeToRemove != null) {
-      tree.getNodeStorage().remove(nodeToRemove);
+    @Override
+    public void updateExpression(Expression expression) {
+//        String key = nodeKeyProvider.evaluateKey(expression);
+//        Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
+//        if (nodeToUpdate != null && nodeToUpdate instanceof WatchExpressionNode) {
+//            WatchExpressionNode expNode = ((WatchExpressionNode) nodeToUpdate);
+//            expNode.setData(expression);
+//            tree.getNodeStorage().update(nodeToUpdate);
+//            tree.refresh(nodeToUpdate);
+//        }
     }
-  }
 
-  @Override
-  public void setBreakpoints(@NotNull List<Breakpoint> breakpoints) {
-    this.breakpoints.render(breakpoints);
-  }
-
-  @Override
-  public void setThreadDump(List<? extends ThreadState> threadDump, long threadIdToSelect) {
-    threads.clear();
-
-    for (int i = 0; i < threadDump.size(); i++) {
-      ThreadState ts = threadDump.get(i);
-
-      StringBuilder title = new StringBuilder();
-      title.append("\"");
-      title.append(ts.getName());
-      title.append("\"@");
-      title.append(ts.getId());
-      title.append(" in group \"");
-      title.append(ts.getGroupName());
-      title.append("\": ");
-      title.append(ts.getStatus());
-
-      threads.addItem(title.toString(), String.valueOf(ts.getId()));
-      if (ts.getId() == threadIdToSelect) {
-        threads.setSelectedIndex(i);
-      }
+    @Override
+    public void removeExpression(Expression expression) {
+//        String key = nodeKeyProvider.evaluateKey(expression);
+//        Node nodeToRemove = tree.getNodeStorage().findNodeWithKey(key);
+//        if (nodeToRemove != null) {
+//            tree.getNodeStorage().remove(nodeToRemove);
+//        }
     }
-  }
 
-  @Override
-  public void setFrames(List<? extends StackFrameDump> stackFrameDumps) {
-    frames.render(new ArrayList<>(stackFrameDumps));
-    if (!stackFrameDumps.isEmpty()) {
-      frames.getSelectionModel().setSelectedItem(0);
+    @Override
+    public void setBreakpoints(@NotNull List<Breakpoint> breakpoints) {
+        this.breakpoints.render(breakpoints);
     }
-  }
 
-  @Override
-  public void setVMName(@Nullable String name) {
-    vmName.setText(name == null ? "" : name);
-  }
+    @Override
+    public void setThreadDump(List<? extends ThreadState> threadDump, long threadIdToSelect) {
+        threads.clear();
 
-  @Override
-  public Variable getSelectedVariable() {
-    Node selectedNode = getSelectedNode();
-    if (selectedNode instanceof VariableNode) {
-      return ((VariableNode) selectedNode).getData();
+        for (int i = 0; i < threadDump.size(); i++) {
+            ThreadState ts = threadDump.get(i);
+
+            StringBuilder title = new StringBuilder();
+            title.append("\"");
+            title.append(ts.getName());
+            title.append("\"@");
+            title.append(ts.getId());
+            title.append(" in group \"");
+            title.append(ts.getGroupName());
+            title.append("\": ");
+            title.append(ts.getStatus());
+
+            threads.addItem(title.toString(), String.valueOf(ts.getId()));
+            if (ts.getId() == threadIdToSelect) {
+                threads.setSelectedIndex(i);
+            }
+        }
     }
-    return null;
-  }
 
-  @Override
-  public Expression getSelectedExpression() {
-    Node selectedNode = getSelectedNode();
-    if (selectedNode instanceof WatchExpressionNode) {
-      return ((WatchExpressionNode) selectedNode).getData();
+    @Override
+    public void setFrames(List<? extends StackFrameDump> stackFrameDumps) {
+        frames.render(new ArrayList<>(stackFrameDumps));
+        if (!stackFrameDumps.isEmpty()) {
+            frames.getSelectionModel().setSelectedItem(0);
+        }
     }
-    return null;
-  }
 
-  private Node getSelectedNode() {
-    if (tree.getSelectionModel().getSelectedNodes().isEmpty()) {
-      return null;
+    @Override
+    public void setVMName(@Nullable String name) {
+        vmName.setText(name == null ? "" : name);
     }
-    return tree.getSelectionModel().getSelectedNodes().get(0);
-  }
 
-  @Override
-  public AcceptsOneWidget getDebuggerToolbarPanel() {
-    return toolbarPanel;
-  }
+    @Override
+    public Variable getSelectedVariable() {
+        Node selectedNode = getSelectedNode();
+        if (selectedNode instanceof VariableNode) {
+            return ((VariableNode) selectedNode).getData();
+        }
+        return null;
+    }
 
-  @Override
-  public AcceptsOneWidget getDebuggerWatchToolbarPanel() {
-    return watchExpressionPanel;
-  }
+    @Override
+    public Expression getSelectedExpression() {
+        Node selectedNode = getSelectedNode();
+        if (selectedNode instanceof WatchExpressionNode) {
+            return ((WatchExpressionNode) selectedNode).getData();
+        }
+        return null;
+    }
 
-  @Override
-  public long getSelectedThreadId() {
-    String selectedValue = threads.getSelectedValue();
-    return selectedValue == null ? -1 : Integer.parseInt(selectedValue);
-  }
+    private Node getSelectedNode() {
+//        if (tree.getSelectionModel().getSelectedNodes().isEmpty()) {
+            return null;
+//        }
+//        return tree.getSelectionModel().getSelectedNodes().get(0);
+    }
 
-  @Override
-  public int getSelectedFrameIndex() {
-    return frames.getSelectionModel().getSelectedIndex();
-  }
+    @Override
+    public AcceptsOneWidget getDebuggerToolbarPanel() {
+        return toolbarPanel;
+    }
 
-  @UiHandler({"threads"})
-  void onThreadChanged(ChangeEvent event) {
-    delegate.onSelectedThread(Integer.parseInt(threads.getSelectedValue()));
-  }
+    @Override
+    public AcceptsOneWidget getDebuggerWatchToolbarPanel() {
+        return watchExpressionPanel;
+    }
 
-  private SimpleList<Breakpoint> createBreakpointList() {
-    TableElement breakPointsElement = Elements.createTableElement();
-    breakPointsElement.setAttribute("style", "width: 100%");
+    @Override
+    public long getSelectedThreadId() {
+        String selectedValue = threads.getSelectedValue();
+        return selectedValue == null ? -1 : Integer.parseInt(selectedValue);
+    }
 
-    SimpleList.ListEventDelegate<Breakpoint> breakpointListEventDelegate =
-        new SimpleList.ListEventDelegate<Breakpoint>() {
-          public void onListItemClicked(Element itemElement, Breakpoint itemData) {
-            breakpoints.getSelectionModel().setSelectedItem(itemData);
-          }
+    @Override
+    public int getSelectedFrameIndex() {
+        return frames.getSelectionModel().getSelectedIndex();
+    }
 
-          public void onListItemDoubleClicked(Element listItemBase, Breakpoint itemData) {}
-        };
+    @UiHandler({"threads"})
+    void onThreadChanged(ChangeEvent event) {
+        delegate.onSelectedThread(Integer.parseInt(threads.getSelectedValue()));
+    }
 
-    return SimpleList.create(
-        (SimpleList.View) breakPointsElement,
-        coreRes.defaultSimpleListCss(),
-        new BreakpointItemRender(debuggerResources),
-        breakpointListEventDelegate);
-  }
+    private SimpleList<Breakpoint> createBreakpointList() {
+        TableElement breakPointsElement = Elements.createTableElement();
+        breakPointsElement.setAttribute("style", "width: 100%");
 
-  private SimpleList<StackFrameDump> createFramesList() {
-    TableElement frameElement = Elements.createTableElement();
-    frameElement.setAttribute("style", "width: 100%");
+        SimpleList.ListEventDelegate<Breakpoint> breakpointListEventDelegate =
+                new SimpleList.ListEventDelegate<Breakpoint>() {
+                    public void onListItemClicked(Element itemElement, Breakpoint itemData) {
+                        breakpoints.getSelectionModel().setSelectedItem(itemData);
+                    }
 
-    SimpleList.ListEventDelegate<StackFrameDump> frameListEventDelegate =
-        new SimpleList.ListEventDelegate<StackFrameDump>() {
-          public void onListItemClicked(Element itemElement, StackFrameDump itemData) {
-            frames.getSelectionModel().setSelectedItem(itemData);
-            delegate.onSelectedFrame(frames.getSelectionModel().getSelectedIndex());
-          }
+                    public void onListItemDoubleClicked(Element listItemBase, Breakpoint itemData) {
+                    }
+                };
 
-          public void onListItemDoubleClicked(Element listItemBase, StackFrameDump itemData) {}
-        };
+        return SimpleList.create(
+                (SimpleList.View) breakPointsElement,
+                coreRes.defaultSimpleListCss(),
+                new BreakpointItemRender(debuggerResources),
+                breakpointListEventDelegate);
+    }
 
-    return SimpleList.create(
-        (SimpleList.View) frameElement,
-        coreRes.defaultSimpleListCss(),
-        new FrameItemRender(),
-        frameListEventDelegate);
-  }
+    private SimpleList<StackFrameDump> createFramesList() {
+        TableElement frameElement = Elements.createTableElement();
+        frameElement.setAttribute("style", "width: 100%");
+
+        SimpleList.ListEventDelegate<StackFrameDump> frameListEventDelegate =
+                new SimpleList.ListEventDelegate<StackFrameDump>() {
+                    public void onListItemClicked(Element itemElement, StackFrameDump itemData) {
+                        frames.getSelectionModel().setSelectedItem(itemData);
+                        delegate.onSelectedFrame(frames.getSelectionModel().getSelectedIndex());
+                    }
+
+                    public void onListItemDoubleClicked(Element listItemBase, StackFrameDump itemData) {
+                    }
+                };
+
+        return SimpleList.create(
+                (SimpleList.View) frameElement,
+                coreRes.defaultSimpleListCss(),
+                new FrameItemRender(),
+                frameListEventDelegate);
+    }
 }

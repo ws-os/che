@@ -25,10 +25,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
-import org.eclipse.che.api.debug.shared.model.Location;
-import org.eclipse.che.api.debug.shared.model.MutableVariable;
-import org.eclipse.che.api.debug.shared.model.StackFrameDump;
-import org.eclipse.che.api.debug.shared.model.ThreadState;
+import org.eclipse.che.api.debug.shared.model.*;
 import org.eclipse.che.api.promises.client.Operation;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
@@ -177,7 +174,7 @@ public class DebuggerPresenterTest extends BaseTest {
 
     verify(promiseStackFrame).then(operationStackFrameCaptor.capture());
     operationStackFrameCaptor.getValue().apply(stackFrame);
-    verify(view).setVariables(stackFrame.getVariables());
+    verify(view).setVariables((List<Variable>)stackFrame.getVariables());
   }
 
   @Test

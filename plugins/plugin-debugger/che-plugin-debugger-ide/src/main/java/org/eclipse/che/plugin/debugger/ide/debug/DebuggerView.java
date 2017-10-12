@@ -73,7 +73,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
    *
    * @param variables available variables
    */
-  void setVariables(@NotNull List<? extends Variable> variables);
+  void setVariables(@NotNull List<Variable> variables);
 
   /** Updates variable in the list */
   void updateVariable(Variable variable);
