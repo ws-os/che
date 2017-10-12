@@ -161,7 +161,8 @@ public class DebuggerPresenter extends BasePresenter
               value -> {
                 MutableVariable updatedVariable = new MutableVariableImpl(variable);
                 updatedVariable.setValue(value);
-                view.expandVariable(updatedVariable);
+                view.updateVariable(updatedVariable);
+                //view.expandVariable(updatedVariable);
               })
           .catchError(
               error -> {

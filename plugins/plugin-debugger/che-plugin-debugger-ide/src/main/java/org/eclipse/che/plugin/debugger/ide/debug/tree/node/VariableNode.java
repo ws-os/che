@@ -35,6 +35,17 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
     this.promiseProvider = promiseProvider;
     this.nodeFactory = nodeFactory;
     this.data = data;
+    updateChildren();
+  }
+
+  private void updateChildren() {
+    children = data.getValue() != null
+            ? data.getValue()
+            .getVariables()
+            .stream()
+            .map(nodeFactory::createVariableNode)
+            .collect(Collectors.toList())
+            : emptyList();
   }
 
   @Override
@@ -66,5 +77,6 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
   @Override
   public void setData(Variable data) {
     this.data = data;
+    updateChildren();
   }
 }
