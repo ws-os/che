@@ -342,7 +342,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <!-- set-up plugin for compilation -->
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
                 <executions>
@@ -354,6 +353,10 @@
                 </executions>
                 <configuration>
                     <moduleName>org.eclipse.che.ide.IDE</moduleName>
+                    <jvmArgs>
+                        <arg>${gwt.compiler.jvmArgs.Xss}</arg>
+                        <arg>${gwt.compiler.jvmArgs.Xmx}</arg>
+                    </jvmArgs>
                 </configuration>
             </plugin>
             <plugin>

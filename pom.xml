@@ -1481,45 +1481,6 @@
             <url>https://maven.codenvycorp.com/content/repositories/codenvy-public-snapshots/</url>
         </pluginRepository>
     </pluginRepositories>
-    <build>
-        <pluginManagement>
-            <!-- TODO: move to maven-parent-pom -->
-            <plugins>
-                <plugin>
-                    <groupId>net.ltgt.gwt.maven</groupId>
-                    <artifactId>gwt-maven-plugin</artifactId>
-                    <version>1.0-rc-8</version>
-                    <configuration>
-                        <jvmArgs>
-                            <arg>-Xss512m</arg>
-                            <arg>-Xmx2048m</arg>
-                        </jvmArgs>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <!-- set-up plugin for SDM -->
-                <groupId>net.ltgt.gwt.maven</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <inherited>false</inherited>
-                <configuration>
-                    <!-- specify project explicitly till it hasn't gwt-app packaging -->
-                    <projects>assembly-ide-war</projects>
-                    <moduleName>org.eclipse.che.ide.IDE</moduleName>
-                    <!-- Include provided dependencies to the CodeServer's classpath.
-                     They are: gwt-dev and servlet-api in assembly-ide-war. -->
-                    <classpathScope>compile+runtime</classpathScope>
-                    <codeserverArgs>
-                        <arg>-noprecompile</arg>
-                        <!-- to avoid a lot of errors -->
-                        <arg>-noincremental</arg>
-                    </codeserverArgs>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <profiles>
         <!-- Profile for building Che faster by skipping unit tests, license checks and other enforcement features -->
         <profile>
