@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.html;
+package org.eclipse.che.plugin.web.client.html;
 
 import static java.util.Collections.singletonList;
 import static org.eclipse.che.ide.part.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
@@ -22,7 +22,7 @@ import org.eclipse.che.ide.api.app.AppContext;
 import org.eclipse.che.ide.api.resources.File;
 import org.eclipse.che.ide.api.resources.Resource;
 import org.eclipse.che.ide.util.browser.BrowserUtils;
-import org.eclipse.che.plugin.web.ide.WebLocalizationConstant;
+import org.eclipse.che.plugin.web.client.WebLocalizationConstant;
 
 /**
  * Action for previewing an HTML page.

@@ -8,33 +8,32 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.js.editor;
+package org.eclipse.che.plugin.web.client.html.editor;
 
 import com.google.inject.Inject;
 import java.util.Set;
 import javax.inject.Provider;
-import org.eclipse.che.plugin.web.ide.html.editor.AutoEditStrategyFactory;
 
 /**
- * Provider for JS Editor configuration.
+ * Guice Provider for HTML Editor configuration.
  *
  * @author Florent Benoit
  */
-public class JsEditorConfigurationProvider implements Provider<JsEditorConfiguration> {
+public class HTMLEditorConfigurationProvider implements Provider<HtmlEditorConfiguration> {
 
-  /** Auto Edit strategies */
+  /** Auto Edit strategies with HTML editor scope */
   @Inject(optional = true)
   private Set<AutoEditStrategyFactory> autoEditStrategyFactories;
 
   @Inject private DefaultCodeAssistProcessor chainedCodeAssistProcessor;
 
   /**
-   * Build a new instance of JS Editor configuration
+   * Build a new instance of HtmlEditor Configuration
    *
    * @return
    */
   @Override
-  public JsEditorConfiguration get() {
-    return new JsEditorConfiguration(autoEditStrategyFactories, chainedCodeAssistProcessor);
+  public HtmlEditorConfiguration get() {
+    return new HtmlEditorConfiguration(autoEditStrategyFactories, chainedCodeAssistProcessor);
   }
 }

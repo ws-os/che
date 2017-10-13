@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.inject;
+package org.eclipse.che.plugin.web.client.inject;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.inject.client.multibindings.GinMultibinder;
@@ -18,8 +18,8 @@ import com.google.inject.name.Named;
 import org.eclipse.che.ide.api.extension.ExtensionGinModule;
 import org.eclipse.che.ide.api.filetypes.FileType;
 import org.eclipse.che.ide.api.project.type.wizard.ProjectWizardRegistrar;
-import org.eclipse.che.plugin.web.ide.WebExtensionResource;
-import org.eclipse.che.plugin.web.ide.typescript.TSProjectWizardRegistrar;
+import org.eclipse.che.plugin.web.client.WebExtensionResource;
+import org.eclipse.che.plugin.web.client.typescript.TSProjectWizardRegistrar;
 
 /**
  * Adds custom binding for Editors.

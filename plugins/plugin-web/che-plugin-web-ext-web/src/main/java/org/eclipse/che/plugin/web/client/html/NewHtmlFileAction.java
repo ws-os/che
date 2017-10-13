@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.html;
+package org.eclipse.che.plugin.web.client.html;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -20,7 +20,7 @@ import org.eclipse.che.ide.api.editor.EditorAgent;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.newresource.AbstractNewResourceAction;
 import org.eclipse.che.ide.ui.dialogs.DialogFactory;
-import org.eclipse.che.plugin.web.ide.WebLocalizationConstant;
+import org.eclipse.che.plugin.web.client.WebLocalizationConstant;
 
 /**
  * Action to create new HTML file.

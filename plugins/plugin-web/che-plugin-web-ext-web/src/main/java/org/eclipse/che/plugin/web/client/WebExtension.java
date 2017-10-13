@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide;
+package org.eclipse.che.plugin.web.client;
 
 import static org.eclipse.che.ide.api.action.IdeActions.GROUP_ASSISTANT;
 import static org.eclipse.che.ide.api.action.IdeActions.GROUP_FILE_NEW;
@@ -25,13 +25,13 @@ import org.eclipse.che.ide.api.filetypes.FileType;
 import org.eclipse.che.ide.api.filetypes.FileTypeRegistry;
 import org.eclipse.che.ide.api.icon.Icon;
 import org.eclipse.che.ide.api.icon.IconRegistry;
-import org.eclipse.che.plugin.web.ide.css.NewCssFileAction;
-import org.eclipse.che.plugin.web.ide.css.NewLessFileAction;
-import org.eclipse.che.plugin.web.ide.html.NewHtmlFileAction;
-import org.eclipse.che.plugin.web.ide.html.PreviewHTMLAction;
-import org.eclipse.che.plugin.web.ide.html.editor.HtmlEditorProvider;
-import org.eclipse.che.plugin.web.ide.js.NewJavaScriptFileAction;
-import org.eclipse.che.plugin.web.ide.js.editor.JsEditorProvider;
+import org.eclipse.che.plugin.web.client.css.NewCssFileAction;
+import org.eclipse.che.plugin.web.client.css.NewLessFileAction;
+import org.eclipse.che.plugin.web.client.html.NewHtmlFileAction;
+import org.eclipse.che.plugin.web.client.html.PreviewHTMLAction;
+import org.eclipse.che.plugin.web.client.html.editor.HtmlEditorProvider;
+import org.eclipse.che.plugin.web.client.js.NewJavaScriptFileAction;
+import org.eclipse.che.plugin.web.client.js.editor.JsEditorProvider;
 
 /**
  * Extension add editing JavaScript, HTML, CSS css type support to the IDE Application. It provides

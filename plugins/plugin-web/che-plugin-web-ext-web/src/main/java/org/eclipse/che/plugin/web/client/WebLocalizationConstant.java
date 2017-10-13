@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide;
+package org.eclipse.che.plugin.web.client;
 
 import com.google.gwt.i18n.client.Messages;
 

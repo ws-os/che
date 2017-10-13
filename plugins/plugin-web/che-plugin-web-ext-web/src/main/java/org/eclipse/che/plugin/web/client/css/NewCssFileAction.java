@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.js;
+package org.eclipse.che.plugin.web.client.css;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -20,19 +20,20 @@ import org.eclipse.che.ide.api.editor.EditorAgent;
 import org.eclipse.che.ide.api.notification.NotificationManager;
 import org.eclipse.che.ide.newresource.AbstractNewResourceAction;
 import org.eclipse.che.ide.ui.dialogs.DialogFactory;
-import org.eclipse.che.plugin.web.ide.WebLocalizationConstant;
+import org.eclipse.che.plugin.web.client.WebLocalizationConstant;
 
 /**
- * Action to create new JavaScript file.
+ * Action to create new CSS file.
  *
  * @author Artem Zatsarynnyi
  * @author Vlad Zhukovskyi
  */
 @Singleton
-public class NewJavaScriptFileAction extends AbstractNewResourceAction {
+public class NewCssFileAction extends AbstractNewResourceAction {
+  private static final String DEFAULT_CONTENT = "@CHARSET \"UTF-8\";";
 
   @Inject
-  public NewJavaScriptFileAction(
+  public NewCssFileAction(
       WebLocalizationConstant localizationConstant,
       DialogFactory dialogFactory,
       CoreLocalizationConstant coreLocalizationConstant,
@@ -41,8 +42,8 @@ public class NewJavaScriptFileAction extends AbstractNewResourceAction {
       NotificationManager notificationManager,
       Provider<EditorAgent> editorAgentProvider) {
     super(
-        localizationConstant.newJavaScriptFileActionTitle(),
-        localizationConstant.newJavaScriptFileActionDescription(),
+        localizationConstant.newCssFileActionTitle(),
+        localizationConstant.newCssFileActionDescription(),
         null,
         dialogFactory,
         coreLocalizationConstant,
@@ -54,6 +55,11 @@ public class NewJavaScriptFileAction extends AbstractNewResourceAction {
 
   @Override
   protected String getExtension() {
-    return "js";
+    return "css";
+  }
+
+  @Override
+  protected String getDefaultContent() {
+    return DEFAULT_CONTENT;
   }
 }

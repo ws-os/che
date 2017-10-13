@@ -40,10 +40,17 @@
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-ide-ui</artifactId>
+            <type>gwt-lib</type>
         </dependency>
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-web-ext-shared</artifactId>
+        </dependency>
+        <!-- needed for including to GWT source path -->
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-web-ext-shared</artifactId>
+            <classifier>sources</classifier>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
@@ -85,6 +92,21 @@
                 <configuration>
                     <moduleName>org.eclipse.che.plugin.web.Web</moduleName>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies>
+                                <!-- needed for including to GWT source path -->
+                                <ignoredUnusedDeclaredDependency>org.eclipse.che.plugin:che-plugin-web-ext-shared</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

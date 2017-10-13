@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.js.editor;
+package org.eclipse.che.plugin.web.client.html.editor;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -16,7 +16,7 @@ import java.util.Set;
 import org.eclipse.che.ide.api.editor.codeassist.DefaultChainedCodeAssistProcessor;
 
 /**
- * Allows to chain code assist processor for a given content type. It will delegate to sub
+ * Allows to chain code assist processor for the default given content type. It will delegate to sub
  * processors.
  *
  * @author Florent Benoit
@@ -24,9 +24,9 @@ import org.eclipse.che.ide.api.editor.codeassist.DefaultChainedCodeAssistProcess
 @Singleton
 public class DefaultCodeAssistProcessor extends DefaultChainedCodeAssistProcessor {
 
-  /** Javascript code assist processors.(as it's optional it can't be in constructor) */
+  /** HTML code assist processors.(as it's optional it can't be in constructor) */
   @Inject(optional = true)
-  protected void injectProcessors(Set<JsCodeAssistProcessor> jsCodeAssistProcessors) {
-    setProcessors(jsCodeAssistProcessors);
+  protected void injectProcessors(Set<HTMLCodeAssistProcessor> htmlCodeAssistProcessors) {
+    setProcessors(htmlCodeAssistProcessors);
   }
 }

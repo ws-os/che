@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.html.editor;
+package org.eclipse.che.plugin.web.client.html.editor;
 
 import com.google.inject.Inject;
 import org.eclipse.che.ide.api.editor.EditorProvider;

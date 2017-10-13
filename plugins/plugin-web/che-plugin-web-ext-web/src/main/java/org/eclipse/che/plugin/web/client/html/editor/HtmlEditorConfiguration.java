@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.js.editor;
+package org.eclipse.che.plugin.web.client.html.editor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,16 +20,14 @@ import org.eclipse.che.ide.api.editor.changeintercept.TextChangeInterceptor;
 import org.eclipse.che.ide.api.editor.codeassist.CodeAssistProcessor;
 import org.eclipse.che.ide.api.editor.editorconfig.DefaultTextEditorConfiguration;
 import org.eclipse.che.ide.api.editor.partition.DocumentPartitioner;
-import org.eclipse.che.plugin.web.ide.html.editor.AutoEditStrategyFactory;
 
-/**
- * The JS type editor configuration.
- *
- * @author Evgen Vidolob
- */
-public class JsEditorConfiguration extends DefaultTextEditorConfiguration {
+/** The html type editor configuration. */
+public class HtmlEditorConfiguration extends DefaultTextEditorConfiguration {
 
+  /** Auto edit factories. */
   private Set<AutoEditStrategyFactory> autoEditStrategyFactories;
+
+  /** Chained processor. */
   private DefaultCodeAssistProcessor defaultProcessor;
 
   /**
@@ -37,7 +35,7 @@ public class JsEditorConfiguration extends DefaultTextEditorConfiguration {
    *
    * @param autoEditStrategyFactories the strategy factories
    */
-  public JsEditorConfiguration(
+  public HtmlEditorConfiguration(
       Set<AutoEditStrategyFactory> autoEditStrategyFactories,
       DefaultCodeAssistProcessor defaultProcessor) {
     this.autoEditStrategyFactories = autoEditStrategyFactories;

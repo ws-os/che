@@ -8,7 +8,7 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.web.ide.js.editor;
+package org.eclipse.che.plugin.web.client.js.editor;
 
 import org.eclipse.che.ide.api.editor.codeassist.CodeAssistProcessor;
 
