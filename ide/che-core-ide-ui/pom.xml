@@ -102,7 +102,7 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <extensions>true</extensions>
                 <configuration>
-                    <moduleName>org.eclipse.che.ide.ui.UI</moduleName>
+                    <moduleName>org.eclipse.che.ide.UI</moduleName>
                 </configuration>
             </plugin>
             <plugin>
