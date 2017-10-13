@@ -36,8 +36,8 @@
         <module>samples</module>
         <module>dashboard</module>
         <module>assembly</module>
-        <module>assembly-multiuser</module>
-        <module>selenium</module>
+        <!--<module>assembly-multiuser</module>-->
+        <!--<module>selenium</module>-->
     </modules>
     <scm>
         <connection>scm:git:git@github.com:eclipse/che.git</connection>
@@ -991,6 +991,7 @@
                 <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-help-ext-client</artifactId>
                 <version>${che.version}</version>
+                <type>gwt-lib</type>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
@@ -1046,6 +1047,7 @@
                 <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-keybinding-eclipse-ide</artifactId>
                 <version>${che.version}</version>
+                <type>gwt-lib</type>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
@@ -1292,6 +1294,7 @@
                 <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-web-ext-web</artifactId>
                 <version>${che.version}</version>
+                <type>gwt-lib</type>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
@@ -1481,16 +1484,44 @@
             <url>https://maven.codenvycorp.com/content/repositories/codenvy-public-snapshots/</url>
         </pluginRepository>
     </pluginRepositories>
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Configuration for launching GWT Super DevMode with gwt:codeserver -->
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <inherited>false</inherited>
+                <configuration>
+                    <projects>assembly-ide-war</projects>
+                    <!-- Include provided dependencies to the CodeServer's classpath.
+                     They are: gwt-dev and servlet-api in assembly-ide-war. -->
+                    <classpathScope>compile+runtime</classpathScope>
+                    <codeserverArgs>
+                        <arg>-noprecompile</arg>
+                        <arg>-noincremental</arg>
+                    </codeserverArgs>
+                    <jvmArgs>
+                        <arg>${gwt.compiler.jvmArgs.Xss}</arg>
+                        <arg>${gwt.compiler.jvmArgs.Xmx}</arg>
+                    </jvmArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <!-- Profile for building Che faster by skipping unit tests, license checks and other enforcement features -->
         <profile>
             <id>fast</id>
             <properties>
                 <findbugs.skip>true</findbugs.skip>
-                <gwt.compiler.localWorkers>2 -T 1C</gwt.compiler.localWorkers>
+                <enforcer.skip>true</enforcer.skip>
+                <gwt.draftCompile>true</gwt.draftCompile>
+                <gwt.localWorkers>1C</gwt.localWorkers>
+                <gwt.optimize>0</gwt.optimize>
                 <license.skip>true</license.skip>
                 <mdep.analyze.skip>true</mdep.analyze.skip>
                 <skipTests>true</skipTests>
+                <sort.skip>true</sort.skip>
             </properties>
         </profile>
     </profiles>

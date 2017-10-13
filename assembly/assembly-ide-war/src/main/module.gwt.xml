@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2012-2017 Red Hat, Inc.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+
+    Contributors:
+      Red Hat, Inc. - initial API and implementation
+
+-->
+<module>
+    <!--<inherits name="javax.validation.Validation"/>-->
+    <!--<inherits name="jsinterop.annotations.Annotations"/>-->
+    <inherits name="org.eclipse.che.Requirejs"/>
+    <inherits name="org.eclipse.che.api.auth.Auth"/>
+    <inherits name="org.eclipse.che.api.core.Core"/>
+    <inherits name="org.eclipse.che.api.core.model.Model"/>
+    <inherits name="org.eclipse.che.api.debug.Debug"/>
+    <inherits name="org.eclipse.che.api.factory.Factory"/>
+    <inherits name="org.eclipse.che.api.git.Git"/>
+    <!--<inherits name="org.eclipse.che.api.languageserver.LanguageServer"/>-->
+    <inherits name="org.eclipse.che.api.machine.Machine"/>
+    <inherits name="org.eclipse.che.api.project.Project"/>
+    <inherits name="org.eclipse.che.api.promises.Promises"/>
+    <inherits name="org.eclipse.che.api.ssh.Ssh"/>
+    <inherits name="org.eclipse.che.api.testing.Testing"/>
+    <inherits name="org.eclipse.che.api.user.User"/>
+    <inherits name="org.eclipse.che.api.workspace.Workspace"/>
+    <inherits name="org.eclipse.che.ide.Api"/>
+    <inherits name="org.eclipse.che.ide.Commons"/>
+    <inherits name="org.eclipse.che.ide.Core"/>
+    <inherits name="org.eclipse.che.ide.Util"/>
+    <inherits name="org.eclipse.che.ide.collections.Collections"/>
+    <inherits name="org.eclipse.che.ide.dto.DtoGen"/>
+    <inherits name="org.eclipse.che.ide.editor.orion.OrionEditor"/>
+    <!--<inherits name="org.eclipse.che.ide.ext.dashboard.Dashboard"/>-->
+    <inherits name="org.eclipse.che.ide.ext.git.Git"/>
+    <!--<inherits name="org.eclipse.che.ide.ext.gwt.GWT"/>-->
+    <!--<inherits name="org.eclipse.che.ide.ext.help.HelpAboutExtension"/>-->
+    <inherits name="org.eclipse.che.ide.ext.java.Java"/>
+    <!--<inherits name="org.eclipse.che.ide.ext.plugins.PluginsDevelopment"/>-->
+    <!--<inherits name="org.eclipse.che.ide.ext.ssh.MachineSsh"/>-->
+    <!--<inherits name="org.eclipse.che.ide.ext.web.Web"/>-->
+    <inherits name="org.eclipse.che.ide.logger.slf4j.Logging"/>
+    <inherits name="org.eclipse.che.ide.orion.OrionCompare"/>
+    <inherits name="org.eclipse.che.ide.runtime.Runtime"/>
+    <inherits name="org.eclipse.che.ide.ui.CodenvyUI"/>
+    <inherits name="org.eclipse.che.ide.useragents"/>
+    <inherits name="org.eclipse.che.lib.terminal.Terminal"/>
+    <inherits name="org.eclipse.che.orion.CheOrion"/>
+    <!--<inherits name="org.eclipse.che.plugin.activity.ActivityModule"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.composer.Composer"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.cpp.Cpp"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.csharp.CSharp"/>-->
+    <inherits name="org.eclipse.che.plugin.debugger.Debugger"/>
+    <!--<inherits name="org.eclipse.che.plugin.docker.client.dto.Dto"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.gdb.Gdb"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.github.GitHub"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.java.plain.PlainJava"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.jdb.JavaDebugger"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.keybinding.eclipse.EclipseKeyBinding"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.languageserver.LanguageServer"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.maven.Maven"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.nodejs.NodeJs"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.nodejsdbg.NodeJsDebugger"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.php.Php"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.product.info.ProductInfo"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.pullrequest.GithubPullRequest"/>-->
+    <!-- TODO: Some problems with DTO generation while gwt:codeserver -->
+    <!--<inherits name="org.eclipse.che.plugin.pullrequest.PullRequest"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.python.Python"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.ssh.key.SshKey"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.svn.Subversion"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.testing.TestingExtension"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.testing.junit.JUnit"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.testing.phpunit.PHPUnit"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.testing.testng.TestNG"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.web.WebShared"/>-->
+    <!--<inherits name="org.eclipse.che.plugin.zdb.ZendDebugger"/>-->
+    <inherits name="org.eclipse.che.providers.Providers"/>
+    <inherits name="org.eclipse.che.security.OAuth"/>
+    <!--<inherits name="org.eclipse.lsp4j.Lsp4j"/>-->
+    <!--<inherits name="org.eclipse.xtend2.lib.Lib"/>-->
+    <!--<inherits name="org.eclipse.xtext.xbase.lib.Lib"/>-->
+    <!--<inherits name="org.hibernate.validator.HibernateValidator"/>-->
+    <!--<inherits name="org.vectomatic.libgwtsvg"/>-->
+
+    <stylesheet src="IDE.css"/>
+    <entry-point class="org.eclipse.che.ide.client.IDE"/>
+    <inherits name="com.google.gwt.logging.Logging"/>
+    <!-- Disable logging to the server -->
+    <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
+    <!-- Enable logging to the browser's console in SuperDev mode -->
+    <set-property name="gwt.logging.developmentModeHandler" value="ENABLED" />
+    <set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
+
+    <set-property name="user.agent" value="safari" />
+    <set-property name="mobile.user.agent" value="not_mobile" />
+</module>

@@ -31,190 +31,197 @@
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-ide-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-activity-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-composer-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-cpp-lang-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-csharp-lang-ide</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-activity-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-composer-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-cpp-lang-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-csharp-lang-ide</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-debugger-ide</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-docker-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-ext-dashboard-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-gdb-ide</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-docker-client</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-ext-dashboard-client</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-gdb-ide</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-git-ext-git</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-github-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-github-oauth2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-github-pullrequest</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-github-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-gwt-ext-gwt</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-github-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-github-oauth2</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-github-pullrequest</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-github-shared</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-gwt-ext-gwt</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-help-ext-client</artifactId>
+            <type>gwt-lib</type>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-java-debugger-ide</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-java-debugger-ide</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-java-ext-lang-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-java-ext-lang-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-java-plain-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-java-plain-shared</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-java-ext-lang-shared</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-java-plain-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-java-plain-shared</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-keybinding-eclipse-ide</artifactId>
+            <type>gwt-lib</type>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-languageserver-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-machine-ssh-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-maven-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-maven-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-nodejs-debugger-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-nodejs-lang-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-nodejs-lang-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-openshift-client</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-languageserver-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-machine-ssh-client</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-maven-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-maven-shared</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-nodejs-debugger-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-nodejs-lang-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-nodejs-lang-shared</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-openshift-client</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-orion-compare</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-php-lang-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-php-lang-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-product-info</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-pullrequest-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-pullrequest-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-python-lang-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-python-lang-shared</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-sdk-ext-plugins</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-ssh-key-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-svn-ext-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-testing-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-testing-junit-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-testing-phpunit-ide</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-testing-testng-ide</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-php-lang-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-php-lang-shared</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-product-info</artifactId>-->
+        <!--</dependency>-->
+        <!-- TODO: Some problems with DTO generation while gwt:codeserver -->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-pullrequest-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-pullrequest-shared</artifactId>-->
+        <!--</dependency>-->
+
+
+
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-python-lang-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-python-lang-shared</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-sdk-ext-plugins</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-ssh-key-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-svn-ext-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-testing-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-testing-junit-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-testing-phpunit-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-testing-testng-ide</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-web-ext-web</artifactId>
+            <type>gwt-lib</type>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-zend-debugger-ide</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-zend-debugger-ide</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
@@ -270,20 +277,20 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <id>gwt-xml</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <mainClass>org.eclipse.che.util.GwtXmlGenerator</mainClass>
-                            <arguments>
-                                <argument>--rootDir=${generated.sources.directory}</argument>
-                                <argument>--loggingEnabled=${gwt.log.enable}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
+                    <!--<execution>-->
+                        <!--<id>gwt-xml</id>-->
+                        <!--<phase>generate-sources</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>java</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<mainClass>org.eclipse.che.util.GwtXmlGenerator</mainClass>-->
+                            <!--<arguments>-->
+                                <!--<argument>&#45;&#45;rootDir=${generated.sources.directory}</argument>-->
+                                <!--<argument>&#45;&#45;loggingEnabled=${gwt.log.enable}</argument>-->
+                            <!--</arguments>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
                     <execution>
                         <id>extManager-client</id>
                         <phase>generate-sources</phase>
@@ -344,15 +351,18 @@
             <plugin>
                 <groupId>net.ltgt.gwt.maven</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
+                <extensions>true</extensions>
                 <executions>
                     <execution>
                         <goals>
+                            <goal>generate-module</goal>
                             <goal>compile</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
                     <moduleName>org.eclipse.che.ide.IDE</moduleName>
+                    <moduleShortName>_app</moduleShortName>
                     <jvmArgs>
                         <arg>${gwt.compiler.jvmArgs.Xss}</arg>
                         <arg>${gwt.compiler.jvmArgs.Xmx}</arg>
