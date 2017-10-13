@@ -142,7 +142,7 @@ public class StepIntoStepOverStepReturnWithChangeVariableTest {
     debugPanel.waitTextInVariablesPanel("secretNum=");
     debugPanel.selectVarInVariablePanel("numGuessByUser=\"6\"");
     debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.CHANGE_DEBUG_TREE_NODE);
-    debugPanel.typeAndSaveDialog("\"7\"");
+    debugPanel.typeAndSaveTextAreaDialog("\"7\"");
     debugPanel.waitTextInVariablesPanel("numGuessByUser=\"7\"");
     debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.RESUME_BTN_ID);
     assertTrue(instToRequestThread.get().contains("<html>"));

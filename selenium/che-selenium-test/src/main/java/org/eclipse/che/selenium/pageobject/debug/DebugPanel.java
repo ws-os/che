@@ -157,6 +157,12 @@ public class DebugPanel {
         .until((ExpectedCondition<Boolean>) (webDriver -> variablesPanel.getText().contains(text)));
   }
 
+  public void waitTextIsNotPresentInVariablesPanel(final String text) {
+    waitVariablesPanel();
+    new WebDriverWait(seleniumWebDriver, LOAD_PAGE_TIMEOUT_SEC)
+            .until((ExpectedCondition<Boolean>) (webDriver -> !variablesPanel.getText().contains(text)));
+  }
+
   /**
    * Select specified value in Variable panel
    *
@@ -185,13 +191,13 @@ public class DebugPanel {
     loader.waitOnClosed();
   }
 
-  /** Wait appearance change variable form */
-  public void waitAppearChangeVariableForm() {
+  /** Wait appearance text area form */
+  public void waitAppearTextAreaForm() {
     new WebDriverWait(seleniumWebDriver, 20).until(ExpectedConditions.visibilityOf(textAreaForm));
   }
 
   /** Wait disappear variable form */
-  public void waitDisappearChangeVariableForm() {
+  public void waitDisappearTextAreaForm() {
     new WebDriverWait(seleniumWebDriver, 20)
         .until(
             ExpectedConditions.invisibilityOfElementLocated(
@@ -204,7 +210,7 @@ public class DebugPanel {
    * @param value new value
    */
   public void typeNewValueInTheDialog(String value) {
-    waitAppearChangeVariableForm();
+    waitAppearTextAreaForm();
     textAreaForm.clear();
     textAreaForm.sendKeys(value);
   }
@@ -214,10 +220,10 @@ public class DebugPanel {
    *
    * @param newValue new value to save
    */
-  public void typeAndSaveDialog(String newValue) {
+  public void typeAndSaveTextAreaDialog(String newValue) {
     typeNewValueInTheDialog(newValue);
     saveDialogChangesBtn.click();
-    waitDisappearChangeVariableForm();
+    waitDisappearTextAreaForm();
     loader.waitOnClosed();
   }
 

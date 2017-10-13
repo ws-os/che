@@ -140,7 +140,7 @@ public class ChangeVariableWithEvaluatingTest {
     debugPanel.selectVarInVariablePanel("numGuessByUser=\"11\"");
     debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.CHANGE_DEBUG_TREE_NODE);
     String secretNum = getValueOfSecretNumFromVarWidget().trim();
-    debugPanel.typeAndSaveDialog(secretNum);
+    debugPanel.typeAndSaveTextAreaDialog(secretNum);
     debugPanel.selectVarInVariablePanel(String.format("numGuessByUser=%s", secretNum));
     debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.EVALUATE_EXPRESSIONS);
     debugPanel.typeEvaluateExpression("numGuessByUser.length()");
