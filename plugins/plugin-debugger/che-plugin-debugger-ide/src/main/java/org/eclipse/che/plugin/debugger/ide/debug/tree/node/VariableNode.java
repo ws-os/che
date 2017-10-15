@@ -29,9 +29,8 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
   private Variable data;
 
   @Inject
-  public VariableNode(@Assisted Variable data,
-                      PromiseProvider promiseProvider,
-                      DebuggerNodeFactory nodeFactory) {
+  public VariableNode(
+      @Assisted Variable data, PromiseProvider promiseProvider, DebuggerNodeFactory nodeFactory) {
     this.promiseProvider = promiseProvider;
     this.nodeFactory = nodeFactory;
     this.data = data;
@@ -39,12 +38,13 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
   }
 
   private void updateChildren() {
-    children = data.getValue() != null
+    children =
+        data.getValue() != null
             ? data.getValue()
-            .getVariables()
-            .stream()
-            .map(nodeFactory::createVariableNode)
-            .collect(Collectors.toList())
+                .getVariables()
+                .stream()
+                .map(nodeFactory::createVariableNode)
+                .collect(Collectors.toList())
             : emptyList();
   }
 

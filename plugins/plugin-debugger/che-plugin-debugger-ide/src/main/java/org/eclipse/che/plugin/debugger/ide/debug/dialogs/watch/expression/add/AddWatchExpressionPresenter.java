@@ -39,8 +39,7 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
         dialogFactory.createTextAreaDialogView(
             constant.addExpressionTextAreaDialogView(),
             constant.addExpressionViewSaveButtonTitle(),
-            constant.addExpressionViewCancelButtonTitle(),
-            "debugger-add-expression");
+            constant.addExpressionViewCancelButtonTitle());
     this.view.setDelegate(this);
     this.debuggerPresenter = debuggerPresenter;
   }

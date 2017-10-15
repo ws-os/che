@@ -70,8 +70,8 @@ public class DebugPanel {
   }
 
   private interface LocatorsTextAreaDialogWindow {
-    String AGREE_BUTTON = "debugger-change-value-agree-btn";
-    String CANCEL_BTN = "debugger-change-value-cancel-btn";
+    String AGREE_BUTTON = "debugger-textarea-dialog-agree-btn";
+    String CANCEL_BTN = "debugger-textarea-dialog-cancel-btn";
     String TEXTAREA = "gwt-debug-text-area-dialog";
   }
 
@@ -160,7 +160,8 @@ public class DebugPanel {
   public void waitTextIsNotPresentInVariablesPanel(final String text) {
     waitVariablesPanel();
     new WebDriverWait(seleniumWebDriver, LOAD_PAGE_TIMEOUT_SEC)
-            .until((ExpectedCondition<Boolean>) (webDriver -> !variablesPanel.getText().contains(text)));
+        .until(
+            (ExpectedCondition<Boolean>) (webDriver -> !variablesPanel.getText().contains(text)));
   }
 
   /**

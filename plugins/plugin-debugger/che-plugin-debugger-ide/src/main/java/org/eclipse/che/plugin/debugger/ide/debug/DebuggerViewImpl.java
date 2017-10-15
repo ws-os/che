@@ -131,9 +131,10 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     tree.addExpandHandler(
         event -> {
           Node expandedNode = event.getNode();
-            if (!tree.getNodeStorage().hasChildren(expandedNode) && expandedNode instanceof VariableNode) {
-              delegate.onExpandVariable(((VariableNode) expandedNode).getData());
-            }
+          if (!tree.getNodeStorage().hasChildren(expandedNode)
+              && expandedNode instanceof VariableNode) {
+            delegate.onExpandVariable(((VariableNode) expandedNode).getData());
+          }
         });
 
     tree.getNodeStorage()
@@ -172,9 +173,9 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   //@Override
-//  public void expandVariable(Variable variable) {
-//
-//  }
+  //  public void expandVariable(Variable variable) {
+  //
+  //  }
 
   @Override
   public void updateVariable(Variable variable) {

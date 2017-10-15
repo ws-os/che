@@ -17,9 +17,7 @@ import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.R
 import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.Run.EDIT_DEBUG_CONFIGURATION;
 import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.Run.RUN_MENU;
 import static org.eclipse.che.selenium.core.project.ProjectTemplates.MAVEN_SPRING;
-import static org.eclipse.che.selenium.pageobject.debug.DebugPanel.DebuggerActionButtons.ADD_WATCH_EXPRESSION;
-import static org.eclipse.che.selenium.pageobject.debug.DebugPanel.DebuggerActionButtons.CHANGE_DEBUG_TREE_NODE;
-import static org.eclipse.che.selenium.pageobject.debug.DebugPanel.DebuggerActionButtons.REMOVE_WATCH_EXPRESSION;
+import static org.eclipse.che.selenium.pageobject.debug.DebugPanel.DebuggerActionButtons.*;
 
 import com.google.inject.Inject;
 import java.net.URL;
@@ -96,56 +94,61 @@ public class DebuggerWatchExpressionTest {
     menu.runCommand(RUN_MENU, EDIT_DEBUG_CONFIGURATION);
     debugConfig.createConfig(PROJECT);
     menu.runCommand(RUN_MENU, DEBUG, DEBUG + "/" + PROJECT);
+    editor.waitActiveBreakpoint(34);
 
     String appUrl = "http://" + wsClient.getServerAddressByPort(ws.getId(), 8080) + "/spring/guess";
 
     debuggerUtils.gotoDebugAppAndSendRequest(appUrl, "11");
     debugPanel.openDebugPanel();
-    debugPanel.waitDebugHighlightedText("String result = \"\";");
+    debugPanel.waitDebugHighlightedText("result = \"Sorry, you failed. Try again later!\";");
   }
 
   @Test(priority = 1)
   public void addWatchExpression() {
-    editor.waitActiveBreakpoint(34);
-
     debugPanel.clickOnButton(ADD_WATCH_EXPRESSION);
     debugPanel.waitAppearTextAreaForm();
-    debugPanel.typeAndSaveTextAreaDialog(NUM_GUESS_BY_USER);
+    debugPanel.typeAndSaveTextAreaDialog(NUM_GUESS_BY_USER + "+ \"!\"");
     debugPanel.waitDisappearTextAreaForm();
 
-    debugPanel.waitTextInVariablesPanel(NUM_GUESS_BY_USER + "=" + "\"11\"");
+    debugPanel.waitTextInVariablesPanel(NUM_GUESS_BY_USER + "+ \"!\"");
   }
 
   @Test(priority = 2)
   public void editWatchExpression() {
+    debugPanel.waitTextInVariablesPanel(NUM_GUESS_BY_USER + " + \"!\"=\"11!\"");
+
+    debugPanel.selectVarInVariablePanel(NUM_GUESS_BY_USER + " + \"!\"=\"11!\"");
     debugPanel.clickOnButton(CHANGE_DEBUG_TREE_NODE);
     debugPanel.waitAppearTextAreaForm();
-    debugPanel.typeAndSaveTextAreaDialog(RESULT_VARIABLE);
+    debugPanel.typeAndSaveTextAreaDialog(RESULT_VARIABLE + " + \"!\"");
     debugPanel.waitDisappearTextAreaForm();
 
-    debugPanel.waitTextInVariablesPanel(RESULT_VARIABLE + " = \"Sorry, you failed. Try again later!\";");
+    debugPanel.waitTextIsNotPresentInVariablesPanel(NUM_GUESS_BY_USER + " + \"!\"=\"11!\"");
+    debugPanel.waitTextInVariablesPanel(RESULT_VARIABLE + " + \"!\"=\"!\"");
   }
 
   @Test(priority = 3)
+  public void watchExpressionShouldBeReEvaluatedOnNextDebugStep() {
+    debugPanel.waitTextInVariablesPanel(RESULT_VARIABLE + " = \"\";");
+
+    debugPanel.clickOnButton(STEP_OVER);
+
+    debugPanel.waitTextInVariablesPanel(
+        RESULT_VARIABLE + "=\"Sorry, you failed. Try again later!\"");
+  }
+
+  @Test(priority = 4)
+  public void debuggerSupportComplexArithmeticExpression() {}
+
+  @Test
+  public void watchExpressionShouldStayAfterStopDebug() {}
+
+  @Test
   public void removeWatchExpression() {
+    debugPanel.selectVarInVariablePanel(RESULT_VARIABLE + " = \"\";");
     debugPanel.clickOnButton(REMOVE_WATCH_EXPRESSION);
 
-    debugPanel.waitTextIsNotPresentInVariablesPanel(RESULT_VARIABLE + " = \"Sorry, you failed. Try again later!\";");
-  }
-
-  @Test
-  public void watchExpressionShouldBeReEvaluatedOnNextDebugStep() {
-
-  }
-
-  @Test
-  public void debuggerSupportComplexArithmeticExpression() {
-
-  }
-
-  @Test
-  public void watchExpressionShouldStayAfterStopDebug() {
-
+    debugPanel.waitTextIsNotPresentInVariablesPanel(RESULT_VARIABLE + " = \"\";");
   }
 
   //  private static final

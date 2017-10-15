@@ -78,7 +78,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   /** Updates variable in the list */
   void updateVariable(Variable variable);
 
-//  void expandVariable(Variable variable);
+  //  void expandVariable(Variable variable);
 
   /**
    * Returns selected variable on the debugger panel or null if none selected variable.

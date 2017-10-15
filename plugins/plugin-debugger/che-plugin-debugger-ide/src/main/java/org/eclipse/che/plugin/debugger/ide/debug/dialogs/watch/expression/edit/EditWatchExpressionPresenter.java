@@ -40,8 +40,7 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
         dialogFactory.createTextAreaDialogView(
             constant.editExpressionTextAreaDialogView(),
             constant.editExpressionViewSaveButtonTitle(),
-            constant.editExpressionViewCancelButtonTitle(),
-            "debugger-edit-selectedExpression");
+            constant.editExpressionViewCancelButtonTitle());
     this.view.setDelegate(this);
     this.debuggerPresenter = debuggerPresenter;
     this.constant = constant;

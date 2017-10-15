@@ -12,11 +12,11 @@ package org.eclipse.che.api.debug.shared.model;
 
 public interface Expression {
 
-    String getExpression();
+  String getExpression();
 
-    void setExpression(String expression);
+  void setExpression(String expression);
 
-    String getResult();
+  String getResult();
 
-    void setResult(String result);
+  void setResult(String result);
 }
