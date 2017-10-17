@@ -10,9 +10,7 @@
  */
 package org.eclipse.che.selenium.pageobject.debug;
 
-import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.LOAD_PAGE_TIMEOUT_SEC;
-import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.MINIMUM_SEC;
-import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.REDRAW_UI_ELEMENTS_TIMEOUT_SEC;
+import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.*;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
@@ -64,7 +62,6 @@ public class DebugPanel {
     String DEBUGGER_PANEL_TAB = "gwt-debug-partButton-Debug";
     String FRAMES_LIST_ID = "gwt-debug-debugger-frames-list";
     String THREADS_LIST_ID = "gwt-debug-debugger-threads-list";
-    String VARIABLES_PANEL_ID = "gwt-debug-debugger-variablesPanel";
     String VARIABLES_TREE_ID = "gwt-debug-debugger-tree";
     String VARIABLES_TREE_SELECT_NODE = "//div[@id='" + VARIABLES_TREE_ID + "']//div[text()='%s']";
   }
@@ -95,8 +92,8 @@ public class DebugPanel {
   @FindBy(id = Locators.DEBUGGER_PANEL_TAB)
   WebElement debuggerTab;
 
-  @FindBy(id = Locators.VARIABLES_PANEL_ID)
-  WebElement variablesPanel;
+  @FindBy(id = Locators.VARIABLES_TREE_ID)
+  WebElement debuggerTree;
 
   @FindBy(id = LocatorsTextAreaDialogWindow.TEXTAREA)
   WebElement textAreaForm;
@@ -143,7 +140,7 @@ public class DebugPanel {
 
   /** Wait while the Variables panel appears */
   public void waitVariablesPanel() {
-    new WebDriverWait(seleniumWebDriver, 20).until(ExpectedConditions.visibilityOf(variablesPanel));
+    new WebDriverWait(seleniumWebDriver, 20).until(ExpectedConditions.visibilityOf(debuggerTree));
   }
 
   /**
@@ -154,7 +151,7 @@ public class DebugPanel {
   public void waitTextInVariablesPanel(final String text) {
     waitVariablesPanel();
     new WebDriverWait(seleniumWebDriver, LOAD_PAGE_TIMEOUT_SEC)
-        .until((ExpectedCondition<Boolean>) (webDriver -> variablesPanel.getText().contains(text)));
+        .until((ExpectedCondition<Boolean>) (webDriver -> debuggerTree.getText().contains(text)));
   }
 
   /**
@@ -165,8 +162,7 @@ public class DebugPanel {
   public void waitTextIsNotPresentInVariablesPanel(final String text) {
     waitVariablesPanel();
     new WebDriverWait(seleniumWebDriver, LOAD_PAGE_TIMEOUT_SEC)
-        .until(
-            (ExpectedCondition<Boolean>) (webDriver -> !variablesPanel.getText().contains(text)));
+        .until((ExpectedCondition<Boolean>) (webDriver -> !debuggerTree.getText().contains(text)));
   }
 
   /** Select node in debugger tree by node {@code text} */
@@ -307,7 +303,7 @@ public class DebugPanel {
     String locatorWithHiglightedText =
         "//div[@id='gwt-debug-editorPartStack-contentPanel']//div[@active]//div[@class='textviewContent' and @contenteditable='true']//span[@debugid='debug-line']";
     List<WebElement> hilightedElements =
-        new WebDriverWait(seleniumWebDriver, LOAD_PAGE_TIMEOUT_SEC)
+        new WebDriverWait(seleniumWebDriver, ELEMENT_TIMEOUT_SEC)
             .until(
                 ExpectedConditions.presenceOfAllElementsLocatedBy(
                     By.xpath(locatorWithHiglightedText)));
@@ -401,7 +397,7 @@ public class DebugPanel {
 
   public String getVariables() {
     waitVariablesPanel();
-    return variablesPanel.getText();
+    return debuggerTree.getText();
   }
 
   public void waitFramesListPanelReady() {

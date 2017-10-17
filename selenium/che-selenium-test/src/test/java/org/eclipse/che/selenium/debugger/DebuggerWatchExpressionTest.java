@@ -30,11 +30,7 @@ import org.eclipse.che.selenium.core.client.TestProjectServiceClient;
 import org.eclipse.che.selenium.core.client.TestWorkspaceServiceClient;
 import org.eclipse.che.selenium.core.constant.TestBuildConstants;
 import org.eclipse.che.selenium.core.workspace.TestWorkspace;
-import org.eclipse.che.selenium.pageobject.CodenvyEditor;
-import org.eclipse.che.selenium.pageobject.Consoles;
-import org.eclipse.che.selenium.pageobject.Ide;
-import org.eclipse.che.selenium.pageobject.Menu;
-import org.eclipse.che.selenium.pageobject.ProjectExplorer;
+import org.eclipse.che.selenium.pageobject.*;
 import org.eclipse.che.selenium.pageobject.debug.DebugPanel;
 import org.eclipse.che.selenium.pageobject.debug.JavaDebugConfig;
 import org.eclipse.che.selenium.pageobject.intelligent.CommandsPalette;
@@ -47,13 +43,12 @@ public class DebuggerWatchExpressionTest {
       generate(DebuggerWatchExpressionTest.class.getSimpleName(), 2);
   private static final String PROJECT_PATH = "/projects/debugWatchExpression";
   private static final String PATH_TO_CLASS = "/src/main/java/org/eclipse/qa/ShapeController.java";
+  private static final String SHAPE_JSON =
+      "{\"type\" : \"triangle\", \"a\": \"3\", \"b\": \"2\", \"c\": \"1\"}";
 
   private static final String START_DEBUG = "startDebug";
   private static final String LAUNCH_APP =
-      "mvn clean install -f /projects/"
-          + PROJECT
-          + " && "
-          + "mvn clean install -f /projects/"
+      "mvn -f /projects/"
           + PROJECT
           + " spring-boot:run -Drun.jvmArguments=\"-Xdebug "
           + "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000\"";
@@ -72,6 +67,7 @@ public class DebuggerWatchExpressionTest {
   @Inject private Consoles consoles;
   @Inject private Menu menu;
   @Inject private JavaDebugConfig debugConfig;
+  @Inject private NotificationsPopupPanel notifications;
 
   @BeforeClass
   public void prepare() throws Exception {
@@ -97,12 +93,12 @@ public class DebuggerWatchExpressionTest {
     menu.runCommand(RUN_MENU, EDIT_DEBUG_CONFIGURATION);
     debugConfig.createConfig(PROJECT);
     menu.runCommand(RUN_MENU, DEBUG, DEBUG + "/" + PROJECT);
+    notifications.waitExpectedMessageOnProgressPanelAndClosed("Remote debugger connected");
     editor.waitActiveBreakpoint(91);
 
     String appUrl = "http://" + wsClient.getServerAddressByPort(ws.getId(), 8080) + "/shape";
 
-    debuggerUtils.goToDebugAppAndSendJson(
-        appUrl, "{\"type\" : \"triangle\", \"a\": \"3\", \"b\": \"2\", \"c\": \"1\"}");
+    debuggerUtils.goToDebugAppAndSendJson(appUrl, SHAPE_JSON);
     debugPanel.openDebugPanel();
     debugPanel.waitDebugHighlightedText("long id = shape.getId();");
   }
