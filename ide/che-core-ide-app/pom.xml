@@ -316,9 +316,6 @@
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/*.png</exclude>
-                        <exclude>**/*.gif</exclude>
-                        <exclude>**/*.jpg</exclude>
                         <exclude>**/OutputCustomizer.java</exclude>
                         <exclude>**/AbstractOutputCustomizer.java</exclude>
                         <exclude>**/BaseOutputCustomizerTest.java</exclude>
