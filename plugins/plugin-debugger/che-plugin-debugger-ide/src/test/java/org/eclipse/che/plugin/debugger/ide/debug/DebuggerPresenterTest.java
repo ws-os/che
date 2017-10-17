@@ -12,7 +12,6 @@ package org.eclipse.che.plugin.debugger.ide.debug;
 
 import static org.eclipse.che.ide.api.notification.StatusNotification.DisplayMode.NOT_EMERGE_MODE;
 import static org.eclipse.che.ide.api.notification.StatusNotification.Status.SUCCESS;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -167,8 +166,8 @@ public class DebuggerPresenterTest extends BaseTest {
     verify(promiseThreadDump).then(operationThreadDumpCaptor.capture());
     operationThreadDumpCaptor.getValue().apply(threadDump);
     verify(presenter).updateStackFrameDump(THREAD_ID);
-//    verify(presenter).updateVariables(THREAD_ID, 0);
-//    verify(view).setThreadDump(eq(threadDump), anyLong());
+    //    verify(presenter).updateVariables(THREAD_ID, 0);
+    //    verify(view).setThreadDump(eq(threadDump), anyLong());
   }
 
   @Test

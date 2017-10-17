@@ -53,11 +53,15 @@ public class TextAreaDialogViewImpl extends Window implements TextAreaDialogView
 
     Button cancelButton =
         createButton(
-            cancelBtnLabel, "debugger-textarea-dialog-cancel-btn", clickEvent -> delegate.onCancelClicked());
+            cancelBtnLabel,
+            "debugger-textarea-dialog-cancel-btn",
+            clickEvent -> delegate.onCancelClicked());
 
     agreeButton =
         createButton(
-            agreeBtnLabel, "debugger-textarea-dialog-agree-btn", clickEvent -> delegate.onAgreeClicked());
+            agreeBtnLabel,
+            "debugger-textarea-dialog-agree-btn",
+            clickEvent -> delegate.onAgreeClicked());
 
     addButtonToFooter(cancelButton);
     addButtonToFooter(agreeButton);

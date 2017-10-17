@@ -13,9 +13,7 @@ package org.eclipse.che.selenium.debugger;
 import static java.nio.file.Paths.get;
 import static org.eclipse.che.commons.lang.NameGenerator.generate;
 import static org.eclipse.che.selenium.core.constant.TestCommandsConstants.CUSTOM;
-import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.Run.DEBUG;
-import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.Run.EDIT_DEBUG_CONFIGURATION;
-import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.Run.RUN_MENU;
+import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.Run.*;
 import static org.eclipse.che.selenium.core.project.ProjectTemplates.MAVEN_SPRING;
 import static org.eclipse.che.selenium.pageobject.debug.DebugPanel.DebuggerActionButtons.*;
 
@@ -37,23 +35,18 @@ import org.testng.annotations.Test;
 public class DebuggerWatchExpressionTest {
   private static final String PROJECT =
       generate(DebuggerWatchExpressionTest.class.getSimpleName(), 2);
-  private static final String PROJECT_PATH = "/projects/debug-spring-project";
-  private static final String PATH_TO_CLASS =
-      "/src/main/java/org/eclipse/qa/examples/AppController.java";
+  private static final String PROJECT_PATH = "/projects/debugWatchExpression";
+  private static final String PATH_TO_CLASS = "/src/main/java/org/eclipse/qa/ShapeController.java";
 
   private static final String START_DEBUG = "startDebug";
   private static final String LAUNCH_APP =
       "mvn clean install -f /projects/"
           + PROJECT
-          + " && cp /projects/"
+          + " && "
+          + "mvn clean install -f /projects/"
           + PROJECT
-          + "/target/qa-spring-sample-1.0-SNAPSHOT.war "
-          + "/home/user/tomcat8/webapps/ROOT.war "
-          + "&& /home/user/tomcat8/bin/catalina.sh jpda run";
-
-  private static final String NUM_GUESS_BY_USER = "numGuessByUser";
-  private static final String RESULT_VARIABLE = "result";
-  private static final String ARIPHMETIC_COMPLEX_EXPRESSION = "1000.0 + (60.0)/userName.length()";
+          + " spring-boot:run -Drun.jvmArguments=\"-Xdebug "
+          + "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000\"";
 
   private DebuggerUtils debuggerUtils = new DebuggerUtils();
 
@@ -84,8 +77,8 @@ public class DebuggerWatchExpressionTest {
     projectExplorer.openItemByPath(PROJECT + PATH_TO_CLASS);
 
     editor.waitActiveEditor();
-    editor.setCursorToLine(34);
-    editor.setBreakpoint(34);
+    editor.setCursorToLine(91);
+    editor.setBreakpoint(91);
 
     cmdPalette.openCommandPalette();
     cmdPalette.startCommandByDoubleClick(START_DEBUG);
@@ -94,62 +87,77 @@ public class DebuggerWatchExpressionTest {
     menu.runCommand(RUN_MENU, EDIT_DEBUG_CONFIGURATION);
     debugConfig.createConfig(PROJECT);
     menu.runCommand(RUN_MENU, DEBUG, DEBUG + "/" + PROJECT);
-    editor.waitActiveBreakpoint(34);
+    editor.waitActiveBreakpoint(91);
 
-    String appUrl = "http://" + wsClient.getServerAddressByPort(ws.getId(), 8080) + "/spring/guess";
+    String appUrl = "http://" + wsClient.getServerAddressByPort(ws.getId(), 8080) + "/shape";
 
-    debuggerUtils.gotoDebugAppAndSendRequest(appUrl, "11");
+    debuggerUtils.goToDebugAppAndSendJson(
+        appUrl, "{\"type\" : \"triangle\", \"a\": \"3\", \"b\": \"2\", \"c\": \"1\"}");
     debugPanel.openDebugPanel();
-    debugPanel.waitDebugHighlightedText("result = \"Sorry, you failed. Try again later!\";");
+    debugPanel.waitDebugHighlightedText("long id = shape.getId();");
   }
 
   @Test(priority = 1)
   public void addWatchExpression() {
     debugPanel.clickOnButton(ADD_WATCH_EXPRESSION);
     debugPanel.waitAppearTextAreaForm();
-    debugPanel.typeAndSaveTextAreaDialog(NUM_GUESS_BY_USER + "+ \"!\"");
+    debugPanel.typeAndSaveTextAreaDialog("shape.a");
     debugPanel.waitDisappearTextAreaForm();
 
-    debugPanel.waitTextInVariablesPanel(NUM_GUESS_BY_USER + "+ \"!\"");
+    debugPanel.waitTextInVariablesPanel("shape.a=3.0");
   }
 
   @Test(priority = 2)
   public void editWatchExpression() {
-    debugPanel.waitTextInVariablesPanel(NUM_GUESS_BY_USER + " + \"!\"=\"11!\"");
+    debugPanel.waitTextInVariablesPanel("shape.a=3.0");
+    debugPanel.selectVarInVariablePanel("shape.a=3.0");
 
-    debugPanel.selectVarInVariablePanel(NUM_GUESS_BY_USER + " + \"!\"=\"11!\"");
     debugPanel.clickOnButton(CHANGE_DEBUG_TREE_NODE);
     debugPanel.waitAppearTextAreaForm();
-    debugPanel.typeAndSaveTextAreaDialog(RESULT_VARIABLE + " + \"!\"");
+    debugPanel.typeAndSaveTextAreaDialog("shapes.size()");
     debugPanel.waitDisappearTextAreaForm();
 
-    debugPanel.waitTextIsNotPresentInVariablesPanel(NUM_GUESS_BY_USER + " + \"!\"=\"11!\"");
-    debugPanel.waitTextInVariablesPanel(RESULT_VARIABLE + " + \"!\"=\"!\"");
+    debugPanel.waitTextIsNotPresentInVariablesPanel("shape.a=3.0");
+    debugPanel.waitTextInVariablesPanel("shapes.size()=4");
   }
 
   @Test(priority = 3)
   public void watchExpressionShouldBeReEvaluatedOnNextDebugStep() {
-    debugPanel.waitTextInVariablesPanel(RESULT_VARIABLE + " = \"\";");
+    debugPanel.waitTextInVariablesPanel("shapes.size()=4");
 
-    debugPanel.clickOnButton(STEP_OVER);
+    editor.setCursorToLine(97);
+    editor.setBreakpoint(97);
 
-    debugPanel.waitTextInVariablesPanel(
-        RESULT_VARIABLE + "=\"Sorry, you failed. Try again later!\"");
+    debugPanel.clickOnButton(STEP_OUT);
+
+    debugPanel.waitTextInVariablesPanel("shapes.size()=5");
   }
 
   @Test(priority = 4)
-  public void debuggerSupportComplexArithmeticExpression() {}
+  public void debuggerSupportComplexArithmeticExpression() {
+    debugPanel.clickOnButton(ADD_WATCH_EXPRESSION);
+    debugPanel.waitAppearTextAreaForm();
+    debugPanel.typeAndSaveTextAreaDialog("100.0 + 1.0/2.0");
+    debugPanel.waitDisappearTextAreaForm();
 
-  @Test
-  public void watchExpressionShouldStayAfterStopDebug() {}
-
-  @Test
-  public void removeWatchExpression() {
-    debugPanel.selectVarInVariablePanel(RESULT_VARIABLE + " = \"\";");
-    debugPanel.clickOnButton(REMOVE_WATCH_EXPRESSION);
-
-    debugPanel.waitTextIsNotPresentInVariablesPanel(RESULT_VARIABLE + " = \"\";");
+    debugPanel.waitTextInVariablesPanel("100.0 + 1.0/2.0=100.5");
   }
 
-  //  private static final
+  @Test(priority = 5)
+  public void watchExpressionShouldStayAfterStopDebug() {
+    debugPanel.clickOnButton(BTN_DISCONNECT);
+
+    debugPanel.waitTextInVariablesPanel("shapes.size()=");
+    debugPanel.waitTextInVariablesPanel("100.0 + 1.0/2.0=");
+  }
+
+  @Test(priority = 6)
+  public void removeWatchExpression() {
+    debugPanel.waitTextInVariablesPanel("shapes.size()=");
+
+    debugPanel.selectVarInVariablePanel("shapes.size()=");
+    debugPanel.clickOnButton(REMOVE_WATCH_EXPRESSION);
+
+    debugPanel.waitTextIsNotPresentInVariablesPanel("\"shapes.size()=\"");
+  }
 }
