@@ -50,6 +50,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
  * @author Valeriy Svydenko
  * @author Anatoliy Bazko
  * @author Mykola Morhun
+ * @author Oleksandr Andriienko
  */
 @Singleton
 @Extension(title = "Debugger", version = "4.1.0")

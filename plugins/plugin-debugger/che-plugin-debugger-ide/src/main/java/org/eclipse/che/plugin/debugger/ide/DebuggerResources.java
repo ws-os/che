@@ -78,7 +78,5 @@ public interface DebuggerResources extends ClientBundle {
     String selectConfigurationsBoxIconPanel();
 
     String watchExpressionsPanel();
-
-    String debugTreeContainer();
   }
 }

@@ -12,6 +12,7 @@
 -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:tree="urn:import:org.eclipse.che.ide.ui.smartTree"
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <ui:with field='locale' type='org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant'/>
     <ui:with field='coreRes' type='org.eclipse.che.ide.Resources'/>
@@ -93,8 +94,7 @@
                                 <g:SimplePanel ui:field="watchExpressionPanel" debugId="watch-expression-panel"/>
                             </g:west>
                             <g:center>
-                                <g:SimplePanel ui:field="variablesPanel" addStyleNames="{coreRes.coreCss.simpleListContainer}"
-                                               debugId="debugger-variablesPanel"/>
+                                <tree:Tree ui:field="tree" addStyleNames="{coreRes.coreCss.simpleListContainer}"/>
                             </g:center>
                         </g:DockLayoutPanel>
                     </g:FlowPanel>

@@ -10,10 +10,10 @@
  */
 package org.eclipse.che.plugin.debugger.ide.actions;
 
+import static java.util.Collections.singletonList;
 import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
 import com.google.inject.Inject;
-import java.util.Collections;
 import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
@@ -46,7 +46,7 @@ public class ChangeDebugNodeAction extends AbstractPerspectiveAction {
       EditWatchExpressionPresenter editWatchExpressionPresenter,
       DebuggerPresenter debuggerPresenter) {
     super(
-        Collections.singletonList(PROJECT_PERSPECTIVE_ID),
+        singletonList(PROJECT_PERSPECTIVE_ID),
         locale.changeDebugNode(),
         locale.changeDebugNodeDescription(),
         null,

@@ -73,7 +73,6 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   @UiField Label vmName;
   @UiField Label executionPoint;
   @UiField SimplePanel toolbarPanel;
-  @UiField SimplePanel variablesPanel;
   @UiField ScrollPanel breakpointsPanel;
   @UiField SimplePanel watchExpressionPanel;
 
@@ -86,13 +85,16 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   @UiField(provided = true)
   SplitLayoutPanel splitPanel = new SplitLayoutPanel(3);
 
+  @UiField(provided = true)
+  Tree tree;
+
   @UiField ListBox threads;
   @UiField ScrollPanel framesPanel;
 
   private final SimpleList<Breakpoint> breakpoints;
   private final SimpleList<StackFrameDump> frames;
   private final DebuggerResources debuggerResources;
-  private final Tree tree;
+
   private final DebuggerNodeFactory nodeFactory;
   private final DebugNodeUniqueKeyProvider nodeKeyProvider;
 
@@ -112,6 +114,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     this.coreRes = coreRes;
     this.nodeKeyProvider = nodeKeyProvider;
 
+    tree = new Tree(new NodeStorage(nodeKeyProvider), new NodeLoader());
     setContentWidget(uiBinder.createAndBindUi(this));
 
     this.breakpoints = createBreakpointList();
@@ -121,12 +124,9 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     this.framesPanel.add(frames);
     this.nodeFactory = nodeFactory;
 
-    tree = new Tree(new NodeStorage(nodeKeyProvider), new NodeLoader());
     tree.ensureDebugId("debugger-tree");
 
     tree.getSelectionModel().setSelectionMode(SINGLE);
-
-    tree.addStyleName(resources.getCss().debugTreeContainer());
 
     tree.addExpandHandler(
         event -> {
@@ -141,7 +141,6 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     tree.getNodeStorage()
         .addSortInfo(new NodeStorage.StoreSortInfo(new VariableNodeComparator(), ASC));
 
-    this.variablesPanel.add(tree);
     minimizeButton.ensureDebugId("debugger-minimizeBut");
 
     watchExpressionPanel.addStyleName(resources.getCss().watchExpressionsPanel());

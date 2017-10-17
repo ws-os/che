@@ -37,11 +37,6 @@
 .watchExpressionsPanel {
 }
 
-.debugTreeContainer {
-    height: 100%;
-    width: 100%;
-}
-
 .watchExpressionsPanel .leftToolbarPart {
     margin: 0;
     float: none;
