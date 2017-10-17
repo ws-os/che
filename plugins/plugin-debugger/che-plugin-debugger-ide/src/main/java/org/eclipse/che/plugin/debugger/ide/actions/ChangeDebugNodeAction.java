@@ -25,7 +25,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValue
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit.EditWatchExpressionPresenter;
 
 /**
- * Action which allows change value of selected variable with debugger
+ * Action which allows change value of selected node in the debugger tree.
  *
  * @author Mykola Morhun
  * @author Oleksandr Andriienko
