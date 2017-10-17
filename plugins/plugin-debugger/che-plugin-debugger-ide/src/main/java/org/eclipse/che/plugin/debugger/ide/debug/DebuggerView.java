@@ -13,14 +13,13 @@ package org.eclipse.che.plugin.debugger.ide.debug;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import org.eclipse.che.api.debug.shared.model.Expression;
-import org.eclipse.che.api.debug.shared.model.Variable;
-import org.eclipse.che.api.debug.shared.model.Location;
-import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
+import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
+import org.eclipse.che.api.debug.shared.model.ThreadState;
+import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.commons.annotation.Nullable;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.mvp.View;
 import org.eclipse.che.ide.api.parts.base.BaseActionDelegate;
 
@@ -82,19 +81,36 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   void expandVariable(Variable variable);
 
   /**
+   * Returns selected variable on the debugger panel or null if none selected variable.
+   *
+   * @return selected variable or null otherwise.
+   */
+  Variable getSelectedVariable();
+
+  /**
+   * Returns selected expression on the debugger panel or null if none selected expression.
+   *
+   * @return selected expression or null otherwise.
+   */
+  Expression getSelectedExpression();
+
+  /**
    * Add new watch expression.
+   *
    * @param expression to add
    */
   void addExpression(Expression expression);
 
   /**
    * Update new expression.
+   *
    * @param expression to update
    */
   void updateExpression(Expression expression);
 
   /**
    * Remove expression.
+   *
    * @param expression to remove
    */
   void removeExpression(Expression expression);
@@ -134,13 +150,6 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
 
   /** Returns selected frame index inside thread or -1 if there is no selection. */
   int getSelectedFrameIndex();
-
-  /**
-   * Returns selected variable in the variables list on debugger panel or null if no selection.
-   *
-   * @return selected variable or null if no selection.
-   */
-  Node getSelectedTeeNode();
 
   /** Returns debugger toolbar panel widget. */
   AcceptsOneWidget getDebuggerToolbarPanel();

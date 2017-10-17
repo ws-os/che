@@ -12,15 +12,14 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.common;
 
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.ide.api.mvp.View;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
 
 /**
- * The view of {@link ChangeValuePresenter}.
+ * Dialog Window based on TextArea widget.
  *
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
  */
 public interface TextAreaDialogView extends View<TextAreaDialogView.ActionDelegate> {
-  /** Needs for delegate some function into ChangeValue view. */
+  /** Needs for delegate some function into TextArea view. */
   interface ActionDelegate {
 
     /** Show text area dialog view. */

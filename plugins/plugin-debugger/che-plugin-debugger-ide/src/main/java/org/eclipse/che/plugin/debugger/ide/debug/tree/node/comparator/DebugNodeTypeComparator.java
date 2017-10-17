@@ -8,10 +8,12 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
+package org.eclipse.che.plugin.debugger.ide.debug.tree.node.comparator;
 
 import java.util.Comparator;
 import org.eclipse.che.ide.api.data.tree.Node;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
+import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * Comparator for debugger tree.
@@ -30,6 +32,7 @@ public class DebugNodeTypeComparator implements Comparator<Node> {
     if (node instanceof WatchExpressionNode) {
       return 1;
     }
+
     if (node instanceof VariableNode) {
       return 2;
     }

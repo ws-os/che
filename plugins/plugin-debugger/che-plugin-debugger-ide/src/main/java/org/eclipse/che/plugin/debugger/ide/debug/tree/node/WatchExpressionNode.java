@@ -42,7 +42,7 @@ public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
   @Override
   protected Promise<List<Node>> getChildrenImpl() {
     // Todo: current server side returns result of evaluation expression like simple string line,
-    // so we have not ability to get and render children.
+    // so we have no children.
     return promiseProvider.resolve(emptyList());
   }
 

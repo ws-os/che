@@ -14,21 +14,18 @@ import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspect
 
 import com.google.inject.Inject;
 import java.util.Collections;
-
 import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /** @author Alexander Andrienko */
 public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   private final DebuggerPresenter debuggerPresenter;
-  private Node selectedNode;
+  private Expression selectedExpression;
 
   @Inject
   public RemoveWatchExpressionAction(
@@ -46,15 +43,12 @@ public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    Expression expression = ((WatchExpressionNode) selectedNode).getData();
-    debuggerPresenter.onRemoveExpressionBtnClicked(expression);
+    debuggerPresenter.onRemoveExpressionBtnClicked(selectedExpression);
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    selectedNode = debuggerPresenter.getSelectedDebugNode();
-    event
-        .getPresentation()
-        .setEnabled(selectedNode != null && selectedNode instanceof WatchExpressionNode);
+    selectedExpression = debuggerPresenter.getSelectedWatchExpression();
+    event.getPresentation().setEnabled(selectedExpression != null);
   }
 }

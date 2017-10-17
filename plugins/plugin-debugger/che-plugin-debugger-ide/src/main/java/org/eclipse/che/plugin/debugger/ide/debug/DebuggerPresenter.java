@@ -33,11 +33,9 @@ import org.eclipse.che.api.debug.shared.model.SimpleValue;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
-import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
 import org.eclipse.che.ide.api.debug.BreakpointManagerObserver;
 import org.eclipse.che.ide.api.notification.NotificationManager;
@@ -307,28 +305,29 @@ public class DebuggerPresenter extends BasePresenter
 
   private void calculateWatchExpression(Expression expression, long threadId, int frameIndex) {
     Debugger activeDebugger = debuggerManager.getActiveDebugger();
-
-    if (activeDebugger == null || !activeDebugger.isConnected()) {
-      return;
+    if (activeDebugger != null && activeDebugger.isSuspended()) {
+      debuggerManager
+          .getActiveDebugger()
+          .evaluate(expression.getExpression(), threadId, frameIndex)
+          .then(
+              result -> {
+                expression.setResult(result);
+                view.updateExpression(expression);
+              })
+          .catchError(
+              error -> {
+                expression.setResult(error.getMessage());
+                view.updateExpression(expression);
+              });
     }
-
-    debuggerManager
-        .getActiveDebugger()
-        .evaluate(expression.getExpression(), threadId, frameIndex)
-        .then(
-            result -> {
-              expression.setResult(result);
-              view.updateExpression(expression);
-            })
-        .catchError(
-            error -> {
-              expression.setResult(error.getMessage());
-              view.updateExpression(expression);
-            });
   }
 
-  public Node getSelectedDebugNode() {
-    return view.getSelectedTeeNode();
+  public Expression getSelectedWatchExpression() {
+    return view.getSelectedExpression();
+  }
+
+  public Variable getSelectedVariable() {
+    return view.getSelectedVariable();
   }
 
   public ToolbarPresenter getDebuggerToolbar() {
@@ -425,7 +424,14 @@ public class DebuggerPresenter extends BasePresenter
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
     view.setVariables(emptyList());
-    setWatchExpressions(view.getSelectedThreadId(), view.getSelectedFrameIndex());
+    clearExpressionsValue();
+  }
+
+  private void clearExpressionsValue() {
+    for (Expression expression : expressions) {
+      expression.setResult("");
+      view.addExpression(expression);
+    }
   }
 
   private void resetView() {
@@ -439,7 +445,7 @@ public class DebuggerPresenter extends BasePresenter
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
     view.setVariables(emptyList());
-    setWatchExpressions(view.getSelectedThreadId(), view.getSelectedFrameIndex());
+    clearExpressionsValue();
   }
 
   @Override

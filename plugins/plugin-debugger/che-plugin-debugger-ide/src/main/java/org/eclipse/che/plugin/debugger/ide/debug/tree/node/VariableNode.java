@@ -12,7 +12,6 @@ package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.promises.client.Promise;
@@ -22,14 +21,14 @@ import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 
 public class VariableNode extends AbstractDebuggerNode<Variable> {
 
+  private final PromiseProvider promiseProvider;
   private Variable data;
-  private PromiseProvider promiseProvider;
 
   @Inject
-  public VariableNode(@Assisted Variable data, PromiseProvider promiseProvider) {
-    this.data = data;
-    this.children = new ArrayList<>();
+  public VariableNode(@Assisted Variable data,
+                      PromiseProvider promiseProvider) {
     this.promiseProvider = promiseProvider;
+    this.data = data;
   }
 
   @Override
