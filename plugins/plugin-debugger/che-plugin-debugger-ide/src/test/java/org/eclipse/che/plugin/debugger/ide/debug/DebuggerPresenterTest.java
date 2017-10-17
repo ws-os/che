@@ -167,7 +167,7 @@ public class DebuggerPresenterTest extends BaseTest {
     verify(promiseThreadDump).then(operationThreadDumpCaptor.capture());
     operationThreadDumpCaptor.getValue().apply(threadDump);
     verify(presenter).updateStackFrameDump(THREAD_ID);
-    verify(presenter).updateVariables(THREAD_ID, 0);
+    verify(presenter).updateVariablesAndExpressions(THREAD_ID, 0);
     verify(view).setThreadDump(eq(threadDump), anyLong());
   }
 

@@ -13,12 +13,10 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.che.api.debug.shared.model.Expression;
-import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
-import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
  * Presenter to apply expression in the debugger watch list.
@@ -31,7 +29,7 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
   private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
   private final DebuggerLocalizationConstant constant;
-  private WatchExpressionNode watchExpressionNode;
+  private Expression selectedExpression;
 
   @Inject
   public EditWatchExpressionPresenter(
@@ -51,17 +49,13 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
 
   @Override
   public void showDialog() {
-    Node selectedNode = debuggerPresenter.getSelectedDebugNode();
-    if (selectedNode instanceof WatchExpressionNode) {
-      watchExpressionNode = (WatchExpressionNode) selectedNode;
-
-      view.setValueTitle(constant.editExpressionViewExpressionFieldTitle());
-      view.setValue(watchExpressionNode.getData().getExpression());
-      view.focusInValueField();
-      view.selectAllText();
-      view.setEnableChangeButton(false);
-      view.show();
-    }
+    selectedExpression = debuggerPresenter.getSelectedWatchExpression();
+    view.setValueTitle(constant.editExpressionViewExpressionFieldTitle());
+    view.setValue(selectedExpression.getExpression());
+    view.focusInValueField();
+    view.selectAllText();
+    view.setEnableChangeButton(false);
+    view.show();
   }
 
   @Override
@@ -71,11 +65,8 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
 
   @Override
   public void onAgreeClicked() {
-    if (watchExpressionNode != null) {
-      Expression expression = watchExpressionNode.getData();
-      expression.setExpression(view.getValue());
-      debuggerPresenter.onEditExpressionBtnClicked(expression);
-    }
+    selectedExpression.setExpression(view.getValue());
+    debuggerPresenter.onEditExpressionBtnClicked(selectedExpression);
 
     view.close();
   }
