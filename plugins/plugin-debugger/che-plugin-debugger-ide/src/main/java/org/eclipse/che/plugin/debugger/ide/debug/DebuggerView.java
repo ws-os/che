@@ -78,7 +78,8 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
   /** Updates variable in the list */
   void updateVariable(Variable variable);
 
-  /** Expand variable in the debugger tree.
+  /**
+   * Expand variable in the debugger tree.
    *
    * @param variable to expand
    */
