@@ -21,6 +21,8 @@ import {CheTypeNumber} from './input-type/input-number.directive';
 import {CheTypeCity} from './input-type/input-city.directive';
 import {CheMultiTransclude} from './multi-transclude/che-multi-transclude.directive';
 import {CheMultiTranscludePart} from './multi-transclude/che-multi-transclude-part.directive';
+import {ImgSrc} from './img-src/img-src.directive';
+import {CheClipTheMiddle} from './clip-the-middle/che-clip-the-middle.directive';
 
 export class AttributeConfig {
 
@@ -45,5 +47,9 @@ export class AttributeConfig {
 
     register.directive('cheMultiTransclude', CheMultiTransclude);
     register.directive('cheMultiTranscludePart', CheMultiTranscludePart);
+
+    register.directive('imgSrc', ImgSrc);
+
+    register.directive('cheClipTheMiddle', CheClipTheMiddle);
   }
 }
