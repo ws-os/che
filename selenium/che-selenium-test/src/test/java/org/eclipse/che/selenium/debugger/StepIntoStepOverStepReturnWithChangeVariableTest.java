@@ -130,21 +130,21 @@ public class StepIntoStepOverStepReturnWithChangeVariableTest {
     CompletableFuture<String> instToRequestThread =
         debugUtils.gotoDebugAppAndSendRequest(appUrl, requestMess);
     editor.waitActiveBreakpoint(34);
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.STEP_OVER);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.STEP_OVER);
     debugPanel.waitDebugHighlightedText("AdditonalClass.check();");
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.STEP_INTO);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.STEP_INTO);
     editor.waitTabFileWithSavedStatus("AdditonalClass");
     debugPanel.waitDebugHighlightedText(" someStr.toLowerCase();");
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.STEP_OVER);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.STEP_OVER);
     debugPanel.waitDebugHighlightedText("Operation.valueOf(\"SUBTRACT\").toString();");
     debugPanel.waitTextInVariablesPanel("someStr=\"hello Cdenvy\"");
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.STEP_OUT);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.STEP_OUT);
     debugPanel.waitTextInVariablesPanel("secretNum=");
-    debugPanel.selectVarInVariablePanel("numGuessByUser=\"6\"");
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.CHANGE_VARIABLE);
-    debugPanel.typeAndChangeVariable("\"7\"");
+    debugPanel.selectNodeInDebuggerTree("numGuessByUser=\"6\"");
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.CHANGE_DEBUG_TREE_NODE);
+    debugPanel.typeAndSaveTextAreaDialog("\"7\"");
     debugPanel.waitTextInVariablesPanel("numGuessByUser=\"7\"");
-    debugPanel.clickOnButton(DebugPanel.DebuggerButtonsPanel.RESUME_BTN_ID);
+    debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.RESUME_BTN_ID);
     assertTrue(instToRequestThread.get().contains("<html>"));
   }
 

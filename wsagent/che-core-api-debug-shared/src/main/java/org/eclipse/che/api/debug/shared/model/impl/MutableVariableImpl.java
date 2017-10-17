@@ -21,7 +21,7 @@ public class MutableVariableImpl implements MutableVariable {
   private final String type;
   private final boolean isPrimitive;
   private final VariablePath variablePath;
-  private  String name;
+  private String name;
   private SimpleValue value;
 
   public MutableVariableImpl(

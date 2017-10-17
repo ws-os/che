@@ -73,4 +73,38 @@ public class DebuggerUtils {
           return responseData.toString();
         });
   }
+
+  public CompletableFuture<String> goToDebugAppAndSendJson(
+      final String appUrl, final String jsonObj) {
+    return CompletableFuture.supplyAsync(
+        () -> {
+          HttpURLConnection connection = null;
+          //todo improve: code duplication
+          StringBuilder responseData = new StringBuilder();
+          try {
+            URL url = new URL(appUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            OutputStream output = connection.getOutputStream();
+            output.write(jsonObj.getBytes());
+            if (connection.getResponseCode() != 201) {
+              throw new RuntimeException(
+                  new Exception(
+                          "Cannot do request for application: " + connection.getResponseCode())
+                      + IoUtil.readStream(connection.getErrorStream()));
+            }
+            output.close();
+          } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+          } finally {
+            if (connection != null) {
+              connection.disconnect();
+            }
+          }
+          return responseData.toString();
+        });
+  }
 }

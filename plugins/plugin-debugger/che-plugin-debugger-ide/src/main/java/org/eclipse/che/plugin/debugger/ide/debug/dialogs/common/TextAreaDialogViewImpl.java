@@ -44,21 +44,24 @@ public class TextAreaDialogViewImpl extends Window implements TextAreaDialogView
       ChangeValueViewImplUiBinder uiBinder,
       @NotNull @Assisted("title") String title,
       @NotNull @Assisted("agreeBtnLabel") String agreeBtnLabel,
-      @NotNull @Assisted("cancelBtnLabel") String cancelBtnLabel,
-      @NotNull @Assisted("debugId") String debugId) {
+      @NotNull @Assisted("cancelBtnLabel") String cancelBtnLabel) {
     Widget widget = uiBinder.createAndBindUi(this);
 
     this.setTitle(title);
     this.setWidget(widget);
-    this.ensureDebugId(debugId);
+    this.ensureDebugId("debugger-textarea-dialog");
 
     Button cancelButton =
         createButton(
-            cancelBtnLabel, debugId + "-cancel-btn", clickEvent -> delegate.onCancelClicked());
+            cancelBtnLabel,
+            "debugger-textarea-dialog-cancel-btn",
+            clickEvent -> delegate.onCancelClicked());
 
     agreeButton =
         createButton(
-            agreeBtnLabel, debugId + "-agree-btn", clickEvent -> delegate.onAgreeClicked());
+            agreeBtnLabel,
+            "debugger-textarea-dialog-agree-btn",
+            clickEvent -> delegate.onAgreeClicked());
 
     addButtonToFooter(cancelButton);
     addButtonToFooter(agreeButton);

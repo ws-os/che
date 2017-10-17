@@ -11,6 +11,10 @@
 package org.eclipse.che.selenium.pageobject.intelligent;
 
 import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.REDRAW_UI_ELEMENTS_TIMEOUT_SEC;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -24,7 +28,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /** @author Sergey Skorik */
@@ -88,8 +91,8 @@ public class CommandsPalette {
   /** Start CommandPalette widget by clicking on button */
   public void openCommandPalette() {
     loader.waitOnClosed();
-    redrawUiElementTimeout.until(ExpectedConditions.visibilityOf(commandPaletteButton)).click();
-    redrawUiElementTimeout.until(ExpectedConditions.visibilityOf(commandPalette));
+    redrawUiElementTimeout.until(visibilityOf(commandPaletteButton)).click();
+    redrawUiElementTimeout.until(visibilityOf(commandPalette));
   }
 
   /** Start CommandPalette widget by Shift+F10 hot keys */
@@ -99,18 +102,17 @@ public class CommandsPalette {
         .createAction(seleniumWebDriver)
         .sendKeys(Keys.SHIFT.toString(), Keys.F10.toString())
         .perform();
-    redrawUiElementTimeout.until(ExpectedConditions.visibilityOf(commandPalette));
+    redrawUiElementTimeout.until(visibilityOf(commandPalette));
   }
 
   /** Check the CommandsPalette widget is started */
   public void waitCommandPalette() {
-    redrawUiElementTimeout.until(ExpectedConditions.visibilityOf(commandPalette));
+    redrawUiElementTimeout.until(visibilityOf(commandPalette));
   }
 
   public void closeCommandPalette() {
-    redrawUiElementTimeout.until(ExpectedConditions.visibilityOf(closeCommandPalette)).click();
-    redrawUiElementTimeout.until(
-        ExpectedConditions.invisibilityOfElementLocated(By.xpath(Locators.COMMAND_PALETTE)));
+    redrawUiElementTimeout.until(visibilityOf(closeCommandPalette)).click();
+    redrawUiElementTimeout.until(invisibilityOfElementLocated(By.xpath(Locators.COMMAND_PALETTE)));
     loader.waitOnClosed();
   }
 
@@ -128,28 +130,24 @@ public class CommandsPalette {
    * @param commandName name of the command
    */
   public void searchAndStartCommand(String commandName) {
-    redrawUiElementTimeout
-        .until(ExpectedConditions.visibilityOf(searchField))
-        .sendKeys(commandName);
+    redrawUiElementTimeout.until(visibilityOf(searchField)).sendKeys(commandName);
     loader.waitOnClosed();
   }
 
   public void clearSearchField() {
-    redrawUiElementTimeout.until(ExpectedConditions.visibilityOf(searchField)).clear();
-    redrawUiElementTimeout.until(ExpectedConditions.visibilityOf(searchField)).sendKeys(Keys.ENTER);
+    redrawUiElementTimeout.until(visibilityOf(searchField)).clear();
+    redrawUiElementTimeout.until(visibilityOf(searchField)).sendKeys(Keys.ENTER);
     loader.waitOnClosed();
   }
 
   public void commandIsExists(String commandName) {
     redrawUiElementTimeout.until(
-        ExpectedConditions.visibilityOfElementLocated(
-            By.xpath(String.format(Locators.COMMANDS, commandName))));
+        visibilityOfElementLocated(By.xpath(String.format(Locators.COMMANDS, commandName))));
   }
 
   public void commandIsNotExists(String commandName) {
     redrawUiElementTimeout.until(
-        ExpectedConditions.invisibilityOfElementLocated(
-            By.xpath(String.format(Locators.COMMANDS, commandName))));
+        invisibilityOfElementLocated(By.xpath(String.format(Locators.COMMANDS, commandName))));
   }
 
   /**
@@ -158,6 +156,8 @@ public class CommandsPalette {
    * @param commandName name of the command
    */
   public void startCommandByDoubleClick(String commandName) {
+    redrawUiElementTimeout.until(
+        elementToBeClickable(By.xpath(String.format(Locators.COMMANDS, commandName))));
     actions
         .doubleClick(
             seleniumWebDriver.findElement(By.xpath(String.format(Locators.COMMANDS, commandName))))

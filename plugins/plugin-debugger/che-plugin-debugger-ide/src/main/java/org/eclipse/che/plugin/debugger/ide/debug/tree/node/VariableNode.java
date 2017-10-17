@@ -25,8 +25,7 @@ public class VariableNode extends AbstractDebuggerNode<Variable> {
   private Variable data;
 
   @Inject
-  public VariableNode(@Assisted Variable data,
-                      PromiseProvider promiseProvider) {
+  public VariableNode(@Assisted Variable data, PromiseProvider promiseProvider) {
     this.promiseProvider = promiseProvider;
     this.data = data;
   }

@@ -14,31 +14,31 @@ import org.eclipse.che.api.debug.shared.model.Expression;
 
 public class ExpressionImpl implements Expression {
 
-    private String expression;
-    private String result;
+  private String expression;
+  private String result;
 
-    public ExpressionImpl(String expression, String result) {
-        this.expression = expression;
-        this.result = result;
-    }
+  public ExpressionImpl(String expression, String result) {
+    this.expression = expression;
+    this.result = result;
+  }
 
-    @Override
-    public String getExpression() {
-        return expression;
-    }
+  @Override
+  public String getExpression() {
+    return expression;
+  }
 
-    @Override
-    public void setExpression(String expression) {
-        this.expression = expression;
-    }
+  @Override
+  public void setExpression(String expression) {
+    this.expression = expression;
+  }
 
-    @Override
-    public String getResult() {
-        return result;
-    }
+  @Override
+  public String getResult() {
+    return result;
+  }
 
-    @Override
-    public void setResult(String result) {
-        this.result = result;
-    }
+  @Override
+  public void setResult(String result) {
+    this.result = result;
+  }
 }

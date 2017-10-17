@@ -192,6 +192,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     if (nodeToUpdate != null && nodeToUpdate instanceof VariableNode) {
       VariableNode variableNode = ((VariableNode) nodeToUpdate);
       variableNode.setData(variable);
+      tree.getNodeStorage().update(variableNode);
 
       if (tree.isExpanded(nodeToUpdate)) {
         tree.getNodeLoader().loadChildren(variableNode);

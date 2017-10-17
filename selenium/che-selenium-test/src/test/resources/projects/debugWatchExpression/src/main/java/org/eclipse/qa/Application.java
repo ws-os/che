@@ -8,15 +8,15 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.api.debug.shared.model;
+package org.eclipse.qa;
 
-public interface Expression {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-  String getExpression();
+@SpringBootApplication
+public class Application {
 
-  void setExpression(String expression);
-
-  String getResult();
-
-  void setResult(String result);
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }

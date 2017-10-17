@@ -20,6 +20,5 @@ public interface DebuggerDialogFactory {
   TextAreaDialogView createTextAreaDialogView(
       @NotNull @Assisted("title") String title,
       @NotNull @Assisted("agreeBtnLabel") String agreeBtnLabel,
-      @NotNull @Assisted("cancelBtnLabel") String cancelBtnLabel,
-      @NotNull @Assisted("debugId") String debugId);
+      @NotNull @Assisted("cancelBtnLabel") String cancelBtnLabel);
 }

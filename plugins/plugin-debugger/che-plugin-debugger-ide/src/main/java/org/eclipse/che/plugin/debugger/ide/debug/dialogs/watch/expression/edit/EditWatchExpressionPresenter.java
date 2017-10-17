@@ -19,7 +19,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
 
 /**
- * Presenter to apply expression in the debugger watch list.
+ * Presenter to edit selected expression in the debugger watch list.
  *
  * @author Alexander Andrienko
  */
@@ -40,8 +40,7 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
         dialogFactory.createTextAreaDialogView(
             constant.editExpressionTextAreaDialogView(),
             constant.editExpressionViewSaveButtonTitle(),
-            constant.editExpressionViewCancelButtonTitle(),
-            "debugger-edit-expression");
+            constant.editExpressionViewCancelButtonTitle());
     this.view.setDelegate(this);
     this.debuggerPresenter = debuggerPresenter;
     this.constant = constant;

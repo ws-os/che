@@ -8,15 +8,15 @@
  * Contributors:
  *   Red Hat, Inc. - initial API and implementation
  */
-package org.eclipse.che.api.debug.shared.model;
+package org.eclipse.qa.util;
 
-public interface Expression {
+import java.util.concurrent.atomic.AtomicLong;
 
-  String getExpression();
+public class ShapeUniqueIdGenerator {
 
-  void setExpression(String expression);
+    private static final AtomicLong counter = new AtomicLong();
 
-  String getResult();
-
-  void setResult(String result);
+    public static long generateUniqueId() {
+        return counter.incrementAndGet();
+    }
 }
