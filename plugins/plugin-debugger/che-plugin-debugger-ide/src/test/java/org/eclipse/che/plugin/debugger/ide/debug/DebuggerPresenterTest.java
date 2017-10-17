@@ -25,11 +25,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
-import org.eclipse.che.api.debug.shared.model.Location;
-import org.eclipse.che.api.debug.shared.model.MutableVariable;
-import org.eclipse.che.api.debug.shared.model.StackFrameDump;
-import org.eclipse.che.api.debug.shared.model.ThreadState;
+import org.eclipse.che.api.debug.shared.model.*;
 import org.eclipse.che.api.promises.client.Operation;
+import org.eclipse.che.api.promises.client.OperationException;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
 import org.eclipse.che.ide.api.notification.NotificationManager;
@@ -116,22 +114,22 @@ public class DebuggerPresenterTest extends BaseTest {
     when(view.getSelectedFrameIndex()).thenReturn(FRAME_INDEX);
   }
 
-  //  @Test
-  //  public void shouldSetNestedVariablesWhenNodeIsExpended() throws OperationException {
-  //    SimpleValueDto valueDto = mock(SimpleValueDto.class);
-  //    doReturn(promiseValue)
-  //        .when(debugger)
-  //        .getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
-  //    doReturn(promiseValue).when(promiseValue).then((Operation<SimpleValueDto>) any());
-  //
-  //    presenter.onExpandVariable(selectedVariable);
-  //
-  //    verify(promiseValue).then(operationValueCaptor.capture());
-  //    operationValueCaptor.getValue().apply(valueDto);
-  //
-  //    verify(debugger).getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
-  //    verify(view).setVariableValue(selectedVariable, valueDto);
-  //  }
+  @Test
+  public void shouldSetNestedVariablesWhenNodeIsExpended() throws OperationException {
+    SimpleValueDto valueDto = mock(SimpleValueDto.class);
+    doReturn(promiseValue)
+        .when(debugger)
+        .getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
+    doReturn(promiseValue).when(promiseValue).then((Operation<SimpleValueDto>) any());
+
+    presenter.onExpandVariable(selectedVariable);
+
+    verify(promiseValue).then(operationValueCaptor.capture());
+    operationValueCaptor.getValue().apply(valueDto);
+
+    verify(debugger).getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
+    verify(view).expandVariable(any(Variable.class));
+  }
 
   @Test
   public void shouldUpdateStackFrameDumpAndVariablesOnNewSelectedThread() throws Exception {
@@ -216,19 +214,19 @@ public class DebuggerPresenterTest extends BaseTest {
     notificationManager.notify(eq(title), eq(description), eq(SUCCESS), eq(NOT_EMERGE_MODE));
   }
 
-  //  @Test
-  //  public void shouldSetNewValueOnValueChanged() throws Exception {
-  //    SimpleValueDto valueDto = mock(SimpleValueDto.class);
-  //    doReturn(promiseValue)
-  //        .when(debugger)
-  //        .getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
-  //    doReturn(promiseValue).when(promiseValue).then((Operation<SimpleValueDto>) any());
-  //
-  //    presenter.onValueChanged(selectedVariable, THREAD_ID, FRAME_INDEX);
-  //
-  //    verify(promiseValue).then(operationValueCaptor.capture());
-  //    operationValueCaptor.getValue().apply(valueDto);
-  //    verify(debugger).getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
-  //    verify(view).setVariableValue(selectedVariable, valueDto);
-  //  }
+  @Test
+  public void shouldSetNewValueOnValueChanged() throws Exception {
+    SimpleValueDto valueDto = mock(SimpleValueDto.class);
+    doReturn(promiseValue)
+        .when(debugger)
+        .getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
+    doReturn(promiseValue).when(promiseValue).then((Operation<SimpleValueDto>) any());
+
+    presenter.onValueChanged(selectedVariable, THREAD_ID, FRAME_INDEX);
+
+    verify(promiseValue).then(operationValueCaptor.capture());
+    operationValueCaptor.getValue().apply(valueDto);
+    verify(debugger).getValue(eq(selectedVariable), eq(THREAD_ID), eq(FRAME_INDEX));
+    verify(view).updateVariable(any(Variable.class));
+  }
 }

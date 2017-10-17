@@ -70,7 +70,7 @@ public class ChangeValuePresenter implements TextAreaDialogView.ActionDelegate {
   @Override
   public void onAgreeClicked() {
     Debugger debugger = debuggerManager.getActiveDebugger();
-    if (debugger != null && debugger.isSuspended()) {
+    if (selectedVariable != null && debugger != null && debugger.isSuspended()) {
       Variable newVariable =
           new VariableImpl(
               selectedVariable.getType(),

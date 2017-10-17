@@ -10,23 +10,28 @@
  */
 package org.eclipse.che.plugin.debugger.ide;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
 import org.eclipse.che.api.debug.shared.dto.VariableDto;
 import org.eclipse.che.api.debug.shared.dto.VariablePathDto;
 import org.eclipse.che.api.debug.shared.model.MutableVariable;
+import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 /**
@@ -34,17 +39,20 @@ import org.mockito.Mock;
  *
  * @author Artem Zatsarynnyi
  */
-public class ChangeVariableValueTest extends BaseTest {
+public class ChangeValuePresenterTest extends BaseTest {
   private static final String VAR_VALUE = "var_value";
   private static final String VAR_NAME = "var_name";
   private static final String EMPTY_VALUE = "";
   @Mock private TextAreaDialogView view;
-  @InjectMocks private ChangeValuePresenter presenter;
+  @Mock private DebuggerManager debuggerManager;
+  @Mock private DebuggerPresenter debuggerPresenter;
+  @Mock private DebuggerDialogFactory dialogFactory;
+
+  private ChangeValuePresenter presenter;
+
   @Mock private VariableDto var;
   @Mock private VariablePathDto varPath;
-  @Mock private DebuggerManager debuggerManager;
   @Mock private Debugger debugger;
-  @Mock private DebuggerPresenter debuggerPresenter;
   @Mock private MutableVariable variable;
   @Mock private VariablePathDto variablePathDto;
   @Mock private SimpleValueDto simpleValueDto;
@@ -52,28 +60,32 @@ public class ChangeVariableValueTest extends BaseTest {
   @Before
   public void setUp() {
     super.setUp();
+    when(dialogFactory.createTextAreaDialogView(any(), any(), any())).thenReturn(view);
     when(var.getName()).thenReturn(VAR_NAME);
     when(var.getValue()).thenReturn(simpleValueDto);
     when(var.getVariablePath()).thenReturn(varPath);
     when(simpleValueDto.getString()).thenReturn(VAR_VALUE);
     when(dtoFactory.createDto(VariableDto.class)).thenReturn(mock(VariableDto.class));
     when(debugger.isSuspended()).thenReturn(true);
+
+    presenter =
+        new ChangeValuePresenter(dialogFactory, constants, debuggerManager, debuggerPresenter);
   }
 
   @Test
   public void shouldShowDialog() throws Exception {
-    //    when(debuggerPresenter.getSelectedVariable()).thenReturn(variable);
-    //    when(variable.getValue()).thenReturn(simpleValueDto);
-    //
-    //    presenter.showDialog();
+    when(debuggerPresenter.getSelectedVariable()).thenReturn(variable);
+    when(variable.getValue()).thenReturn(simpleValueDto);
 
-    //    verify(debuggerPresenter).getSelectedVariable();
-    //    verify(view).setValueTitle(constants.changeValueViewExpressionFieldTitle(VAR_NAME));
-    //    verify(view).setValue(VAR_VALUE);
-    //    verify(view).focusInValueField();
-    //    verify(view).selectAllText();
-    //    verify(view).setEnableChangeButton(eq(DISABLE_BUTTON));
-    //    verify(view).show();
+    presenter.showDialog();
+
+    verify(debuggerPresenter).getSelectedVariable();
+    verify(view).setValueTitle(constants.changeValueViewExpressionFieldTitle(VAR_NAME));
+    verify(view).setValue(VAR_VALUE);
+    verify(view).focusInValueField();
+    verify(view).selectAllText();
+    verify(view).setEnableChangeButton(eq(DISABLE_BUTTON));
+    verify(view).show();
   }
 
   @Test
@@ -103,17 +115,17 @@ public class ChangeVariableValueTest extends BaseTest {
 
   @Test
   public void testChangeValueRequest() throws Exception {
-    //    when(debuggerPresenter.getSelectedDebugNode()).thenReturn(variable);
-    //    when(debuggerManager.getActiveDebugger()).thenReturn(debugger);
-    //    when(view.getValue()).thenReturn(VAR_VALUE);
-    //    when(variable.getVariablePath()).thenReturn(variablePathDto);
-    //    when(variable.getValue()).thenReturn(mock(SimpleValueDto.class));
-    //    when(variablePathDto.getPath()).thenReturn(new ArrayList<>());
+    when(debuggerPresenter.getSelectedVariable()).thenReturn(variable);
+    when(debuggerManager.getActiveDebugger()).thenReturn(debugger);
+    when(view.getValue()).thenReturn(VAR_VALUE);
+    when(variable.getVariablePath()).thenReturn(variablePathDto);
+    when(variable.getValue()).thenReturn(mock(SimpleValueDto.class));
+    when(variablePathDto.getPath()).thenReturn(new ArrayList<>());
 
-    //    presenter.showDialog();
-    //    presenter.onAgreeClicked();
+    presenter.showDialog();
+    presenter.onAgreeClicked();
 
-    //    verify(debugger).setValue(anyObject(), anyLong(), anyInt());
-    //    verify(view).close();
+    verify(debugger).setValue(any(Variable.class), anyLong(), anyInt());
+    verify(view).close();
   }
 }
