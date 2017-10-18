@@ -20,7 +20,11 @@ import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add.AddWatchExpressionPresenter;
 
-/** @author Alexander Andrienko */
+/**
+ * Action allows add new debugger watch expression to the debugger tree.
+ *
+ * @author Oleksandr Andriienko
+ */
 public class AddWatchExpressionAction extends AbstractPerspectiveAction {
 
   private final AddWatchExpressionPresenter addWatchExpressionPresenter;

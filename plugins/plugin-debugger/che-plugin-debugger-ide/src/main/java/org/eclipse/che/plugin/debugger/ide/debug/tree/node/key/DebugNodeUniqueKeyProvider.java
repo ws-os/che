@@ -16,13 +16,19 @@ import com.google.common.base.Joiner;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.Objects;
-import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.ui.smartTree.UniqueKeyProvider;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
+/**
+ * Unique key provider for storing debugger node in the {@link org.eclipse.che.ide.ui.smartTree.Tree}
+ * With help this key we can quickly find node in the {@link org.eclipse.che.ide.ui.smartTree.NodeStorage}
+ *
+ * @author Oleksandr Andriienko
+ */
 @Singleton
 public class DebugNodeUniqueKeyProvider implements UniqueKeyProvider<Node> {
 
@@ -36,7 +42,7 @@ public class DebugNodeUniqueKeyProvider implements UniqueKeyProvider<Node> {
       return evaluateKey(variable);
     }
     if (item instanceof WatchExpressionNode) {
-      Expression expression = ((WatchExpressionNode) item).getData();
+      WatchExpression expression = ((WatchExpressionNode) item).getData();
       return evaluateKey(expression);
     }
     return evaluateKey(item);
@@ -46,7 +52,7 @@ public class DebugNodeUniqueKeyProvider implements UniqueKeyProvider<Node> {
     return Joiner.on("/").join(variable.getVariablePath().getPath());
   }
 
-  public String evaluateKey(Expression expression) {
+  public String evaluateKey(WatchExpression expression) {
     int hash = expression.hashCode();
     return valueOf(hash);
   }

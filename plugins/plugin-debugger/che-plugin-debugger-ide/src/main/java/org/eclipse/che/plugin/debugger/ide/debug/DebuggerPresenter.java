@@ -27,13 +27,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.MutableVariable;
 import org.eclipse.che.api.debug.shared.model.SimpleValue;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
@@ -66,6 +66,7 @@ import org.vectomatic.dom.svg.ui.SVGResource;
  * @author Dmitry Shnurenko
  * @author Anatoliy Bazko
  * @author Mykola Morhun
+ * @author Oleksandr Andriienko
  */
 @Singleton
 public class DebuggerPresenter extends BasePresenter
@@ -85,7 +86,7 @@ public class DebuggerPresenter extends BasePresenter
   private final BreakpointContextMenuFactory breakpointContextMenuFactory;
 
   private List<Variable> variables;
-  private List<Expression> expressions;
+  private List<WatchExpression> expressions;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
   private DebuggerDescriptor debuggerDescriptor;
@@ -279,7 +280,7 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   private void setWatchExpressions(long threadId, int frameIndex) {
-    for (Expression expression : expressions) {
+    for (WatchExpression expression : expressions) {
       expression.setResult("");
       view.addExpression(expression);
 
@@ -288,7 +289,7 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   @Override
-  public void onAddExpressionBtnClicked(Expression expression) {
+  public void onAddExpressionBtnClicked(WatchExpression expression) {
     view.addExpression(expression);
     expressions.add(expression);
 
@@ -296,20 +297,20 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   @Override
-  public void onRemoveExpressionBtnClicked(Expression expression) {
+  public void onRemoveExpressionBtnClicked(WatchExpression expression) {
     view.removeExpression(expression);
     expressions.remove(expression);
   }
 
   @Override
-  public void onEditExpressionBtnClicked(Expression expression) {
+  public void onEditExpressionBtnClicked(WatchExpression expression) {
     expression.setResult("");
     view.updateExpression(expression);
 
     calculateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
   }
 
-  private void calculateWatchExpression(Expression expression, long threadId, int frameIndex) {
+  private void calculateWatchExpression(WatchExpression expression, long threadId, int frameIndex) {
     Debugger activeDebugger = debuggerManager.getActiveDebugger();
     if (activeDebugger != null && activeDebugger.isSuspended()) {
       debuggerManager
@@ -328,7 +329,7 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  public Expression getSelectedWatchExpression() {
+  public WatchExpression getSelectedWatchExpression() {
     return view.getSelectedExpression();
   }
 
@@ -434,7 +435,7 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   private void clearExpressionsValue() {
-    for (Expression expression : expressions) {
+    for (WatchExpression expression : expressions) {
       expression.setResult("");
       view.addExpression(expression);
     }

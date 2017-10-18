@@ -12,7 +12,7 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
@@ -21,7 +21,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogVi
 /**
  * Presenter to edit selected expression in the debugger watch list.
  *
- * @author Alexander Andrienko
+ * @author Oleksander Andriienko
  */
 @Singleton
 public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDelegate {
@@ -29,7 +29,7 @@ public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDe
   private final TextAreaDialogView view;
   private final DebuggerPresenter debuggerPresenter;
   private final DebuggerLocalizationConstant constant;
-  private Expression selectedExpression;
+  private WatchExpression selectedExpression;
 
   @Inject
   public EditWatchExpressionPresenter(

@@ -10,14 +10,19 @@
  */
 package org.eclipse.che.api.debug.shared.model.impl;
 
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 
-public class ExpressionImpl implements Expression {
+/**
+ * Implementation @{@link WatchExpression}
+ *
+ * @author Oleksander Andriienko
+ */
+public class WatchExpressionImpl implements WatchExpression {
 
   private String expression;
   private String result;
 
-  public ExpressionImpl(String expression, String result) {
+  public WatchExpressionImpl(String expression, String result) {
     this.expression = expression;
     this.result = result;
   }

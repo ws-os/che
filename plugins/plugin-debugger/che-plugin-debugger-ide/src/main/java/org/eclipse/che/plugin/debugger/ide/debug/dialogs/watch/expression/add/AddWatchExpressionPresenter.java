@@ -12,8 +12,8 @@ package org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.add;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.eclipse.che.api.debug.shared.model.Expression;
-import org.eclipse.che.api.debug.shared.model.impl.ExpressionImpl;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
+import org.eclipse.che.api.debug.shared.model.impl.WatchExpressionImpl;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
@@ -22,7 +22,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogVi
 /**
  * Presenter to apply expression in the debugger watch list.
  *
- * @author Alexander Andrienko
+ * @author Oleksandr Andriienko
  */
 @Singleton
 public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDelegate {
@@ -59,7 +59,7 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
 
   @Override
   public void onAgreeClicked() {
-    Expression expression = new ExpressionImpl(view.getValue(), "");
+    WatchExpression expression = new WatchExpressionImpl(view.getValue(), "");
     debuggerPresenter.onAddExpressionBtnClicked(expression);
 
     view.close();

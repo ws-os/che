@@ -14,8 +14,8 @@ import static java.util.Collections.singletonList;
 import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
 import com.google.inject.Inject;
-import org.eclipse.che.api.debug.shared.model.Expression;
 import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
@@ -30,16 +30,16 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.watch.expression.edit.E
  * @author Mykola Morhun
  * @author Oleksandr Andriienko
  */
-public class ChangeDebugNodeAction extends AbstractPerspectiveAction {
+public class EditDebugVariableAction extends AbstractPerspectiveAction {
 
   private final ChangeValuePresenter changeValuePresenter;
   private final DebuggerPresenter debuggerPresenter;
   private final EditWatchExpressionPresenter editWatchExpressionPresenter;
   private Variable selectedVariable;
-  private Expression selectedExpression;
+  private WatchExpression selectedExpression;
 
   @Inject
-  public ChangeDebugNodeAction(
+  public EditDebugVariableAction(
       DebuggerLocalizationConstant locale,
       DebuggerResources resources,
       ChangeValuePresenter changeValuePresenter,

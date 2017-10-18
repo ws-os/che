@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
@@ -202,13 +202,13 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public void addExpression(Expression expression) {
+  public void addExpression(WatchExpression expression) {
     WatchExpressionNode node = nodeFactory.createExpressionNode(expression);
     tree.getNodeStorage().add(node);
   }
 
   @Override
-  public void updateExpression(Expression expression) {
+  public void updateExpression(WatchExpression expression) {
     String key = nodeKeyProvider.evaluateKey(expression);
     Node nodeToUpdate = tree.getNodeStorage().findNodeWithKey(key);
     if (nodeToUpdate != null && nodeToUpdate instanceof WatchExpressionNode) {
@@ -220,7 +220,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public void removeExpression(Expression expression) {
+  public void removeExpression(WatchExpression expression) {
     String key = nodeKeyProvider.evaluateKey(expression);
     Node nodeToRemove = tree.getNodeStorage().findNodeWithKey(key);
     if (nodeToRemove != null) {
@@ -280,7 +280,7 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public Expression getSelectedExpression() {
+  public WatchExpression getSelectedExpression() {
     Node selectedNode = getSelectedNode();
     if (selectedNode instanceof WatchExpressionNode) {
       return ((WatchExpressionNode) selectedNode).getData();

@@ -15,23 +15,29 @@ import static java.util.Collections.emptyList;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.util.List;
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.api.promises.client.PromiseProvider;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 
-public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
+/**
+ *  Watch expression node for display watch Expression information in
+ *  the Debugger tree structure.
+ *
+ *  @author Oleksander Andriienko
+ */
+public class WatchExpressionNode extends AbstractDebuggerNode<WatchExpression> {
 
   private final PromiseProvider promiseProvider;
 
-  private Expression expression;
+  private WatchExpression expression;
   private DebuggerResources debuggerResources;
 
   @Inject
   public WatchExpressionNode(
-      @Assisted Expression expression,
+      @Assisted WatchExpression expression,
       PromiseProvider promiseProvider,
       DebuggerResources debuggerResources) {
     this.promiseProvider = promiseProvider;
@@ -65,12 +71,12 @@ public class WatchExpressionNode extends AbstractDebuggerNode<Expression> {
   }
 
   @Override
-  public Expression getData() {
+  public WatchExpression getData() {
     return expression;
   }
 
   @Override
-  public void setData(Expression expression) {
+  public void setData(WatchExpression expression) {
     this.expression = expression;
   }
 }

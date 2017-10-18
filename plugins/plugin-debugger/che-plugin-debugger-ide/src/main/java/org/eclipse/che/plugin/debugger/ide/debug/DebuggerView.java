@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
@@ -30,6 +30,7 @@ import org.eclipse.che.ide.api.parts.base.BaseActionDelegate;
  *
  * @author Andrey Plotnikov
  * @author Dmitry Shnurenko
+ * @author Oleksandr Andriienko
  */
 public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
 
@@ -55,13 +56,13 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
     void onExpandVariable(Variable varNode);
 
     /** Is invoked when a add watch expression button clicked */
-    void onAddExpressionBtnClicked(Expression expression);
+    void onAddExpressionBtnClicked(WatchExpression expression);
 
     /** Is invoked when remove watch expression button clicked. */
-    void onRemoveExpressionBtnClicked(Expression expression);
+    void onRemoveExpressionBtnClicked(WatchExpression expression);
 
     /** Is invoked when edit watch expression button clicked. */
-    void onEditExpressionBtnClicked(Expression expression);
+    void onEditExpressionBtnClicked(WatchExpression expression);
   }
 
   /**
@@ -100,28 +101,28 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
    *
    * @return selected expression or null otherwise.
    */
-  Expression getSelectedExpression();
+  WatchExpression getSelectedExpression();
 
   /**
    * Add new watch expression.
    *
    * @param expression to add
    */
-  void addExpression(Expression expression);
+  void addExpression(WatchExpression expression);
 
   /**
    * Update new expression.
    *
    * @param expression to update
    */
-  void updateExpression(Expression expression);
+  void updateExpression(WatchExpression expression);
 
   /**
    * Remove expression.
    *
    * @param expression to remove
    */
-  void removeExpression(Expression expression);
+  void removeExpression(WatchExpression expression);
 
   /**
    * Sets breakpoints.

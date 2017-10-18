@@ -14,18 +14,22 @@ import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspect
 
 import com.google.inject.Inject;
 import java.util.Collections;
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 
-/** @author Alexander Andrienko */
+/**
+ * Action allows remove debugger watch expression from debugger tree.
+ *
+ * @author Oleksander Andriienko
+ */
 public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   private final DebuggerPresenter debuggerPresenter;
-  private Expression selectedExpression;
+  private WatchExpression selectedExpression;
 
   @Inject
   public RemoveWatchExpressionAction(

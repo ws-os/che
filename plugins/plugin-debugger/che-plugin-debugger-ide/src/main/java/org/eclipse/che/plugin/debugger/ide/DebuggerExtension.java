@@ -26,7 +26,7 @@ import org.eclipse.che.ide.api.keybinding.KeyBuilder;
 import org.eclipse.che.ide.util.browser.UserAgent;
 import org.eclipse.che.ide.util.input.KeyCodeMap;
 import org.eclipse.che.plugin.debugger.ide.actions.AddWatchExpressionAction;
-import org.eclipse.che.plugin.debugger.ide.actions.ChangeDebugNodeAction;
+import org.eclipse.che.plugin.debugger.ide.actions.EditDebugVariableAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DebugAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DeleteAllBreakpointsAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DisconnectDebuggerAction;
@@ -67,7 +67,7 @@ public class DebuggerExtension {
   public static final String RESUME_EXECUTION_ID = "resumeExecution";
   public static final String SUSPEND_EXECUTION_ID = "suspendExecution";
   public static final String EVALUATE_EXPRESSION_ID = "evaluateExpression";
-  public static final String CHANGE_DEBUG_NODE_ID = "changeDebugNode";
+  public static final String EDIT_DEBUG_VARIABLE_ID = "changeDebugNode";
   public static final String ADD_WATCH_EXPRESSION = "addWatchExpression";
   public static final String REMOVE_WATCH_EXPRESSION = "removeWatchExpression";
   public static final String SHOW_HIDE_DEBUGGER_PANEL_ID = "showHideDebuggerPanel";
@@ -90,7 +90,7 @@ public class DebuggerExtension {
       SuspendAction suspendAction,
       EvaluateExpressionAction evaluateExpressionAction,
       DeleteAllBreakpointsAction deleteAllBreakpointsAction,
-      ChangeDebugNodeAction changeDebugNodeAction,
+      EditDebugVariableAction editDebugVariableAction,
       ShowHideDebuggerPanelAction showHideDebuggerPanelAction,
       EditConfigurationsAction editConfigurationsAction,
       BreakpointConfigurationAction breakpointConfigurationAction,
@@ -114,7 +114,7 @@ public class DebuggerExtension {
     actionManager.registerAction(RESUME_EXECUTION_ID, resumeExecutionAction);
     actionManager.registerAction(SUSPEND_EXECUTION_ID, suspendAction);
     actionManager.registerAction(EVALUATE_EXPRESSION_ID, evaluateExpressionAction);
-    actionManager.registerAction(CHANGE_DEBUG_NODE_ID, changeDebugNodeAction);
+    actionManager.registerAction(EDIT_DEBUG_VARIABLE_ID, editDebugVariableAction);
     actionManager.registerAction(ADD_WATCH_EXPRESSION, addWatchExpressionAction);
     actionManager.registerAction(REMOVE_WATCH_EXPRESSION, removeWatchExpressionAction);
     actionManager.registerAction(SHOW_HIDE_DEBUGGER_PANEL_ID, showHideDebuggerPanelAction);
@@ -161,7 +161,7 @@ public class DebuggerExtension {
     watchDebuggerActionGroup.add(addWatchExpressionAction);
     watchDebuggerActionGroup.add(removeWatchExpressionAction);
 
-    watchDebuggerActionGroup.add(changeDebugNodeAction);
+    watchDebuggerActionGroup.add(editDebugVariableAction);
 
     //create watch debugger toolbar action group
     debuggerPresenter.getWatchToolbar().bindMainGroup(watchDebuggerActionGroup);
@@ -195,7 +195,7 @@ public class DebuggerExtension {
         .addKey(new KeyBuilder().alt().charCode(KeyCodeMap.F8).build(), EVALUATE_EXPRESSION_ID);
     keyBinding
         .getGlobal()
-        .addKey(new KeyBuilder().charCode(KeyCodeMap.F2).build(), CHANGE_DEBUG_NODE_ID);
+        .addKey(new KeyBuilder().charCode(KeyCodeMap.F2).build(), EDIT_DEBUG_VARIABLE_ID);
 
     if (UserAgent.isMac()) {
       keyBinding

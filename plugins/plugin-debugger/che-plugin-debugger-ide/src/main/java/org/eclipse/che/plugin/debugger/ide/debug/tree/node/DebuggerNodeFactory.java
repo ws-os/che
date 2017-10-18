@@ -11,12 +11,17 @@
 package org.eclipse.che.plugin.debugger.ide.debug.tree.node;
 
 import com.google.inject.assistedinject.Assisted;
-import org.eclipse.che.api.debug.shared.model.Expression;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.Variable;
 
+/**
+ * Factory for creation debugger tree node elements.
+ *
+ * @author Oleksandr Andriienko
+ */
 public interface DebuggerNodeFactory {
 
   VariableNode createVariableNode(@Assisted Variable variable);
 
-  WatchExpressionNode createExpressionNode(@Assisted Expression expression);
+  WatchExpressionNode createExpressionNode(@Assisted WatchExpression expression);
 }

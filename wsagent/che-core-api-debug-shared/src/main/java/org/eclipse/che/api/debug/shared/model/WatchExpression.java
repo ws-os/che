@@ -10,7 +10,12 @@
  */
 package org.eclipse.che.api.debug.shared.model;
 
-public interface Expression {
+/**
+ * Interface to representation debugger watch expression item.
+ *
+ * @author Oleksander Andriienko
+ */
+public interface WatchExpression {
 
   String getExpression();
 
