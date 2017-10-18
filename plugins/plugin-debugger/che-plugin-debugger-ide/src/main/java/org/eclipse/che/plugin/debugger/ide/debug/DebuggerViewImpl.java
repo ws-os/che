@@ -331,7 +331,10 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
             breakpoints.getSelectionModel().setSelectedItem(itemData);
           }
 
-          public void onListItemDoubleClicked(Element listItemBase, Breakpoint itemData) {}
+          @Override
+          public void onListItemContextMenu(int clientX, int clientY, Breakpoint itemData) {
+            delegate.onBreakpointContextMenu(clientX, clientY, itemData);
+          }
         };
 
     return SimpleList.create(
@@ -351,8 +354,6 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
             frames.getSelectionModel().setSelectedItem(itemData);
             delegate.onSelectedFrame(frames.getSelectionModel().getSelectedIndex());
           }
-
-          public void onListItemDoubleClicked(Element listItemBase, StackFrameDump itemData) {}
         };
 
     return SimpleList.create(

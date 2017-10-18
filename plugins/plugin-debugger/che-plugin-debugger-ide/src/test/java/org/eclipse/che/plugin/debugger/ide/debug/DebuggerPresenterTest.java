@@ -40,6 +40,7 @@ import org.eclipse.che.ide.ui.toolbar.ToolbarPresenter;
 import org.eclipse.che.plugin.debugger.ide.BaseTest;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
+import org.eclipse.che.plugin.debugger.ide.debug.breakpoint.BreakpointContextMenuFactory;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -72,6 +73,7 @@ public class DebuggerPresenterTest extends BaseTest {
   @Mock private DebuggerManager debuggerManager;
   @Mock private WorkspaceAgent workspaceAgent;
   @Mock private DebuggerResourceHandlerFactory debuggerResourceHandlerFactory;
+  @Mock private BreakpointContextMenuFactory breakpointContextMenuFactory;
 
   @Mock private Debugger debugger;
   @Mock private MutableVariable selectedVariable;
@@ -107,7 +109,8 @@ public class DebuggerPresenterTest extends BaseTest {
                 watchToolbar,
                 debuggerManager,
                 workspaceAgent,
-                debuggerResourceHandlerFactory));
+                debuggerResourceHandlerFactory,
+                breakpointContextMenuFactory));
 
     Mockito.reset(view);
     when(view.getSelectedThreadId()).thenReturn(THREAD_ID);
