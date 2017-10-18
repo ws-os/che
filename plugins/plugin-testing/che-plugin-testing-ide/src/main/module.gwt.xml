@@ -11,11 +11,11 @@
 
 -->
 <module>
+    <inherits name="com.google.gwt.http.HTTP"/>
+    <inherits name="com.google.gwt.i18n.I18N"/>
+    <inherits name="com.google.gwt.json.JSON"/>
     <inherits name="com.google.gwt.user.User"/>
-    <inherits name="org.eclipse.che.ide.Api"/>
     <inherits name="com.google.gwt.inject.Inject"/>
-    <inherits name="org.eclipse.che.ide.ui.CodenvyUI"/>
-    <inherits name="org.eclipse.che.plugin.testing.TestingExtension"/>
 
     <source path="ide"/>
 </module>

@@ -57,10 +57,6 @@
             <artifactId>che-plugin-debugger-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-docker-client</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-ext-dashboard-client</artifactId>
@@ -81,10 +77,6 @@
             <artifactId>che-plugin-github-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.eclipse.che.plugin</groupId>-->
-        <!--<artifactId>che-plugin-github-oauth2</artifactId>-->
-        <!--</dependency>-->
 <!--
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
@@ -92,10 +84,11 @@
             <type>gwt-lib</type>
         </dependency>
 -->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-gwt-ext-gwt</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-gwt-ext-gwt</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-help-ext-client</artifactId>
@@ -126,10 +119,10 @@
             <artifactId>che-plugin-languageserver-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-machine-ssh-client</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-machine-ssh-client</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-maven-ide</artifactId>
@@ -145,10 +138,6 @@
             <artifactId>che-plugin-nodejs-lang-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-openshift-client</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-orion-compare</artifactId>
@@ -176,30 +165,36 @@
             <artifactId>che-plugin-python-lang-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-sdk-ext-plugins</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-ssh-key-ide</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-testing-ide</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-testing-junit-ide</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-testing-phpunit-ide</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-testing-testng-ide</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-sdk-ext-plugins</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-ssh-key-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-testing-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-testing-junit-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-testing-phpunit-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-testing-testng-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-web-ext-web</artifactId>

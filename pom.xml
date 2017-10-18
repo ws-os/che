@@ -939,7 +939,7 @@
                 <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-cpp-lang-shared</artifactId>
                 <version>${che.version}</version>
-                <classifier>source</classifier>
+                <classifier>sources</classifier>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
@@ -1419,6 +1419,12 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
+                <artifactId>che-plugin-sdk-ext-plugins</artifactId>
+                <version>${che.version}</version>
+                <type>gwt-lib</type>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-sdk-tools</artifactId>
                 <version>${che.version}</version>
             </dependency>
@@ -1461,8 +1467,20 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
+                <artifactId>che-plugin-testing-ide</artifactId>
+                <version>${che.version}</version>
+                <type>gwt-lib</type>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-testing-junit-ide</artifactId>
                 <version>${che.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.plugin</groupId>
+                <artifactId>che-plugin-testing-junit-ide</artifactId>
+                <version>${che.version}</version>
+                <type>gwt-lib</type>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
@@ -1481,6 +1499,12 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
+                <artifactId>che-plugin-testing-phpunit-ide</artifactId>
+                <version>${che.version}</version>
+                <type>gwt-lib</type>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-testing-phpunit-server</artifactId>
                 <version>${che.version}</version>
             </dependency>
@@ -1488,6 +1512,12 @@
                 <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-testing-testng-ide</artifactId>
                 <version>${che.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.plugin</groupId>
+                <artifactId>che-plugin-testing-testng-ide</artifactId>
+                <version>${che.version}</version>
+                <type>gwt-lib</type>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
