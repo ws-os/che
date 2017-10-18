@@ -14,7 +14,11 @@ import java.util.Comparator;
 import org.eclipse.che.ide.api.data.tree.Node;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 
-/** @author Olexander Andriienko */
+/**
+ * Comparator to sort {@link VariableNode} by name in the debugger tree.
+ *
+ * @author Olexander Andriienko
+ */
 public class VariableNodeComparator implements Comparator<Node> {
   @Override
   public int compare(Node o1, Node o2) {

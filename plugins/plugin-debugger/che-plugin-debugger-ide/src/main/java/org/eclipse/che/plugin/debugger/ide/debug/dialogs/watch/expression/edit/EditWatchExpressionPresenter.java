@@ -21,7 +21,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogVi
 /**
  * Presenter to edit selected expression in the debugger watch list.
  *
- * @author Oleksander Andriienko
+ * @author Oleksandr Andriienko
  */
 @Singleton
 public class EditWatchExpressionPresenter implements TextAreaDialogView.ActionDelegate {

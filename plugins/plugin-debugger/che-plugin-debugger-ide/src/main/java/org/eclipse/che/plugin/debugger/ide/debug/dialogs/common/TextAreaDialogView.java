@@ -17,6 +17,7 @@ import org.eclipse.che.ide.api.mvp.View;
  * Dialog Window based on TextArea widget.
  *
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
+ * @author Oleksandr Andriienko
  */
 public interface TextAreaDialogView extends View<TextAreaDialogView.ActionDelegate> {
   /** Needs for delegate some function into TextArea view. */

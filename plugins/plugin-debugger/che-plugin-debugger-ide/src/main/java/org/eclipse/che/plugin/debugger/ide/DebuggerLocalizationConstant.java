@@ -57,8 +57,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("suspend")
   String suspend();
 
-  @Key("changeDebugNode")
-  String changeDebugNode();
+  @Key("editDebugVariable")
+  String editDebugVariable();
 
   @Key("evaluateExpression")
   String evaluateExpression();
@@ -97,8 +97,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("deleteAllBreakpointsDescription")
   String deleteAllBreakpointsDescription();
 
-  @Key("changeDebugNodeDescription")
-  String changeDebugNodeDescription();
+  @Key("editDebugVariableDescription")
+  String editDebugVariableDescription();
 
   @Key("evaluateExpressionDescription")
   String evaluateExpressionDescription();

@@ -28,6 +28,7 @@ import org.eclipse.che.ide.ui.window.Window;
  * The implementation of {@link TextAreaDialogView}.
  *
  * @author <a href="mailto:aplotnikov@codenvy.com">Andrey Plotnikov</a>
+ * @author Oleksandr Andriienko
  */
 public class TextAreaDialogViewImpl extends Window implements TextAreaDialogView {
   interface ChangeValueViewImplUiBinder extends UiBinder<Widget, TextAreaDialogViewImpl> {}

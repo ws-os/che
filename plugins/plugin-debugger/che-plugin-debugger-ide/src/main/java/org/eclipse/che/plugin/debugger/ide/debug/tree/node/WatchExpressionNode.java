@@ -23,10 +23,9 @@ import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
 
 /**
- *  Watch expression node for display watch Expression information in
- *  the Debugger tree structure.
+ * Watch expression node for display watch Expression information in the debugger tree.
  *
- *  @author Oleksander Andriienko
+ * @author Oleksandr Andriienko
  */
 public class WatchExpressionNode extends AbstractDebuggerNode<WatchExpression> {
 

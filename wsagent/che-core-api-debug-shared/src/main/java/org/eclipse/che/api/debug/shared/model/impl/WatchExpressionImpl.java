@@ -13,9 +13,9 @@ package org.eclipse.che.api.debug.shared.model.impl;
 import org.eclipse.che.api.debug.shared.model.WatchExpression;
 
 /**
- * Implementation @{@link WatchExpression}
+ * Implementation {@link WatchExpression}
  *
- * @author Oleksander Andriienko
+ * @author Oleksandr Andriienko
  */
 public class WatchExpressionImpl implements WatchExpression {
 

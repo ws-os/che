@@ -14,7 +14,11 @@ import com.google.inject.assistedinject.Assisted;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
 
-/** @author Alexander Andrienko */
+/**
+ * Factory for creation text area base dialog.
+ *
+ * @author Oleksandr Andriienko
+ */
 public interface DebuggerDialogFactory {
 
   TextAreaDialogView createTextAreaDialogView(

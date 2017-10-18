@@ -55,6 +55,7 @@ import org.mockito.junit.MockitoRule;
  * Testing {@link DebuggerPresenter} functionality.
  *
  * @author Dmytro Nochevnov
+ * @author Oleksandr Andriienko
  */
 public class DebuggerPresenterTest extends BaseTest {
 

@@ -26,11 +26,11 @@ import org.eclipse.che.ide.api.keybinding.KeyBuilder;
 import org.eclipse.che.ide.util.browser.UserAgent;
 import org.eclipse.che.ide.util.input.KeyCodeMap;
 import org.eclipse.che.plugin.debugger.ide.actions.AddWatchExpressionAction;
-import org.eclipse.che.plugin.debugger.ide.actions.EditDebugVariableAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DebugAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DeleteAllBreakpointsAction;
 import org.eclipse.che.plugin.debugger.ide.actions.DisconnectDebuggerAction;
 import org.eclipse.che.plugin.debugger.ide.actions.EditConfigurationsAction;
+import org.eclipse.che.plugin.debugger.ide.actions.EditDebugVariableAction;
 import org.eclipse.che.plugin.debugger.ide.actions.EvaluateExpressionAction;
 import org.eclipse.che.plugin.debugger.ide.actions.RemoveWatchExpressionAction;
 import org.eclipse.che.plugin.debugger.ide.actions.ResumeExecutionAction;
@@ -67,7 +67,7 @@ public class DebuggerExtension {
   public static final String RESUME_EXECUTION_ID = "resumeExecution";
   public static final String SUSPEND_EXECUTION_ID = "suspendExecution";
   public static final String EVALUATE_EXPRESSION_ID = "evaluateExpression";
-  public static final String EDIT_DEBUG_VARIABLE_ID = "changeDebugNode";
+  public static final String EDIT_DEBUG_VARIABLE_ID = "editDebugVariable";
   public static final String ADD_WATCH_EXPRESSION = "addWatchExpression";
   public static final String REMOVE_WATCH_EXPRESSION = "removeWatchExpression";
   public static final String SHOW_HIDE_DEBUGGER_PANEL_ID = "showHideDebuggerPanel";
@@ -164,7 +164,7 @@ public class DebuggerExtension {
     watchDebuggerActionGroup.add(editDebugVariableAction);
 
     //create watch debugger toolbar action group
-    debuggerPresenter.getWatchToolbar().bindMainGroup(watchDebuggerActionGroup);
+    debuggerPresenter.getWatchExpressionToolbar().bindMainGroup(watchDebuggerActionGroup);
 
     // add actions in 'Debug' context menu
     final DefaultActionGroup debugContextMenuGroup =

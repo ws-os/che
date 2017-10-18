@@ -16,7 +16,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.VariableNode;
 import org.eclipse.che.plugin.debugger.ide.debug.tree.node.WatchExpressionNode;
 
 /**
- * Comparator for debugger tree.
+ * Comparator to sort node by type in the debugger tree.
  *
  * @author Alexander Andrienko
  */

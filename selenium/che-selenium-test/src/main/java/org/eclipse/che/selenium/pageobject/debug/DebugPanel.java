@@ -11,13 +11,12 @@
 package org.eclipse.che.selenium.pageobject.debug;
 
 import static java.lang.String.format;
+import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.*;
 import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.LOAD_PAGE_TIMEOUT_SEC;
 import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.MINIMUM_SEC;
 import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.REDRAW_UI_ELEMENTS_TIMEOUT_SEC;
-import static org.openqa.selenium.By.id;
-import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.By.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
-import static org.eclipse.che.selenium.core.constant.TestTimeoutsConstants.*;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
@@ -28,7 +27,6 @@ import org.eclipse.che.selenium.core.action.ActionsFactory;
 import org.eclipse.che.selenium.pageobject.CodenvyEditor;
 import org.eclipse.che.selenium.pageobject.Loader;
 import org.eclipse.che.selenium.pageobject.intelligent.CommandsExplorer;
-import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -41,7 +39,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** @author Musienko Maxim */
+/**
+ * Page Object for Debugger panel.
+ *
+ * @author Musienko Maxim
+ * @author Oleksandr Andriienko
+ */
 @Singleton
 public class DebugPanel {
 
@@ -136,7 +139,7 @@ public class DebugPanel {
   /** Wait while debugger panel will be clear for all breakpoints */
   public void waitWhileAllBreakPointsOnEditorPanelDisapper() {
     new WebDriverWait(seleniumWebDriver, REDRAW_UI_ELEMENTS_TIMEOUT_SEC)
-        .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("div.breakpoint")));
+        .until(ExpectedConditions.invisibilityOfElementLocated(cssSelector("div.breakpoint")));
   }
 
   /**
@@ -222,7 +225,7 @@ public class DebugPanel {
     new WebDriverWait(seleniumWebDriver, 20)
         .until(
             ExpectedConditions.invisibilityOfElementLocated(
-                By.xpath(LocatorsTextAreaDialogWindow.TEXTAREA)));
+                xpath(LocatorsTextAreaDialogWindow.TEXTAREA)));
   }
 
   /**
@@ -358,7 +361,7 @@ public class DebugPanel {
               try {
                 return editorLines
                     .get(numOfPosition - 1)
-                    .findElement(By.tagName("span"))
+                    .findElement(tagName("span"))
                     .getAttribute("debugid")
                     .equals("debug-line");
               } catch (Exception e) {

@@ -24,7 +24,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
 /**
  * Action allows remove debugger watch expression from debugger tree.
  *
- * @author Oleksander Andriienko
+ * @author Oleksandr Andriienko
  */
 public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 

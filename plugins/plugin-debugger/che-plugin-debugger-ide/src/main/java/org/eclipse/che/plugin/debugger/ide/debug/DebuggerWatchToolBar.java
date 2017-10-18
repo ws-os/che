@@ -10,7 +10,6 @@
  */
 package org.eclipse.che.plugin.debugger.ide.debug;
 
-/** @author Alexander Andrienko */
 import com.google.inject.BindingAnnotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -18,9 +17,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to bind debugger toolbar.
+ * Used to bind watch expressions toolbar.
  *
- * @author Alexander Andrienko
+ * @author Oleksandr Andriienko
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD, ElementType.TYPE})

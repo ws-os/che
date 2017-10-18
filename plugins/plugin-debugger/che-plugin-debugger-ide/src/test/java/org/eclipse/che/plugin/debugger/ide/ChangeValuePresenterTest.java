@@ -38,6 +38,7 @@ import org.mockito.Mock;
  * Testing {@link ChangeValuePresenter} functionality.
  *
  * @author Artem Zatsarynnyi
+ * @author Oleksandr Andriienko
  */
 public class ChangeValuePresenterTest extends BaseTest {
   private static final String VAR_VALUE = "var_value";

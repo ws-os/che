@@ -47,8 +47,8 @@ public class EditDebugVariableAction extends AbstractPerspectiveAction {
       DebuggerPresenter debuggerPresenter) {
     super(
         singletonList(PROJECT_PERSPECTIVE_ID),
-        locale.changeDebugNode(),
-        locale.changeDebugNodeDescription(),
+        locale.editDebugVariable(),
+        locale.editDebugVariableDescription(),
         null,
         resources.changeDebugNode());
     this.changeValuePresenter = changeValuePresenter;

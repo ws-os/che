@@ -32,11 +32,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.eclipse.che.api.debug.shared.model.Breakpoint;
-import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.Location;
 import org.eclipse.che.api.debug.shared.model.StackFrameDump;
 import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.Resources;
 import org.eclipse.che.ide.api.data.tree.Node;
@@ -63,7 +63,7 @@ import org.eclipse.che.plugin.debugger.ide.debug.tree.node.key.DebugNodeUniqueKe
  *
  * @author Andrey Plotnikov
  * @author Dmitry Shnurenko
- * @author Oleksander Andriienko
+ * @author Oleksandr Andriienko
  */
 @Singleton
 public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>

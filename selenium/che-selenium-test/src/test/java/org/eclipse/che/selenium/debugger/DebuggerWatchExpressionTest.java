@@ -38,7 +38,7 @@ import org.eclipse.che.selenium.pageobject.intelligent.CommandsPalette;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-/** @author Oleksander Andriienko */
+/** @author Oleksandr Andriienko */
 public class DebuggerWatchExpressionTest {
   private static final String PROJECT =
       generate(DebuggerWatchExpressionTest.class.getSimpleName(), 2);

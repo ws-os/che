@@ -15,7 +15,11 @@ import org.eclipse.che.ide.api.data.tree.AbstractTreeNode;
 import org.eclipse.che.ide.ui.smartTree.presentation.HasPresentation;
 import org.eclipse.che.ide.ui.smartTree.presentation.NodePresentation;
 
-/** @author Alexander Andrienko */
+/**
+ * Base tree node represents of the debugger variable data in the debugger tree.
+ *
+ * @author Alexander Andrienko
+ */
 public abstract class AbstractDebuggerNode<D> extends AbstractTreeNode
     implements HasDataObject<D>, HasPresentation {
   private NodePresentation nodePresentation;

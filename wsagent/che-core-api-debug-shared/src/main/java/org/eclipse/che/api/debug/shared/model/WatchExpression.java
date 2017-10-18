@@ -13,7 +13,7 @@ package org.eclipse.che.api.debug.shared.model;
 /**
  * Interface to representation debugger watch expression item.
  *
- * @author Oleksander Andriienko
+ * @author Oleksandr Andriienko
  */
 public interface WatchExpression {
 
