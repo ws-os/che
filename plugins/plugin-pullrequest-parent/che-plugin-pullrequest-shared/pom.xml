@@ -44,19 +44,18 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${dto-generator-out-directory}</directory>
+            </resource>
+        </resources>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>pre-compile</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -76,6 +75,18 @@
                 </executions>
             </plugin>
             <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>pre-compile</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.eclipse.che.core</groupId>
                 <artifactId>che-core-api-dto-maven-plugin</artifactId>
                 <version>${project.version}</version>
@@ -83,7 +94,7 @@
                 <executions>
                     <execution>
                         <id>generate-client-dto</id>
-                        <phase>generate-sources</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>

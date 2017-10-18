@@ -19,7 +19,6 @@
 
     <inherits name="org.eclipse.che.api.auth.Auth"/>
     <inherits name="org.eclipse.che.api.ssh.Ssh"/>
-    <!--<inherits name="org.eclipse.che.api.git.Git"/>-->
 
     <!--<inherits name="org.eclipse.che.api.machine.Machine"/>-->
     <!--<inherits name="org.eclipse.che.api.project.Project"/>-->

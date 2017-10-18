@@ -19,7 +19,7 @@
         <version>5.20.0-SNAPSHOT</version>
     </parent>
     <artifactId>che-plugin-csharp-lang-ide</artifactId>
-    <packaging>jar</packaging>
+    <packaging>gwt-lib</packaging>
     <name>Che Plugin :: C# :: IDE</name>
     <dependencies>
         <dependency>
@@ -49,6 +49,7 @@
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-csharp-lang-shared</artifactId>
+            <classifier>sources</classifier>
         </dependency>
         <dependency>
             <groupId>org.vectomatic</groupId>
@@ -61,13 +62,15 @@
         </dependency>
     </dependencies>
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
+        <plugins>
+            <plugin>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <moduleName>org.eclipse.che.plugin.csharp.CSharp</moduleName>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
