@@ -19,7 +19,7 @@
         <version>5.20.0-SNAPSHOT</version>
     </parent>
     <artifactId>che-plugin-java-debugger-ide</artifactId>
-    <packaging>jar</packaging>
+    <packaging>gwt-lib</packaging>
     <name>Che Plugin :: Java :: Java Debugger IDE</name>
     <dependencies>
         <dependency>
@@ -38,10 +38,10 @@
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.core</groupId>
-            <artifactId>che-core-api-debug-shared</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.core</groupId>-->
+            <!--<artifactId>che-core-api-debug-shared</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-api-model</artifactId>
@@ -66,10 +66,10 @@
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-java-ext-lang-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.plugin</groupId>
-            <artifactId>che-plugin-java-ext-lang-shared</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-java-ext-lang-shared</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.vectomatic</groupId>
             <artifactId>lib-gwt-svg</artifactId>
@@ -106,27 +106,18 @@
         </dependency>
     </dependencies>
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
         <plugins>
+            <plugin>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <moduleName>org.eclipse.che.plugin.jdb.JavaDebugger</moduleName>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*.png</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

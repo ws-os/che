@@ -94,10 +94,11 @@
             <artifactId>che-plugin-help-ext-client</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-java-debugger-ide</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+          <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-java-debugger-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-java-ext-lang-client</artifactId>
