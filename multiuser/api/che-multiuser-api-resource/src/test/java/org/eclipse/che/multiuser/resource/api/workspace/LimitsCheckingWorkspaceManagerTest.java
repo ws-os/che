@@ -58,6 +58,7 @@ public class LimitsCheckingWorkspaceManagerTest {
   @Mock private ResourceUsageManager resourceUsageManager;
 
 /*  @Test
+  @Test
   public void shouldUseRamOfSpecifiedEnvironmentOnCheckingAvailabilityOfRamResource()
       throws Exception {
     //given
@@ -268,7 +269,6 @@ public class LimitsCheckingWorkspaceManagerTest {
     public LimitsCheckingWorkspaceManager build() {
       return spy(
           new LimitsCheckingWorkspaceManager(
-              null,
               null,
               null,
               null,

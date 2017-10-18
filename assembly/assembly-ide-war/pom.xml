@@ -16,7 +16,7 @@
     <parent>
         <artifactId>che-assembly-parent</artifactId>
         <groupId>org.eclipse.che</groupId>
-        <version>5.19.0-SNAPSHOT</version>
+        <version>5.20.0-SNAPSHOT</version>
     </parent>
     <artifactId>assembly-ide-war</artifactId>
     <packaging>war</packaging>
@@ -172,6 +172,10 @@
         </dependency>
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-pullrequest-shared</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-python-lang-ide</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
@@ -185,10 +189,6 @@
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-ssh-key-ide</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-svn-ext-ide</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
@@ -211,6 +211,14 @@
             <artifactId>che-plugin-web-ext-web</artifactId>
             <type>gwt-lib</type>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-yaml-ide</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.che.plugin</groupId>-->
+            <!--<artifactId>che-plugin-yaml-shared</artifactId>-->
+        <!--</dependency>-->
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-zend-debugger-ide</artifactId>-->
