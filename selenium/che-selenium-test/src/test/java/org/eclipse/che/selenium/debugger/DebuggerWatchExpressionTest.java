@@ -11,6 +11,7 @@
 package org.eclipse.che.selenium.debugger;
 
 import static java.nio.file.Paths.get;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.eclipse.che.commons.lang.NameGenerator.generate;
 import static org.eclipse.che.selenium.core.constant.TestCommandsConstants.CUSTOM;
 import static org.eclipse.che.selenium.core.constant.TestMenuCommandsConstants.Run.DEBUG;
@@ -98,7 +99,7 @@ public class DebuggerWatchExpressionTest {
 
     String appUrl = "http://" + wsClient.getServerAddressByPort(ws.getId(), 8080) + "/shape";
 
-    debuggerUtils.goToDebugAppAndSendJson(appUrl, SHAPE_JSON);
+    debuggerUtils.gotoDebugAppAndSendRequest(appUrl, SHAPE_JSON, APPLICATION_JSON, 201);
     debugPanel.openDebugPanel();
     debugPanel.waitDebugHighlightedText("long id = shape.getId();");
   }

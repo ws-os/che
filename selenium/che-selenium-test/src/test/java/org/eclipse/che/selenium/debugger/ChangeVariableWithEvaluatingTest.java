@@ -10,6 +10,7 @@
  */
 package org.eclipse.che.selenium.debugger;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.testng.Assert.assertTrue;
 
 import com.google.inject.Inject;
@@ -130,10 +131,11 @@ public class ChangeVariableWithEvaluatingTest {
             + "://"
             + workspaceServiceClient.getServerAddressByPort(ws.getId(), 8080)
             + "/spring/guess";
-    String requestMess = "11";
+    String requestMess = "numGuess=11&submit=Ok";
     editor.waitActiveBreakpoint(34);
     CompletableFuture<String> instToRequestThread =
-        debuggerUtils.gotoDebugAppAndSendRequest(appUrl, requestMess);
+        debuggerUtils.gotoDebugAppAndSendRequest(
+            appUrl, requestMess, APPLICATION_FORM_URLENCODED, 200);
     debugPanel.openDebugPanel();
     debugPanel.waitDebugHighlightedText("result = \"Sorry, you failed. Try again later!\";");
     debugPanel.waitVariablesPanel();

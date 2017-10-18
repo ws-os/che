@@ -30,27 +30,29 @@ public class DebuggerUtils {
    * in breakpoint. And test cannot be continued.
    *
    * @param appUrl the application url of launched application in the Che
-   * @param mess request message for spring application
+   * @param data request message for application
+   * @param contentType content type
+   * @param successCode success code
    */
   public CompletableFuture<String> gotoDebugAppAndSendRequest(
-      final String appUrl, final String mess) throws ExecutionException {
+      final String appUrl, final String data, String contentType, int successCode)
+      throws ExecutionException {
     return CompletableFuture.supplyAsync(
         () -> {
           HttpURLConnection connection = null;
           String response;
           BufferedReader br;
           StringBuilder responseData = new StringBuilder();
-          String queryParams = "numGuess=" + mess + "&submit=Ok";
           try {
             URL url = new URL(appUrl);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Type", contentType);
             connection.setDoOutput(true);
             connection.setDoInput(true);
             OutputStream output = connection.getOutputStream();
-            output.write(queryParams.getBytes("UTF-8"));
-            if (connection.getResponseCode() != 200) {
+            output.write(data.getBytes("UTF-8"));
+            if (connection.getResponseCode() != successCode) {
               throw new RuntimeException(
                   new Exception(
                           "Cannot do request for application: " + connection.getResponseCode())
@@ -63,40 +65,6 @@ public class DebuggerUtils {
             }
             System.out.println(responseData.toString());
             br.close();
-          } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-          } finally {
-            if (connection != null) {
-              connection.disconnect();
-            }
-          }
-          return responseData.toString();
-        });
-  }
-
-  public CompletableFuture<String> goToDebugAppAndSendJson(
-      final String appUrl, final String jsonObj) {
-    return CompletableFuture.supplyAsync(
-        () -> {
-          HttpURLConnection connection = null;
-          //todo improve: code duplication
-          StringBuilder responseData = new StringBuilder();
-          try {
-            URL url = new URL(appUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            OutputStream output = connection.getOutputStream();
-            output.write(jsonObj.getBytes());
-            if (connection.getResponseCode() != 201) {
-              throw new RuntimeException(
-                  new Exception(
-                          "Cannot do request for application: " + connection.getResponseCode())
-                      + IoUtil.readStream(connection.getErrorStream()));
-            }
-            output.close();
           } catch (Exception e) {
             LOG.error(e.getMessage(), e);
           } finally {

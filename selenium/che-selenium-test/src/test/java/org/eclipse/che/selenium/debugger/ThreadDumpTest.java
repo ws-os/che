@@ -117,7 +117,7 @@ public class ThreadDumpTest {
 
     debugPanel.selectThread("Finalizer");
     editor.waitActiveTabFileName("Object");
-    assertEquals(debugPanel.getVariables(), "Nothing to show");
+    assertTrue(debugPanel.getVariables().isEmpty());
 
     debugPanel.selectThread("main");
     editor.waitActiveTabFileName("BookImpl");

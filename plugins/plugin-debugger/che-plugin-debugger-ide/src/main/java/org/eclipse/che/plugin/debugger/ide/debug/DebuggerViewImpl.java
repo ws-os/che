@@ -47,6 +47,7 @@ import org.eclipse.che.ide.ui.list.SimpleList;
 import org.eclipse.che.ide.ui.smartTree.NodeLoader;
 import org.eclipse.che.ide.ui.smartTree.NodeStorage;
 import org.eclipse.che.ide.ui.smartTree.Tree;
+import org.eclipse.che.ide.ui.status.StatusText;
 import org.eclipse.che.ide.util.dom.Elements;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
 import org.eclipse.che.plugin.debugger.ide.DebuggerResources;
@@ -114,7 +115,10 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
     this.coreRes = coreRes;
     this.nodeKeyProvider = nodeKeyProvider;
 
-    tree = new Tree(new NodeStorage(nodeKeyProvider), new NodeLoader());
+    StatusText<Tree> emptyTreeStatus = new StatusText<>();
+    emptyTreeStatus.setText("");
+
+    tree = new Tree(new NodeStorage(nodeKeyProvider), new NodeLoader(), emptyTreeStatus);
     setContentWidget(uiBinder.createAndBindUi(this));
 
     this.breakpoints = createBreakpointList();

@@ -10,6 +10,7 @@
  */
 package org.eclipse.che.selenium.debugger;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.testng.Assert.assertTrue;
 
 import com.google.inject.Inject;
@@ -126,9 +127,10 @@ public class StepIntoStepOverStepReturnWithChangeVariableTest {
             + "://"
             + workspaceServiceClient.getServerAddressByPort(ws.getId(), 8080)
             + "/spring/guess";
-    String requestMess = "6";
+    String requestMess = "numGuess=6&submit=Ok";
     CompletableFuture<String> instToRequestThread =
-        debugUtils.gotoDebugAppAndSendRequest(appUrl, requestMess);
+        debugUtils.gotoDebugAppAndSendRequest(
+            appUrl, requestMess, APPLICATION_FORM_URLENCODED, 200);
     editor.waitActiveBreakpoint(34);
     debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.STEP_OVER);
     debugPanel.waitDebugHighlightedText("AdditonalClass.check();");
