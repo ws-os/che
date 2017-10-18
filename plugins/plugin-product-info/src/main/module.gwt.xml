@@ -17,11 +17,5 @@
     <inherits name="com.google.gwt.http.HTTP"/>
     <inherits name="com.google.gwt.i18n.I18N"/>
     <inherits name="com.google.gwt.json.JSON"/>
-    <inherits name='org.eclipse.che.ide.Api'/>
-    <inherits name='org.eclipse.che.ide.ui.CodenvyUI'/>
     <inherits name="com.google.gwt.inject.Inject"/>
-    <inherits name="org.eclipse.che.api.project.Project"/>
-
-    <source path="ide"/>
-    <source path="shared"/>
 </module>

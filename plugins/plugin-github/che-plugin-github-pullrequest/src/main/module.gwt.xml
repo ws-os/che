@@ -12,16 +12,7 @@
 
 -->
 <module>
-    <inherits name="com.google.gwt.user.User"/>
-    <inherits name="com.google.gwt.http.HTTP"/>
-    <inherits name="com.google.gwt.i18n.I18N"/>
-    <inherits name="com.google.gwt.json.JSON"/>
-    <inherits name="com.google.gwt.inject.Inject"/>
-
     <inherits name='org.eclipse.che.api.workspace.Workspace'/>
     <inherits name="org.eclipse.che.api.project.Project"/>
     <inherits name="org.eclipse.che.security.OAuth"/>
-
-    <inherits name="org.eclipse.che.plugin.github.GitHub"/>
-    <inherits name="org.eclipse.che.plugin.pullrequest.PullRequest"/>
 </module>
