@@ -51,15 +51,17 @@
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-debugger-ide</artifactId>
+            <type>gwt-lib</type>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-docker-client</artifactId>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-ext-dashboard-client</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-ext-dashboard-client</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-gdb-ide</artifactId>-->
@@ -67,6 +69,7 @@
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-git-ext-git</artifactId>
+            <type>gwt-lib</type>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
@@ -100,28 +103,23 @@
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-java-ext-lang-client</artifactId>
+            <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-java-ext-lang-shared</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-java-plain-ide</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-java-plain-shared</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-java-plain-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-keybinding-eclipse-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-languageserver-ide</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-languageserver-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-machine-ssh-client</artifactId>-->
@@ -153,6 +151,7 @@
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-orion-compare</artifactId>
+            <type>gwt-lib</type>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
@@ -166,18 +165,11 @@
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-product-info</artifactId>-->
         <!--</dependency>-->
-        <!-- TODO: Some problems with DTO generation while gwt:codeserver -->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-pullrequest-ide</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.che.plugin</groupId>-->
-            <!--<artifactId>che-plugin-pullrequest-shared</artifactId>-->
-        <!--</dependency>-->
-
-
-
+        <dependency>
+            <groupId>org.eclipse.che.plugin</groupId>
+            <artifactId>che-plugin-pullrequest-ide</artifactId>
+            <type>gwt-lib</type>
+        </dependency>
         <!--<dependency>-->
             <!--<groupId>org.eclipse.che.plugin</groupId>-->
             <!--<artifactId>che-plugin-python-lang-ide</artifactId>-->

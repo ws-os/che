@@ -19,7 +19,7 @@
         <version>5.19.0-SNAPSHOT</version>
     </parent>
     <artifactId>che-core-orion-editor</artifactId>
-    <packaging>jar</packaging>
+    <packaging>gwt-lib</packaging>
     <name>Che Plugin :: Orion :: Editor</name>
     <properties>
         <findbugs.failonerror>false</findbugs.failonerror>
@@ -101,14 +101,21 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/java</directory>
-            </resource>
-            <resource>
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
                 <directory>target/requirejs-${requirejs.upstream.version}</directory>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>net.ltgt.gwt.maven</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <moduleName>org.eclipse.che.ide.editor.orion.OrionEditor</moduleName>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

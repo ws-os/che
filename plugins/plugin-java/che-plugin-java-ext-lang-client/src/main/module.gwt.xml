@@ -13,9 +13,7 @@
 -->
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN" "http://gwtproject.org/doctype/2.7.0/gwt-module.dtd">
 <module>
-    <inherits name='com.google.gwt.user.User'/>
-    <inherits name="com.google.gwt.json.JSON"/>
-    <inherits name="org.eclipse.che.ide.Commons"/>
-    <inherits name="org.eclipse.che.api.machine.Machine"/>
-    <source path='shared'/>
+    <source path="client"/>
+    <source path="shared"/>
+    <source path="jdt"/>
 </module>
