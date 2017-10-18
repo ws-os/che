@@ -37,8 +37,8 @@ import org.eclipse.che.api.core.model.workspace.runtime.ServerStatus;
 import org.eclipse.che.api.core.notification.EventService;
 import org.eclipse.che.api.workspace.server.DtoConverter;
 import org.eclipse.che.api.workspace.server.URLRewriter;
-import org.eclipse.che.api.workspace.server.hc.ServerCheckerFactory;
-import org.eclipse.che.api.workspace.server.hc.ServersReadinessChecker;
+import org.eclipse.che.api.workspace.server.hc.ServersChecker;
+import org.eclipse.che.api.workspace.server.hc.ServersCheckerFactory;
 import org.eclipse.che.api.workspace.server.spi.InfrastructureException;
 import org.eclipse.che.api.workspace.server.spi.InternalInfrastructureException;
 import org.eclipse.che.api.workspace.server.spi.InternalRuntime;
@@ -47,6 +47,7 @@ import org.eclipse.che.api.workspace.shared.dto.event.RuntimeStatusEvent;
 import org.eclipse.che.api.workspace.shared.dto.event.ServerStatusEvent;
 import org.eclipse.che.dto.server.DtoFactory;
 import org.eclipse.che.workspace.infrastructure.openshift.bootstrapper.OpenShiftBootstrapperFactory;
+import org.eclipse.che.workspace.infrastructure.openshift.environment.OpenShiftEnvironment;
 import org.eclipse.che.workspace.infrastructure.openshift.project.OpenShiftProject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +64,7 @@ public class OpenShiftInternalRuntime extends InternalRuntime<OpenShiftRuntimeCo
   private static final String POD_FAILED_STATUS = "Failed";
 
   private final EventService eventService;
-  private final ServerCheckerFactory serverCheckerFactory;
+  private final ServersCheckerFactory serverCheckerFactory;
   private final OpenShiftBootstrapperFactory bootstrapperFactory;
   private final Map<String, OpenShiftMachine> machines;
   private final int machineStartTimeoutMin;
@@ -71,13 +72,13 @@ public class OpenShiftInternalRuntime extends InternalRuntime<OpenShiftRuntimeCo
 
   @Inject
   public OpenShiftInternalRuntime(
-      @Assisted OpenShiftRuntimeContext context,
-      @Assisted OpenShiftProject project,
+      @Named("che.infra.openshift.machine_start_timeout_min") int machineStartTimeoutMin,
       URLRewriter.NoOpURLRewriter urlRewriter,
       EventService eventService,
       OpenShiftBootstrapperFactory bootstrapperFactory,
-      ServerCheckerFactory serverCheckerFactory,
-      @Named("che.infra.openshift.machine_start_timeout_min") int machineStartTimeoutMin) {
+      ServersCheckerFactory serverCheckerFactory,
+      @Assisted OpenShiftRuntimeContext context,
+      @Assisted OpenShiftProject project) {
     super(context, urlRewriter, false);
     this.eventService = eventService;
     this.bootstrapperFactory = bootstrapperFactory;
@@ -90,16 +91,16 @@ public class OpenShiftInternalRuntime extends InternalRuntime<OpenShiftRuntimeCo
   @Override
   protected void internalStart(Map<String, String> startOptions) throws InfrastructureException {
     try {
-
-      prepareOpenShiftPVCs(getContext().getOpenShiftEnvironment().getPersistentVolumeClaims());
+      final OpenShiftEnvironment osEnv = getContext().getOpenShiftEnvironment();
+      prepareOpenShiftPVCs(osEnv.getPersistentVolumeClaims());
 
       List<Service> createdServices = new ArrayList<>();
-      for (Service service : getContext().getOpenShiftEnvironment().getServices().values()) {
+      for (Service service : osEnv.getServices().values()) {
         createdServices.add(project.services().create(service));
       }
 
       List<Route> createdRoutes = new ArrayList<>();
-      for (Route route : getContext().getOpenShiftEnvironment().getRoutes().values()) {
+      for (Route route : osEnv.getRoutes().values()) {
         createdRoutes.add(project.routes().create(route));
       }
 
@@ -198,12 +199,9 @@ public class OpenShiftInternalRuntime extends InternalRuntime<OpenShiftRuntimeCo
    */
   private void checkMachineServers(OpenShiftMachine machine)
       throws InfrastructureException, InterruptedException {
-    final ServersReadinessChecker check =
-        new ServersReadinessChecker(
-            getContext().getIdentity(),
-            machine.getName(),
-            machine.getServers(),
-            serverCheckerFactory);
+    final ServersChecker check =
+        serverCheckerFactory.create(
+            getContext().getIdentity(), machine.getName(), machine.getServers());
     check.startAsync(new ServerReadinessHandler(machine.getName()));
     check.await();
   }
