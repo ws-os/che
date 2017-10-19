@@ -165,7 +165,7 @@ public class TestWorkspaceServiceClient {
       if (status == expectedStatus) {
         return;
       } else {
-        WaitUtils.sleepQuietly(5);
+        WaitUtils.sleepQuietly(10);
       }
     }
 
