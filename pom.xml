@@ -450,6 +450,12 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.core</groupId>
+                <artifactId>che-core-api-testing-shared</artifactId>
+                <version>${che.version}</version>
+                <classifier>sources</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.core</groupId>
                 <artifactId>che-core-api-user</artifactId>
                 <version>${che.version}</version>
                 <classifier>tests</classifier>
@@ -1786,6 +1792,10 @@
                     <codeserverArgs>
                         <arg>-noprecompile</arg>
                         <arg>-noincremental</arg>
+                        <!-- CodeServer should be reachable at all IPs but not 127.0.0.1 only.
+                             To be able to use SDM on the local machine when it's running inside the container. -->
+                        <arg>-bindAddress</arg>
+                        <arg>0.0.0.0</arg>
                     </codeserverArgs>
                     <jvmArgs>
                         <arg>${gwt.compiler.jvmArgs.Xss}</arg>
