@@ -13,6 +13,7 @@ package org.eclipse.che.multiuser.keycloak.server;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
@@ -94,12 +95,16 @@ public class KeycloakAuthenticationFilter extends AbstractKeycloakFilter {
               .setSigningKey(getJwtPublicKey(false))
               .parseClaimsJws(token);
       LOG.debug("JWT = ", jwt);
-      // OK, we can trust this JWT
+      //OK, we can trust this JWT
+    } catch (ExpiredJwtException ex) {
+      LOG.error("Token ------------------------------>  " + token + "    expired");
+      send403(res);
+      return;
     } catch (SignatureException
         | NoSuchAlgorithmException
         | InvalidKeySpecException
         | IllegalArgumentException e) {
-      // don't trust the JWT!
+      //don't trust the JWT!
       LOG.error("Failed verifying the JWT token", e);
       try {
         LOG.info("Retrying after updating the public key", e);
@@ -109,12 +114,16 @@ public class KeycloakAuthenticationFilter extends AbstractKeycloakFilter {
                 .setSigningKey(getJwtPublicKey(true))
                 .parseClaimsJws(token);
         LOG.debug("JWT = ", jwt);
-        // OK, we can trust this JWT
+        //OK, we can trust this JWT
+      } catch (ExpiredJwtException ex) {
+        LOG.error("Token ------------------------------>  " + token + "    expired");
+        send403(res);
+        return;
       } catch (SignatureException
           | NoSuchAlgorithmException
           | InvalidKeySpecException
           | IllegalArgumentException ee) {
-        // don't trust the JWT!
+        //don't trust the JWT!
         LOG.error("Failed verifying the JWT token after public key update", e);
         send403(res);
         return;

@@ -14,17 +14,30 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.che.api.core.rest.DefaultHttpJsonRequestFactory;
 import org.eclipse.che.api.core.rest.HttpJsonRequest;
 import org.eclipse.che.api.core.rest.shared.dto.Link;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/** @author Dmytro Nochevnov */
+/**
+ * @author Dmytro Nochevnov
+ */
 public abstract class TestHttpJsonRequestFactory extends DefaultHttpJsonRequestFactory {
+
+  private static final Logger LOG = LoggerFactory.getLogger(TestHttpJsonRequestFactory.class);
+
   @Override
   public HttpJsonRequest fromUrl(@NotNull String url) {
-    return super.fromUrl(url).setAuthorizationHeader(getAuthToken());
+    final String authToken = getAuthToken();
+    LOG.info(
+        "Request master with user token -----------> " + url + "   token -------> " + authToken);
+    return super.fromUrl(url).setAuthorizationHeader(authToken);
   }
 
   @Override
   public HttpJsonRequest fromLink(@NotNull Link link) {
-    return super.fromLink(link).setAuthorizationHeader(getAuthToken());
+    final String authToken = getAuthToken();
+    LOG.info(
+        "Request master with user token -----------> " + link + "   token -------> " + authToken);
+    return super.fromLink(link).setAuthorizationHeader(authToken);
   }
 
   protected abstract String getAuthToken();
