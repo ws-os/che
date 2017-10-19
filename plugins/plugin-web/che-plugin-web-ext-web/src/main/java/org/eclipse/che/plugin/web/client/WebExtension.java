@@ -32,6 +32,7 @@ import org.eclipse.che.plugin.web.client.html.PreviewHTMLAction;
 import org.eclipse.che.plugin.web.client.html.editor.HtmlEditorProvider;
 import org.eclipse.che.plugin.web.client.js.NewJavaScriptFileAction;
 import org.eclipse.che.plugin.web.client.js.editor.JsEditorProvider;
+import org.vectomatic.dom.svg.ui.SVGImage;
 
 /**
  * Extension add editing JavaScript, HTML, CSS css type support to the IDE Application. It provides
@@ -105,10 +106,18 @@ public class WebExtension {
     actionManager.registerAction("previewHTML", previewHTMLAction);
 
     // set icons
-    newCssFileAction.getTemplatePresentation().setSVGResource(resources.cssFile());
-    newLessFileAction.getTemplatePresentation().setSVGResource(resources.lessFile());
-    newHtmlFileAction.getTemplatePresentation().setSVGResource(resources.htmlFile());
-    newJavaScriptFileAction.getTemplatePresentation().setSVGResource(resources.jsFile());
+    newCssFileAction
+        .getTemplatePresentation()
+        .setImageElement(new SVGImage(resources.cssFile()).getElement());
+    newLessFileAction
+        .getTemplatePresentation()
+        .setImageElement(new SVGImage(resources.lessFile()).getElement());
+    newHtmlFileAction
+        .getTemplatePresentation()
+        .setImageElement(new SVGImage(resources.htmlFile()).getElement());
+    newJavaScriptFileAction
+        .getTemplatePresentation()
+        .setImageElement(new SVGImage(resources.jsFile()).getElement());
 
     // add actions in main menu
     DefaultActionGroup newGroup = (DefaultActionGroup) actionManager.getAction(GROUP_FILE_NEW);

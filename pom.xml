@@ -161,16 +161,6 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che</groupId>
-                <artifactId>infrastructure-docker</artifactId>
-                <version>${che.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che</groupId>
-                <artifactId>infrastructure-openshift</artifactId>
-                <version>${che.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che</groupId>
                 <artifactId>ls-csharp-agent</artifactId>
                 <version>${che.version}</version>
             </dependency>
@@ -670,6 +660,21 @@
                 <type>war</type>
             </dependency>
             <dependency>
+                <groupId>org.eclipse.che.infrastructure</groupId>
+                <artifactId>infrastructure-openshift</artifactId>
+                <version>${che.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.infrastructure.docker</groupId>
+                <artifactId>docker-client</artifactId>
+                <version>${che.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.infrastructure.docker</groupId>
+                <artifactId>infrastructure-docker</artifactId>
+                <version>${che.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.eclipse.che.lib</groupId>
                 <artifactId>antlr-java5-grammar</artifactId>
                 <version>${che.lib.version}</version>
@@ -987,11 +992,6 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
-                <artifactId>che-plugin-docker-client</artifactId>
-                <version>${che.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-docker-machine</artifactId>
                 <version>${che.version}</version>
             </dependency>
@@ -1264,11 +1264,6 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
-                <artifactId>che-plugin-maven-wsmaster</artifactId>
-                <version>${che.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-nodejs-debugger-ide</artifactId>
                 <version>${che.version}</version>
             </dependency>
@@ -1309,11 +1304,6 @@
                 <artifactId>che-plugin-nodejs-lang-shared</artifactId>
                 <version>${che.version}</version>
                 <classifier>sources</classifier>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che.plugin</groupId>
-                <artifactId>che-plugin-openshift-client</artifactId>
-                <version>${che.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
@@ -1533,11 +1523,6 @@
             <dependency>
                 <groupId>org.eclipse.che.plugin</groupId>
                 <artifactId>che-plugin-testing-testng-server</artifactId>
-                <version>${che.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.che.plugin</groupId>
-                <artifactId>che-plugin-traefik-docker</artifactId>
                 <version>${che.version}</version>
             </dependency>
             <dependency>
