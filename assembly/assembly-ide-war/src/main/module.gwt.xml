@@ -12,11 +12,10 @@
 
 -->
 <module>
+    <!-- gwt-logger -->
     <inherits name="org.eclipse.che.ide.logger.slf4j.Logging"/>
 
-    <inherits name="org.eclipse.che.lib.terminal.Terminal"/>
-    <inherits name="org.eclipse.che.orion.CheOrion"/>
-
+    <!-- commons-gwt -->
     <inherits name="org.eclipse.che.Requirejs"/>
     <inherits name="org.eclipse.che.api.promises.Promises"/>
     <inherits name="org.eclipse.che.ide.collections.Collections"/>

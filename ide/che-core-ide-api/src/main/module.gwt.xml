@@ -23,11 +23,12 @@
     <inherits name="org.vectomatic.libgwtsvg"/>
     <inherits name="org.eclipse.che.api.promises.Promises"/>
 
+    <inherits name="org.eclipse.che.api.auth.Auth"/>
+    <inherits name="org.eclipse.che.api.core.model.Model"/>
     <inherits name="org.eclipse.che.api.core.Core"/>
     <inherits name="org.eclipse.che.api.factory.Factory"/>
     <inherits name="org.eclipse.che.api.git.Git"/>
     <inherits name="org.eclipse.che.api.project.Project"/>
-    <inherits name="org.eclipse.che.api.core.model.Model"/>
     <inherits name="org.eclipse.che.api.testing.Testing"/>
     <inherits name="org.eclipse.che.api.user.User"/>
     <inherits name="org.eclipse.che.api.workspace.Workspace"/>

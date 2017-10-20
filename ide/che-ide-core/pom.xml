@@ -95,10 +95,6 @@
             <artifactId>che-core-orion-editor</artifactId>
             <type>gwt-lib</type>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.che.lib</groupId>
-            <artifactId>che-orion-editor</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
