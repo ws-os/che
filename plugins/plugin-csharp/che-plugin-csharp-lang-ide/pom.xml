@@ -75,6 +75,21 @@
                     <moduleName>org.eclipse.che.plugin.csharp.CSharp</moduleName>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies>
+                                <!-- needed for including to GWT source path -->
+                                <ignoredUnusedDeclaredDependency>org.eclipse.che.plugin:che-plugin-csharp-lang-shared</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

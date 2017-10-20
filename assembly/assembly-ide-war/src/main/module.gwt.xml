@@ -12,21 +12,6 @@
 
 -->
 <module>
-    <!--<inherits name="org.eclipse.che.api.core.Core"/>-->
-    <!--<inherits name="org.eclipse.che.api.core.model.Model"/>-->
-    <!--<inherits name="org.eclipse.che.api.debug.Debug"/>-->
-    <!--<inherits name="org.eclipse.che.api.factory.Factory"/>-->
-
-    <inherits name="org.eclipse.che.api.auth.Auth"/>
-    <inherits name="org.eclipse.che.api.ssh.Ssh"/>
-
-    <!--<inherits name="org.eclipse.che.api.machine.Machine"/>-->
-    <!--<inherits name="org.eclipse.che.api.project.Project"/>-->
-    <!--<inherits name="org.eclipse.che.api.testing.Testing"/>-->
-    <!--<inherits name="org.eclipse.che.api.user.User"/>-->
-    <!--<inherits name="org.eclipse.che.api.workspace.Workspace"/>-->
-    <!--<inherits name="org.eclipse.che.ide.ext.ssh.MachineSsh"/>-->
-
     <inherits name="org.eclipse.che.ide.logger.slf4j.Logging"/>
 
     <inherits name="org.eclipse.che.lib.terminal.Terminal"/>
@@ -43,7 +28,11 @@
     <inherits name="org.eclipse.che.security.OAuth"/>
 
     <stylesheet src="IDE.css"/>
+
     <entry-point class="org.eclipse.che.ide.client.IDE"/>
+
+    <!-- Logging configuration -->
+    <!-- Inherit GWT logging module and configure it -->
     <inherits name="com.google.gwt.logging.Logging"/>
     <!-- Disable logging to the server -->
     <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
