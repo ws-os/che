@@ -29,6 +29,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -97,6 +98,12 @@ public class KeycloakAuthenticationFilter extends AbstractKeycloakFilter {
       LOG.debug("JWT = ", jwt);
       //OK, we can trust this JWT
     } catch (ExpiredJwtException ex) {
+      LOG.error("HEADERS    : ---------------------------- ----------------------------:  ");
+      Enumeration<String> headerNames = request.getHeaderNames();
+      while (headerNames.hasMoreElements()){
+        LOG.error(request.getHeader(headerNames.nextElement()));
+      }
+      LOG.error(": ---------------------------- ----------------------------:");
       LOG.error("Token ------------------------------>  " + token + "    expired");
       send403(res);
       return;
@@ -116,6 +123,12 @@ public class KeycloakAuthenticationFilter extends AbstractKeycloakFilter {
         LOG.debug("JWT = ", jwt);
         //OK, we can trust this JWT
       } catch (ExpiredJwtException ex) {
+        LOG.error("HEADERS    : ---------------------------- ----------------------------:  ");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()){
+          LOG.error(request.getHeader(headerNames.nextElement()));
+        }
+        LOG.error(": ---------------------------- ----------------------------:");
         LOG.error("Token ------------------------------>  " + token + "    expired");
         send403(res);
         return;
