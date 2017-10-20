@@ -35,6 +35,7 @@ import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
+import org.eclipse.che.api.debug.shared.model.impl.VariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
@@ -165,7 +166,7 @@ public class DebuggerPresenter extends BasePresenter
       promise
           .then(
               value -> {
-                MutableVariable updatedVariable = new MutableVariableImpl(variable);
+                MutableVariable updatedVariable = variable instanceof MutableVariable ? ((MutableVariable)variable) : new MutableVariableImpl(variable);
                 updatedVariable.setValue(value);
                 view.expandVariable(updatedVariable);
               })
