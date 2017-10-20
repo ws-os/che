@@ -50,7 +50,7 @@ public class EditDebugVariableAction extends AbstractPerspectiveAction {
         locale.editDebugVariable(),
         locale.editDebugVariableDescription(),
         null,
-        resources.changeDebugNode());
+        resources.editDebugNode());
     this.changeValuePresenter = changeValuePresenter;
     this.debuggerPresenter = debuggerPresenter;
     this.editWatchExpressionPresenter = editWatchExpressionPresenter;
@@ -60,8 +60,7 @@ public class EditDebugVariableAction extends AbstractPerspectiveAction {
   public void actionPerformed(ActionEvent e) {
     if (selectedVariable != null) {
       changeValuePresenter.showDialog();
-    }
-    if (selectedExpression != null) {
+    } else if (selectedExpression != null) {
       editWatchExpressionPresenter.showDialog();
     }
   }

@@ -94,7 +94,7 @@ public class DebugPanel {
     String REMOVE_ALL_BREAKPOINTS = "gwt-debug-ActionButton/null-true";
     String EVALUATE_EXPRESSIONS = "gwt-debug-ActionButton/evaluateExpression-true";
 
-    String CHANGE_DEBUG_TREE_NODE = "gwt-debug-ActionButton/changeDebugNode-true";
+    String CHANGE_DEBUG_TREE_NODE = "gwt-debug-ActionButton/editDebugVariable-true";
     String ADD_WATCH_EXPRESSION = "gwt-debug-ActionButton/addWatchExpression-true";
     String REMOVE_WATCH_EXPRESSION = "gwt-debug-ActionButton/removeWatchExpression-true";
   }

@@ -39,7 +39,7 @@ public interface DebuggerResources extends ClientBundle {
   SVGResource debug();
 
   @Source("edit.svg")
-  SVGResource changeDebugNode();
+  SVGResource editDebugNode();
 
   @Source("evaluate.svg")
   SVGResource evaluateExpression();
@@ -57,11 +57,11 @@ public interface DebuggerResources extends ClientBundle {
   @Source("debug-icon.svg")
   SVGResource debugIcon();
 
-  @Source("add-expression-button.svg")
-  SVGResource addExpressionBtn();
+  @Source("add-watch-expression-button.svg")
+  SVGResource addWatchExpressionBtn();
 
-  @Source("remove-expression-button.svg")
-  SVGResource removeExpressionBtn();
+  @Source("remove-watch-expression-button.svg")
+  SVGResource removeWatchExpressionBtn();
 
   @Source("watch-expression-icon.svg")
   SVGResource watchExpressionIcon();

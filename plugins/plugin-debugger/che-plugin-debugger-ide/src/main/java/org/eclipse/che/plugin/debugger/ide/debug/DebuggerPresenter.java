@@ -35,7 +35,6 @@ import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
-import org.eclipse.che.api.debug.shared.model.impl.VariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
@@ -285,7 +284,7 @@ public class DebuggerPresenter extends BasePresenter
       expression.setResult("");
       view.addExpression(expression);
 
-      calculateWatchExpression(expression, threadId, frameIndex);
+      evaluateWatchExpression(expression, threadId, frameIndex);
     }
   }
 
@@ -294,7 +293,7 @@ public class DebuggerPresenter extends BasePresenter
     view.addExpression(expression);
     expressions.add(expression);
 
-    calculateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
+    evaluateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
   }
 
   @Override
@@ -308,10 +307,10 @@ public class DebuggerPresenter extends BasePresenter
     expression.setResult("");
     view.updateExpression(expression);
 
-    calculateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
+    evaluateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
   }
 
-  private void calculateWatchExpression(WatchExpression expression, long threadId, int frameIndex) {
+  private void evaluateWatchExpression(WatchExpression expression, long threadId, int frameIndex) {
     Debugger activeDebugger = debuggerManager.getActiveDebugger();
     if (activeDebugger != null && activeDebugger.isSuspended()) {
       debuggerManager
@@ -319,13 +318,17 @@ public class DebuggerPresenter extends BasePresenter
           .evaluate(expression.getExpression(), threadId, frameIndex)
           .then(
               result -> {
-                expression.setResult(result);
-                view.updateExpression(expression);
+                if (view.getSelectedThreadId() == threadId && view.getSelectedFrameIndex() == frameIndex) {
+                  expression.setResult(result);
+                  view.updateExpression(expression);
+                }
               })
           .catchError(
               error -> {
-                expression.setResult(error.getMessage());
-                view.updateExpression(expression);
+                if (view.getSelectedThreadId() == threadId && view.getSelectedFrameIndex() == frameIndex) {
+                  expression.setResult(error.getMessage());
+                  view.updateExpression(expression);
+                }
               });
     }
   }

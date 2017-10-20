@@ -39,7 +39,7 @@ public class AddWatchExpressionAction extends AbstractPerspectiveAction {
         locale.addWatchExpression(),
         locale.addWatchExpressionDescription(),
         null,
-        resources.addExpressionBtn());
+        resources.addWatchExpressionBtn());
     this.addWatchExpressionPresenter = addWatchExpressionPresenter;
   }
 
