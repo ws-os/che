@@ -85,7 +85,7 @@ public class NodeJsDebugTest {
     checkDebugStepsFeatures();
     checkEvaluationFeatures();
 
-    //disconnect session, check highlighter is disappear
+    // disconnect session, check highlighter is disappear
     debugPanel.clickOnButton(DebugPanel.DebuggerActionButtons.RESUME_BTN_ID);
     new WebDriverWait(ide.driver(), REDRAW_UI_ELEMENTS_TIMEOUT_SEC)
         .until(
