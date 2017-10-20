@@ -72,7 +72,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
    */
   void setExecutionPoint(@NotNull Location location);
 
-  /** Remove all variables and expressions. */
+  /** Remove all variables */
   void removeAllVariables();
 
   /**

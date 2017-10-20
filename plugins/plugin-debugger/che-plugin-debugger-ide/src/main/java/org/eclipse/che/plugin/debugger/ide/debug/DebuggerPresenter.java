@@ -190,7 +190,7 @@ public class DebuggerPresenter extends BasePresenter
     long selectedThreadId = view.getSelectedThreadId();
     view.removeAllVariables();
     setVariables(selectedThreadId, frameIndex);
-    setWatchExpressions(selectedThreadId, frameIndex);
+    updateWatchExpressions(selectedThreadId, frameIndex);
 
     for (ThreadState ts : threadDump) {
       if (ts.getId() == selectedThreadId) {
@@ -243,7 +243,7 @@ public class DebuggerPresenter extends BasePresenter
                   updateStackFrameDump(executionPoint.getThreadId());
                   view.removeAllVariables();
                   setVariables(executionPoint.getThreadId(), 0);
-                  setWatchExpressions(executionPoint.getThreadId(), 0);
+                  updateWatchExpressions(executionPoint.getThreadId(), 0);
                 }
               })
           .catchError(
@@ -285,11 +285,13 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  private void setWatchExpressions(long threadId, int frameIndex) {
+  private void updateWatchExpressions(long threadId, int frameIndex) {
     for (WatchExpression expression : expressions) {
       expression.setResult("");
-      view.addExpression(expression);
+      view.updateExpression(expression);
+    }
 
+    for (WatchExpression expression : expressions) {
       evaluateWatchExpression(expression, threadId, frameIndex);
     }
   }
@@ -449,7 +451,7 @@ public class DebuggerPresenter extends BasePresenter
   private void clearExpressionsValue() {
     for (WatchExpression expression : expressions) {
       expression.setResult("");
-      view.addExpression(expression);
+      view.updateExpression(expression);
     }
   }
 
@@ -483,9 +485,12 @@ public class DebuggerPresenter extends BasePresenter
         promise
             .then(
                 value -> {
-                  MutableVariable mutableVariable = new MutableVariableImpl(variable);
-                  mutableVariable.setValue(value);
-                  view.updateVariable(mutableVariable);
+                  MutableVariable updatedVariable =
+                      variable instanceof MutableVariable
+                          ? ((MutableVariable) variable)
+                          : new MutableVariableImpl(variable);
+                  updatedVariable.setValue(value);
+                  view.updateVariable(updatedVariable);
                 })
             .catchError(
                 error -> {

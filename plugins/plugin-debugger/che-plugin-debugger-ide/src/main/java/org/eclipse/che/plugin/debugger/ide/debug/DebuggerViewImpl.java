@@ -167,7 +167,11 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
   @Override
   public void removeAllVariables() {
-    tree.getNodeStorage().clear();
+    for (Node node: tree.getNodeStorage().getAll()) {
+      if (node instanceof VariableNode) {
+        tree.getNodeStorage().remove(node);
+      }
+    }
   }
 
   @Override
