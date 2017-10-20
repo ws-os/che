@@ -55,8 +55,7 @@ public class DebugNodeUniqueKeyProvider implements UniqueKeyProvider<Node> {
   }
 
   public String evaluateKey(WatchExpression expression) {
-    int hash = expression.hashCode();
-    return valueOf(hash);
+    return expression.getKey();
   }
 
   public <T> String evaluateKey(T item) {

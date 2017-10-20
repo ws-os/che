@@ -82,7 +82,7 @@ public class DebugPanel {
   private interface LocatorsTextAreaDialogWindow {
     String AGREE_BUTTON = "debugger-textarea-dialog-agree-btn";
     String CANCEL_BTN = "debugger-textarea-dialog-cancel-btn";
-    String TEXTAREA = "gwt-debug-text-area-dialog";
+    String TEXTAREA = "gwt-debug-value-text-area";
   }
 
   public interface DebuggerActionButtons {

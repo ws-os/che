@@ -72,8 +72,11 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
    */
   void setExecutionPoint(@NotNull Location location);
 
+  /** Remove all variables and expressions. */
+  void removeAllVariables();
+
   /**
-   * Clear debugger tree(remove all variables and expressions). Sets variables.
+   * Set variables.
    *
    * @param variables available variables
    */

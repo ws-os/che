@@ -166,8 +166,12 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
   }
 
   @Override
-  public void setVariables(@NotNull List<? extends Variable> variables) {
+  public void removeAllVariables() {
     tree.getNodeStorage().clear();
+  }
+
+  @Override
+  public void setVariables(@NotNull List<? extends Variable> variables) {
     for (Variable variable : variables) {
       VariableNode node = nodeFactory.createVariableNode(variable);
       tree.getNodeStorage().add(node);
@@ -207,8 +211,11 @@ public class DebuggerViewImpl extends BaseView<DebuggerView.ActionDelegate>
 
   @Override
   public void addExpression(WatchExpression expression) {
-    WatchExpressionNode node = nodeFactory.createExpressionNode(expression);
-    tree.getNodeStorage().add(node);
+    String key = nodeKeyProvider.evaluateKey(expression);
+    if (tree.getNodeStorage().findNodeWithKey(key) == null) {
+      WatchExpressionNode node = nodeFactory.createExpressionNode(expression);
+      tree.getNodeStorage().add(node);
+    }
   }
 
   @Override

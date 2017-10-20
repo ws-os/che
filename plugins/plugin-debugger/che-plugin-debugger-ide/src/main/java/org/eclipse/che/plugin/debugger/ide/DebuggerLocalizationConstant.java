@@ -235,8 +235,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("removeWatchExpressionDescription")
   String removeWatchExpressionDescription();
 
-  @Key("add.expression.text.area.dialog.view")
-  String addExpressionTextAreaDialogView();
+  @Key("add.expression.view.dialog.title")
+  String addExpressionViewDialogTitle();
 
   @Key("add.expression.view.save.button.title")
   String addExpressionViewSaveButtonTitle();
@@ -244,8 +244,8 @@ public interface DebuggerLocalizationConstant extends com.google.gwt.i18n.client
   @Key("add.expression.view.cancel.button.title")
   String addExpressionViewCancelButtonTitle();
 
-  @Key("edit.expression.text.area.dialog.view")
-  String editExpressionTextAreaDialogView();
+  @Key("edit.expression.view.dialog.title")
+  String editExpressionViewDialogTitle();
 
   @Key("edit.expression.view.save.button.title")
   String editExpressionViewSaveButtonTitle();

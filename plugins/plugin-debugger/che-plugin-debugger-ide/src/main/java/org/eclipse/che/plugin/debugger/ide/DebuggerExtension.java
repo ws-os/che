@@ -163,7 +163,7 @@ public class DebuggerExtension {
 
     watchDebuggerActionGroup.add(editDebugVariableAction);
 
-    //create watch debugger toolbar action group
+    // create watch debugger toolbar action group
     debuggerPresenter.getWatchExpressionToolbar().bindMainGroup(watchDebuggerActionGroup);
 
     // add actions in 'Debug' context menu

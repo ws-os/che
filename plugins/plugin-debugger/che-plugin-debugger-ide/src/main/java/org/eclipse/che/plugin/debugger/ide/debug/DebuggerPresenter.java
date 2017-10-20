@@ -35,7 +35,6 @@ import org.eclipse.che.api.debug.shared.model.ThreadState;
 import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.api.debug.shared.model.impl.MutableVariableImpl;
-import org.eclipse.che.api.debug.shared.model.impl.VariableImpl;
 import org.eclipse.che.api.promises.client.Promise;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.ide.api.debug.BreakpointManager;
@@ -166,7 +165,10 @@ public class DebuggerPresenter extends BasePresenter
       promise
           .then(
               value -> {
-                MutableVariable updatedVariable = variable instanceof MutableVariable ? ((MutableVariable)variable) : new MutableVariableImpl(variable);
+                MutableVariable updatedVariable =
+                    variable instanceof MutableVariable
+                        ? ((MutableVariable) variable)
+                        : new MutableVariableImpl(variable);
                 updatedVariable.setValue(value);
                 view.expandVariable(updatedVariable);
               })
@@ -186,7 +188,9 @@ public class DebuggerPresenter extends BasePresenter
   @Override
   public void onSelectedFrame(int frameIndex) {
     long selectedThreadId = view.getSelectedThreadId();
-    updateVariablesAndExpressions(selectedThreadId, frameIndex);
+    view.removeAllVariables();
+    setVariables(selectedThreadId, frameIndex);
+    setWatchExpressions(selectedThreadId, frameIndex);
 
     for (ThreadState ts : threadDump) {
       if (ts.getId() == selectedThreadId) {
@@ -237,7 +241,9 @@ public class DebuggerPresenter extends BasePresenter
                 if (executionPoint != null) {
                   view.setThreadDump(threadDump, executionPoint.getThreadId());
                   updateStackFrameDump(executionPoint.getThreadId());
-                  updateVariablesAndExpressions(executionPoint.getThreadId(), 0);
+                  view.removeAllVariables();
+                  setVariables(executionPoint.getThreadId(), 0);
+                  setWatchExpressions(executionPoint.getThreadId(), 0);
                 }
               })
           .catchError(
@@ -255,7 +261,7 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  protected void updateVariablesAndExpressions(long threadId, int frameIndex) {
+  protected void setVariables(long threadId, int frameIndex) {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       Promise<? extends StackFrameDump> promise = debugger.getStackFrameDump(threadId, frameIndex);
@@ -270,7 +276,6 @@ public class DebuggerPresenter extends BasePresenter
                   variables.addAll(stackFrameDump.getFields());
                   variables.addAll(stackFrameDump.getVariables());
                   view.setVariables(variables);
-                  setWatchExpressions(threadId, frameIndex);
                 }
               })
           .catchError(
@@ -319,14 +324,16 @@ public class DebuggerPresenter extends BasePresenter
           .evaluate(expression.getExpression(), threadId, frameIndex)
           .then(
               result -> {
-                if (view.getSelectedThreadId() == threadId && view.getSelectedFrameIndex() == frameIndex) {
+                if (view.getSelectedThreadId() == threadId
+                    && view.getSelectedFrameIndex() == frameIndex) {
                   expression.setResult(result);
                   view.updateExpression(expression);
                 }
               })
           .catchError(
               error -> {
-                if (view.getSelectedThreadId() == threadId && view.getSelectedFrameIndex() == frameIndex) {
+                if (view.getSelectedThreadId() == threadId
+                    && view.getSelectedFrameIndex() == frameIndex) {
                   expression.setResult(error.getMessage());
                   view.updateExpression(expression);
                 }
@@ -435,7 +442,7 @@ public class DebuggerPresenter extends BasePresenter
     view.setExecutionPoint(null);
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
-    view.setVariables(emptyList());
+    view.removeAllVariables();
     clearExpressionsValue();
   }
 
@@ -456,7 +463,7 @@ public class DebuggerPresenter extends BasePresenter
     view.setExecutionPoint(null);
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
-    view.setVariables(emptyList());
+    view.removeAllVariables();
     clearExpressionsValue();
   }
 

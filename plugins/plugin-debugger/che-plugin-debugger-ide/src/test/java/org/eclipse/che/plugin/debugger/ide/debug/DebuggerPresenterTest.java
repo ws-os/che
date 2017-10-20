@@ -138,21 +138,21 @@ public class DebuggerPresenterTest extends BaseTest {
   @Test
   public void shouldUpdateStackFrameDumpAndVariablesOnNewSelectedThread() throws Exception {
     doNothing().when(presenter).updateStackFrameDump(THREAD_ID);
-    doNothing().when(presenter).updateVariablesAndExpressions(THREAD_ID, 0);
+    doNothing().when(presenter).setVariables(THREAD_ID, 0);
 
     presenter.onSelectedThread(THREAD_ID);
 
     verify(presenter).updateStackFrameDump(THREAD_ID);
-    verify(presenter).updateVariablesAndExpressions(THREAD_ID, 0);
+    verify(presenter).setVariables(THREAD_ID, 0);
   }
 
   @Test
   public void shouldUpdateVariablesOnSelectedFrame() throws Exception {
-    doNothing().when(presenter).updateVariablesAndExpressions(THREAD_ID, FRAME_INDEX);
+    doNothing().when(presenter).setVariables(THREAD_ID, FRAME_INDEX);
 
     presenter.onSelectedFrame(FRAME_INDEX);
 
-    verify(presenter).updateVariablesAndExpressions(THREAD_ID, FRAME_INDEX);
+    verify(presenter).setVariables(THREAD_ID, FRAME_INDEX);
   }
 
   @Test
@@ -162,14 +162,14 @@ public class DebuggerPresenterTest extends BaseTest {
     doReturn(promiseThreadDump).when(debugger).getThreadDump();
     doReturn(promiseThreadDump).when(promiseThreadDump).then((Operation<List<ThreadState>>) any());
     doNothing().when(presenter).updateStackFrameDump(THREAD_ID);
-    doNothing().when(presenter).updateVariablesAndExpressions(THREAD_ID, 0);
+    doNothing().when(presenter).setVariables(THREAD_ID, 0);
 
     presenter.onBreakpointStopped(null, executionPoint);
 
     verify(promiseThreadDump).then(operationThreadDumpCaptor.capture());
     operationThreadDumpCaptor.getValue().apply(threadDump);
     verify(presenter).updateStackFrameDump(THREAD_ID);
-    verify(presenter).updateVariablesAndExpressions(THREAD_ID, 0);
+    verify(presenter).setVariables(THREAD_ID, 0);
     verify(view).setThreadDump(eq(threadDump), anyLong());
   }
 
@@ -178,7 +178,7 @@ public class DebuggerPresenterTest extends BaseTest {
     doReturn(promiseStackFrame).when(debugger).getStackFrameDump(THREAD_ID, FRAME_INDEX);
     doReturn(promiseStackFrame).when(promiseStackFrame).then((Operation<StackFrameDump>) any());
 
-    presenter.updateVariablesAndExpressions(THREAD_ID, FRAME_INDEX);
+    presenter.setVariables(THREAD_ID, FRAME_INDEX);
 
     verify(promiseStackFrame).then(operationStackFrameCaptor.capture());
     operationStackFrameCaptor.getValue().apply(stackFrame);

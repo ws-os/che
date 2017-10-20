@@ -24,4 +24,6 @@ public interface WatchExpression {
   String getResult();
 
   void setResult(String result);
+
+  String getKey();
 }

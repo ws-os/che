@@ -12,6 +12,8 @@ package org.eclipse.che.api.debug.shared.model.impl;
 
 import org.eclipse.che.api.debug.shared.model.WatchExpression;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Implementation {@link WatchExpression}
  *
@@ -19,12 +21,20 @@ import org.eclipse.che.api.debug.shared.model.WatchExpression;
  */
 public class WatchExpressionImpl implements WatchExpression {
 
+  private static final AtomicLong KEY_COUNTER = new AtomicLong();
+
   private String expression;
   private String result;
+  private String key;
 
   public WatchExpressionImpl(String expression, String result) {
     this.expression = expression;
     this.result = result;
+    this.key = String.valueOf(KEY_COUNTER.incrementAndGet());
+  }
+
+  public String getKey() {
+    return key;
   }
 
   @Override

@@ -29,7 +29,7 @@
             <g:Label ui:field="textAreaLabel" addStyleNames="{style.alignLeft}"/>
         </g:north>
         <g:center>
-            <g:TextArea ui:field="value" debugId="text-area-dialog" width="428px"/>
+            <g:TextArea ui:field="value" debugId="value-text-area" width="428px"/>
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>
