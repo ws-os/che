@@ -10,10 +10,10 @@
  */
 package org.eclipse.che.plugin.debugger.ide;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,22 +23,20 @@ import org.eclipse.che.api.debug.shared.dto.SimpleValueDto;
 import org.eclipse.che.api.debug.shared.dto.VariableDto;
 import org.eclipse.che.api.debug.shared.dto.VariablePathDto;
 import org.eclipse.che.api.debug.shared.model.MutableVariable;
-import org.eclipse.che.api.debug.shared.model.Variable;
 import org.eclipse.che.ide.debug.Debugger;
 import org.eclipse.che.ide.debug.DebuggerManager;
 import org.eclipse.che.plugin.debugger.ide.debug.DebuggerPresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.DebuggerDialogFactory;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.changevalue.ChangeValuePresenter;
-import org.eclipse.che.plugin.debugger.ide.debug.dialogs.common.TextAreaDialogView;
+import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValuePresenter;
+import org.eclipse.che.plugin.debugger.ide.debug.changevalue.ChangeValueView;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 /**
  * Testing {@link ChangeValuePresenter} functionality.
  *
  * @author Artem Zatsarynnyi
- * @author Oleksandr Andriienko
  */
 public class ChangeValuePresenterTest extends BaseTest {
   private static final String VAR_VALUE = "var_value";
