@@ -34,6 +34,10 @@ public class WatchExpressionImpl implements WatchExpression {
     this.key = valueOf(KEY_COUNTER.incrementAndGet());
   }
 
+  public WatchExpressionImpl(String expression) {
+    this(expression, "");
+  }
+
   public String getKey() {
     return key;
   }

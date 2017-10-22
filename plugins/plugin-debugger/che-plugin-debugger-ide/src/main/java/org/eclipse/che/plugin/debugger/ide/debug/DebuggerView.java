@@ -53,7 +53,7 @@ public interface DebuggerView extends View<DebuggerView.ActionDelegate> {
      * Performs any actions appropriate in response to the user having pressed the expand button in
      * variables tree.
      */
-    void onExpandVariable(Variable varNode);
+    void onExpandVariable(Variable variable);
 
     /** Is invoked when a add watch expression button clicked */
     void onAddExpressionBtnClicked(WatchExpression expression);

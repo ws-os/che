@@ -86,7 +86,7 @@ public class DebuggerPresenter extends BasePresenter
   private final BreakpointContextMenuFactory breakpointContextMenuFactory;
 
   private List<Variable> variables;
-  private List<WatchExpression> expressions;
+  private List<WatchExpression> watchExpressions;
   private List<? extends ThreadState> threadDump;
   private Location executionPoint;
   private DebuggerDescriptor debuggerDescriptor;
@@ -123,7 +123,7 @@ public class DebuggerPresenter extends BasePresenter
     this.debuggerManager.addObserver(this);
     this.breakpointManager.addObserver(this);
 
-    this.expressions = new ArrayList<>();
+    this.watchExpressions = new ArrayList<>();
 
     resetView();
     addDebuggerPanel();
@@ -189,7 +189,7 @@ public class DebuggerPresenter extends BasePresenter
   public void onSelectedFrame(int frameIndex) {
     long selectedThreadId = view.getSelectedThreadId();
     view.removeAllVariables();
-    setVariables(selectedThreadId, frameIndex);
+    updateVariables(selectedThreadId, frameIndex);
     updateWatchExpressions(selectedThreadId, frameIndex);
 
     for (ThreadState ts : threadDump) {
@@ -242,7 +242,7 @@ public class DebuggerPresenter extends BasePresenter
                   view.setThreadDump(threadDump, executionPoint.getThreadId());
                   updateStackFrameDump(executionPoint.getThreadId());
                   view.removeAllVariables();
-                  setVariables(executionPoint.getThreadId(), 0);
+                  updateVariables(executionPoint.getThreadId(), 0);
                   updateWatchExpressions(executionPoint.getThreadId(), 0);
                 }
               })
@@ -261,7 +261,7 @@ public class DebuggerPresenter extends BasePresenter
     }
   }
 
-  protected void setVariables(long threadId, int frameIndex) {
+  protected void updateVariables(long threadId, int frameIndex) {
     Debugger debugger = debuggerManager.getActiveDebugger();
     if (debugger != null && debugger.isSuspended()) {
       Promise<? extends StackFrameDump> promise = debugger.getStackFrameDump(threadId, frameIndex);
@@ -286,12 +286,12 @@ public class DebuggerPresenter extends BasePresenter
   }
 
   private void updateWatchExpressions(long threadId, int frameIndex) {
-    for (WatchExpression expression : expressions) {
+    for (WatchExpression expression : watchExpressions) {
       expression.setResult("");
       view.updateExpression(expression);
     }
 
-    for (WatchExpression expression : expressions) {
+    for (WatchExpression expression : watchExpressions) {
       evaluateWatchExpression(expression, threadId, frameIndex);
     }
   }
@@ -299,7 +299,7 @@ public class DebuggerPresenter extends BasePresenter
   @Override
   public void onAddExpressionBtnClicked(WatchExpression expression) {
     view.addExpression(expression);
-    expressions.add(expression);
+    watchExpressions.add(expression);
 
     evaluateWatchExpression(expression, getSelectedThreadId(), getSelectedFrameIndex());
   }
@@ -307,7 +307,7 @@ public class DebuggerPresenter extends BasePresenter
   @Override
   public void onRemoveExpressionBtnClicked(WatchExpression expression) {
     view.removeExpression(expression);
-    expressions.remove(expression);
+    watchExpressions.remove(expression);
   }
 
   @Override
@@ -445,11 +445,11 @@ public class DebuggerPresenter extends BasePresenter
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
     view.removeAllVariables();
-    clearExpressionsValue();
+    invalidateExpressions();
   }
 
-  private void clearExpressionsValue() {
-    for (WatchExpression expression : expressions) {
+  private void invalidateExpressions() {
+    for (WatchExpression expression : watchExpressions) {
       expression.setResult("");
       view.updateExpression(expression);
     }
@@ -466,7 +466,7 @@ public class DebuggerPresenter extends BasePresenter
     view.setThreadDump(emptyList(), -1);
     view.setFrames(emptyList());
     view.removeAllVariables();
-    clearExpressionsValue();
+    invalidateExpressions();
   }
 
   @Override

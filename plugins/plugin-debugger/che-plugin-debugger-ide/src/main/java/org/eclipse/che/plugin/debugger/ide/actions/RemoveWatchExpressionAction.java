@@ -14,6 +14,7 @@ import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspect
 
 import com.google.inject.Inject;
 import java.util.Collections;
+import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
@@ -45,7 +46,10 @@ public class RemoveWatchExpressionAction extends AbstractPerspectiveAction {
 
   @Override
   public void actionPerformed(ActionEvent event) {
-    debuggerPresenter.onRemoveExpressionBtnClicked(debuggerPresenter.getSelectedWatchExpression());
+    WatchExpression expression = debuggerPresenter.getSelectedWatchExpression();
+    if (expression != null) {
+      debuggerPresenter.onRemoveExpressionBtnClicked(expression);
+    }
   }
 
   @Override

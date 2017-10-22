@@ -59,7 +59,7 @@ public class AddWatchExpressionPresenter implements TextAreaDialogView.ActionDel
 
   @Override
   public void onAgreeClicked() {
-    WatchExpression expression = new WatchExpressionImpl(view.getValue(), "");
+    WatchExpression expression = new WatchExpressionImpl(view.getValue());
     debuggerPresenter.onAddExpressionBtnClicked(expression);
 
     view.close();

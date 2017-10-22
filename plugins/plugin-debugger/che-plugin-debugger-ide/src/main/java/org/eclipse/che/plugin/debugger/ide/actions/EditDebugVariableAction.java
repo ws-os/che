@@ -14,8 +14,6 @@ import static java.util.Collections.singletonList;
 import static org.eclipse.che.ide.workspace.perspectives.project.ProjectPerspective.PROJECT_PERSPECTIVE_ID;
 
 import com.google.inject.Inject;
-import org.eclipse.che.api.debug.shared.model.Variable;
-import org.eclipse.che.api.debug.shared.model.WatchExpression;
 import org.eclipse.che.ide.api.action.AbstractPerspectiveAction;
 import org.eclipse.che.ide.api.action.ActionEvent;
 import org.eclipse.che.plugin.debugger.ide.DebuggerLocalizationConstant;
@@ -35,8 +33,6 @@ public class EditDebugVariableAction extends AbstractPerspectiveAction {
   private final ChangeValuePresenter changeValuePresenter;
   private final DebuggerPresenter debuggerPresenter;
   private final EditWatchExpressionPresenter editWatchExpressionPresenter;
-  private Variable selectedVariable;
-  private WatchExpression selectedExpression;
 
   @Inject
   public EditDebugVariableAction(
@@ -58,17 +54,15 @@ public class EditDebugVariableAction extends AbstractPerspectiveAction {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (selectedVariable != null) {
+    if (debuggerPresenter.getSelectedWatchExpression() != null) {
       changeValuePresenter.showDialog();
-    } else if (selectedExpression != null) {
+    } else if (debuggerPresenter.getSelectedVariable() != null) {
       editWatchExpressionPresenter.showDialog();
     }
   }
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    selectedExpression = debuggerPresenter.getSelectedWatchExpression();
-    selectedVariable = debuggerPresenter.getSelectedVariable();
-    event.getPresentation().setEnabled(selectedExpression != null || selectedVariable != null);
+    event.getPresentation().setEnabled(debuggerPresenter.getSelectedWatchExpression() != null || debuggerPresenter.getSelectedVariable() != null);
   }
 }
