@@ -55,6 +55,11 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.che.core</groupId>
+            <artifactId>che-core-api-user-shared</artifactId>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.che.core</groupId>
             <artifactId>che-core-commons-gwt</artifactId>
         </dependency>
         <dependency>
@@ -66,14 +71,17 @@
             <artifactId>che-multiuser-machine-authentication-shared</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.che.multiuser</groupId>
+            <artifactId>che-multiuser-machine-authentication-shared</artifactId>
+            <classifier>sources</classifier>
+        </dependency>
+        <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
     <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <outputDirectory>target/classes</outputDirectory>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
