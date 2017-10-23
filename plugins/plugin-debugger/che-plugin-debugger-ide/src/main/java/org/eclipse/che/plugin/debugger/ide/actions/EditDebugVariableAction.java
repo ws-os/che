@@ -63,6 +63,10 @@ public class EditDebugVariableAction extends AbstractPerspectiveAction {
 
   @Override
   public void updateInPerspective(ActionEvent event) {
-    event.getPresentation().setEnabled(debuggerPresenter.getSelectedWatchExpression() != null || debuggerPresenter.getSelectedVariable() != null);
+    event
+        .getPresentation()
+        .setEnabled(
+            debuggerPresenter.getSelectedWatchExpression() != null
+                || debuggerPresenter.getSelectedVariable() != null);
   }
 }

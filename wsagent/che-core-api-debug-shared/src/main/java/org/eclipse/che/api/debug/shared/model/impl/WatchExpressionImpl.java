@@ -13,8 +13,6 @@ package org.eclipse.che.api.debug.shared.model.impl;
 import java.util.concurrent.atomic.AtomicLong;
 import org.eclipse.che.api.debug.shared.model.WatchExpression;
 
-import static java.lang.String.valueOf;
-
 /**
  * Implementation {@link WatchExpression}
  *
@@ -31,7 +29,7 @@ public class WatchExpressionImpl implements WatchExpression {
   public WatchExpressionImpl(String expression, String result) {
     this.expression = expression;
     this.result = result;
-    this.key = valueOf(KEY_COUNTER.incrementAndGet());
+    this.key = String.valueOf(KEY_COUNTER.incrementAndGet());
   }
 
   public WatchExpressionImpl(String expression) {
