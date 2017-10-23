@@ -80,13 +80,11 @@
             <artifactId>che-plugin-github-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
-<!--
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-github-pullrequest</artifactId>
             <type>gwt-lib</type>
         </dependency>
--->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-gwt-ext-gwt</artifactId>
@@ -157,13 +155,11 @@
             <artifactId>che-plugin-product-info</artifactId>
             <type>gwt-lib</type>
         </dependency>
-<!--
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-pullrequest-ide</artifactId>
             <type>gwt-lib</type>
         </dependency>
--->
         <dependency>
             <groupId>org.eclipse.che.plugin</groupId>
             <artifactId>che-plugin-python-lang-ide</artifactId>
