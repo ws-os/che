@@ -101,7 +101,8 @@ public class KeycloakAuthenticationFilter extends AbstractKeycloakFilter {
       LOG.error("HEADERS    : ---------------------------- ----------------------------:  ");
       Enumeration<String> headerNames = request.getHeaderNames();
       while (headerNames.hasMoreElements()){
-        LOG.error(request.getHeader(headerNames.nextElement()));
+        String name = headerNames.nextElement();
+        LOG.error(name + "   -   " + request.getHeader(name));
       }
       LOG.error(": ---------------------------- ----------------------------:");
       LOG.error("Token ------------------------------>  " + token + "    expired");
@@ -126,7 +127,8 @@ public class KeycloakAuthenticationFilter extends AbstractKeycloakFilter {
         LOG.error("HEADERS    : ---------------------------- ----------------------------:  ");
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){
-          LOG.error(request.getHeader(headerNames.nextElement()));
+          String name = headerNames.nextElement();
+          LOG.error(name + "   -   " + request.getHeader(name));
         }
         LOG.error(": ---------------------------- ----------------------------:");
         LOG.error("Token ------------------------------>  " + token + "    expired");
