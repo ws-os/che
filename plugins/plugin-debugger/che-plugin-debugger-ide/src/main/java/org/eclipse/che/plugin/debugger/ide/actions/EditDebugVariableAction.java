@@ -55,9 +55,9 @@ public class EditDebugVariableAction extends AbstractPerspectiveAction {
   @Override
   public void actionPerformed(ActionEvent e) {
     if (debuggerPresenter.getSelectedWatchExpression() != null) {
-      changeValuePresenter.showDialog();
-    } else if (debuggerPresenter.getSelectedVariable() != null) {
       editWatchExpressionPresenter.showDialog();
+    } else if (debuggerPresenter.getSelectedVariable() != null) {
+      changeValuePresenter.showDialog();
     }
   }
 
