@@ -14,7 +14,7 @@
     <inherits name="com.google.gwt.core.Core"/>
     <inherits name="com.google.gwt.logging.Logging"/>
 
-    <super-source path="emulation"/>
+    <super-source path="super"/>
     <source path="gwtbackend"/>
 
     <replace-with class="org.eclipse.che.ide.logger.slf4j.gwtbackend.GWTLoggerFactory">
