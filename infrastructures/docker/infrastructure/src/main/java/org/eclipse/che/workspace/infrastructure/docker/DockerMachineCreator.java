@@ -25,7 +25,9 @@ import org.eclipse.che.infrastructure.docker.client.json.NetworkSettings;
 import org.eclipse.che.workspace.infrastructure.docker.monit.DockerMachineStopDetector;
 import org.eclipse.che.workspace.infrastructure.docker.server.mapping.ServersMapper;
 
-/** Helps to create {@link DockerMachine} instances. */
+/**
+ * Helps to create {@link DockerMachine} instances.
+ */
 @Singleton
 public class DockerMachineCreator {
 
@@ -33,6 +35,7 @@ public class DockerMachineCreator {
   private final String registry;
   private final boolean snapshotUseRegistry;
   private final String registryNamespace;
+  private final String internalDockerIP;
   private final DockerMachineStopDetector dockerMachineStopDetector;
 
   @Inject
@@ -41,15 +44,19 @@ public class DockerMachineCreator {
       @Named("che.docker.registry") String registry,
       @Named("che.docker.registry_for_snapshots") boolean snapshotUseRegistry,
       @Named("che.docker.namespace") @Nullable String registryNamespace,
+      @Named("che.docker.ip") @Nullable String internalDockerIP,
       DockerMachineStopDetector dockerMachineStopDetector) {
     this.docker = docker;
     this.registry = registry;
     this.snapshotUseRegistry = snapshotUseRegistry;
     this.registryNamespace = registryNamespace;
+    this.internalDockerIP = internalDockerIP;
     this.dockerMachineStopDetector = dockerMachineStopDetector;
   }
 
-  /** Creates new docker machine instance from the short container description. */
+  /**
+   * Creates new docker machine instance from the short container description.
+   */
   public DockerMachine create(ContainerListEntry container) throws InfrastructureException {
     try {
       return create(docker.inspectContainer(container.getId()));
@@ -58,10 +65,17 @@ public class DockerMachineCreator {
     }
   }
 
-  /** Creates new docker machine instance from the full container description. */
+  /**
+   * Creates new docker machine instance from the full container description.
+   */
   public DockerMachine create(ContainerInfo container) {
     NetworkSettings networkSettings = container.getNetworkSettings();
-    String hostname = networkSettings.getGateway();
+    String hostname;
+    if (internalDockerIP != null) {
+      hostname = internalDockerIP;
+    } else {
+      hostname = networkSettings.getGateway();
+    }
     Map<String, ServerConfig> configs =
         Labels.newDeserializer(container.getConfig().getLabels()).servers();
 
