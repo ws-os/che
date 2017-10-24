@@ -35,8 +35,8 @@
         <module>ide/che-ide-core</module>
         <module>dashboard</module>
         <module>assembly</module>
-        <!--<module>assembly-multiuser</module>-->
-        <!--<module>selenium</module>-->
+        <module>assembly-multiuser</module>
+        <module>selenium</module>
     </modules>
     <scm>
         <connection>scm:git:git@github.com:eclipse/che.git</connection>
@@ -849,6 +849,12 @@
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.multiuser</groupId>
+                <artifactId>che-multiuser-keycloak-ide</artifactId>
+                <version>${che.version}</version>
+                <type>gwt-lib</type>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.multiuser</groupId>
                 <artifactId>che-multiuser-keycloak-server</artifactId>
                 <version>${che.version}</version>
             </dependency>
@@ -887,6 +893,12 @@
                 <groupId>org.eclipse.che.multiuser</groupId>
                 <artifactId>che-multiuser-machine-authentication-ide</artifactId>
                 <version>${che.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.che.multiuser</groupId>
+                <artifactId>che-multiuser-machine-authentication-ide</artifactId>
+                <version>${che.version}</version>
+                <type>gwt-lib</type>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.che.multiuser</groupId>
